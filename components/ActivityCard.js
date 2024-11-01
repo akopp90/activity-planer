@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export default function ActivityCard({ title, categories, imageUrl }) {
   return (
-    <StyledCard>
+    <StyledCardSection>
       <StyledImageSection>
         <Image
           src={imageUrl}
@@ -14,7 +14,7 @@ export default function ActivityCard({ title, categories, imageUrl }) {
           fill
         />
       </StyledImageSection>
-      <StyledSection>
+      <StyledDetailsSection>
         <StyledList>
           {categories.map((category) => (
             <StyledListItem key={category}>{category}</StyledListItem>
@@ -23,22 +23,22 @@ export default function ActivityCard({ title, categories, imageUrl }) {
         <StyledLink href="#" title={title}>
           {title}
         </StyledLink>
-      </StyledSection>
-    </StyledCard>
+      </StyledDetailsSection>
+    </StyledCardSection>
   );
 }
 
-const StyledCard = styled.section`
+const StyledCardSection = styled.section`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
 const StyledImageSection = styled.section`
-  height: 250px;
+  height: 200px;
   position: relative;
   background-color: #f1f1f1;
 `;
-const StyledSection = styled.section`
+const StyledDetailsSection = styled.section`
   padding: 16px;
 `;
 const StyledList = styled.ul`
