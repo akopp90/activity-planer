@@ -21,5 +21,5 @@ const StyledList = styled.ul`
   padding: 24px;
   display: grid;
   list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
 `;
