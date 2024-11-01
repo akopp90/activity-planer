@@ -16,8 +16,8 @@ export default function ActivityCard({ title, categories, imageUrl }) {
       </StyledImageSection>
       <StyledDetailsSection>
         <StyledList>
-          {categories.map((category) => (
-            <StyledListItem key={category}>{category}</StyledListItem>
+          {categories.map((category, index) => (
+            <StyledListItem key={index}>{category}</StyledListItem>
           ))}
         </StyledList>
         <StyledLink href="#" title={title}>
