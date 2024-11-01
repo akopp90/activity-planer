@@ -1,11 +1,11 @@
-import Link from "next/link";
+import { uid } from "uid";
 import Image from "next/image";
 import styled from "styled-components";
 
 export default function ActivityCard({ title, categories, imageUrl }) {
   return (
     <StyledCardSection>
-      <StyledImageSection>
+      <StyledImageDiv>
         <Image
           src={imageUrl}
           alt={title}
@@ -13,39 +13,32 @@ export default function ActivityCard({ title, categories, imageUrl }) {
           sizes="33vw"
           fill
         />
-      </StyledImageSection>
-      <StyledDetailsSection>
-        <StyledList>
-          {categories.map((category, index) => (
-            <StyledListItem key={index}>{category}</StyledListItem>
-          ))}
-        </StyledList>
-        <StyledLink href="#" title={title}>
-          {title}
-        </StyledLink>
-      </StyledDetailsSection>
+      </StyledImageDiv>
+      <StyledList>
+        {categories.map((category) => (
+          <StyledListItem key={uid()}>{category}</StyledListItem>
+        ))}
+      </StyledList>
+      <StyledTitle>{title}</StyledTitle>
     </StyledCardSection>
   );
 }
 
-const StyledCardSection = styled.section`
+const StyledCardSection = styled.article`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
-const StyledImageSection = styled.section`
+const StyledImageDiv = styled.div`
   height: 200px;
   position: relative;
   background-color: #f1f1f1;
-`;
-const StyledDetailsSection = styled.section`
-  padding: 16px;
 `;
 const StyledList = styled.ul`
   gap: 8px;
   display: flex;
   list-style: none;
-  margin-bottom: 8px;
+  margin: 16px 16px 8px 16px;
 `;
 const StyledListItem = styled.li`
   padding: 4px 8px;
@@ -53,14 +46,8 @@ const StyledListItem = styled.li`
   border-radius: 4px;
   background-color: #f1f1f1;
 `;
-const StyledLink = styled(Link)`
-  color: inherit;
+const StyledTitle = styled.h2`
   font-weight: bold;
   font-size: 1.25rem;
-  align-self: flex-start;
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
+  margin: 0 16px 16px;
 `;

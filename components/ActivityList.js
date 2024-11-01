@@ -1,20 +1,25 @@
 import styled from "styled-components";
-import { activities } from "@/libs/activities";
+import { activities } from "@/lib/activities";
 import ActivityCard from "@/components/ActivityCard";
 
 export default function ActivityList() {
   return (
-    <StyledMain>
-      {activities.map((activity) => (
-        <ActivityCard key={activity.id} {...activity} />
-      ))}
-    </StyledMain>
+    <main>
+      <StyledList>
+        {activities.map((activity) => (
+          <li key={activity.id}>
+            <ActivityCard {...activity} />
+          </li>
+        ))}
+      </StyledList>
+    </main>
   );
 }
 
-const StyledMain = styled.main`
+const StyledList = styled.ul`
   gap: 16px;
   padding: 24px;
   display: grid;
+  list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 `;
