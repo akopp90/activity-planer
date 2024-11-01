@@ -1,4 +1,3 @@
-import { uid } from "uid";
 import Image from "next/image";
 import styled from "styled-components";
 
@@ -16,7 +15,7 @@ export default function ActivityCard({ title, categories, imageUrl }) {
       </StyledImageDiv>
       <StyledList>
         {categories.map((category) => (
-          <StyledListItem key={uid()}>{category}</StyledListItem>
+          <StyledListItem key={category}>{category}</StyledListItem>
         ))}
       </StyledList>
       <StyledTitle>{title}</StyledTitle>
