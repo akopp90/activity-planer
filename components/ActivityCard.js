@@ -5,10 +5,7 @@ import { useRouter } from "next/router";
 
 export default function ActivityCard({ id, title, categories, imageUrl }) {
   const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/activity/${id}`);
-  };
+  
 
   return ( 
     <StyledArticle>
