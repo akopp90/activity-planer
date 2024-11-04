@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { activities } from "@/lib/activities"; 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ActivityDetails() {
   const router = useRouter();
@@ -35,7 +36,7 @@ const StyledDetails = styled.div`
   padding: 16px;
 `;
 
-const StyledImage = styled.img`
+const StyledImage = styled(Image)`
   width: 100%;
   height: auto;
   border-radius: 8px;
