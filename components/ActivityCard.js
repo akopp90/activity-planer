@@ -57,5 +57,6 @@ const StyledListItem = styled.li`
 const StyledTitle = styled.h2`
   font-weight: bold;
   font-size: 1.25rem;
+  display: inline;
   margin: 0 16px 16px;
 `;

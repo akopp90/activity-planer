@@ -1,16 +1,8 @@
-import { useRouter } from "next/router";
 import styled from "styled-components";
-import { activities } from "@/lib/activities"; 
 import Link from "next/link";
 import Image from "next/image";
 
-export default function ActivityDetails() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const activity = activities.find(activity => activity.id === id);
-
-  if (!activity) return <p>Loading...</p>;
+export default function ActivityDetails({ activity }) {
 
   
 
