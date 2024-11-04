@@ -16,8 +16,8 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
         <Image
           src={imageUrl}
           alt={title}
-          style={{ objectFit: “cover” }}
-          sizes=“33vw”
+          style={{ objectFit: "cover" }}
+          sizes="33vw"
           fill
         />
       </Link>
@@ -32,14 +32,16 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
     </StyledTitle>
   </StyledArticle>
 );
+}
 
-const StyledCardSection = styled.article`
+
+const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
-  cursor: pointer;  /* Zeigt an, dass die Karte klickbar ist */
+  cursor: pointer;  
 `;
-const StyledImageDiv = styled.div`
+const StyledImageContainer = styled.div`
   height: 200px;
   position: relative;
   background-color: #f1f1f1;
@@ -61,4 +63,3 @@ const StyledTitle = styled.h2`
   font-size: 1.25rem;
   margin: 0 16px 16px;
 `;
-
