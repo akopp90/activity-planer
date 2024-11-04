@@ -15,8 +15,10 @@ export default function ActivityDetails() {
   
 
   return (
-    <StyledDetails>
-      <StyledImage src={activity.imageUrl} alt={activity.title} />
+    <StyledDetails>  
+      <StyledImageContainer>
+      <Image src={activity.imageUrl} sizes="50vw" fill style={{ objectFit: "cover" }} alt={activity.title} />
+      </StyledImageContainer>
       <StyledTitle>{activity.title}</StyledTitle>
       <StyledList>
         {activity.categories.map(category => (
@@ -34,10 +36,10 @@ const StyledDetails = styled.div`
   padding: 16px;
 `;
 
-const StyledImage = styled(Image)`
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+const StyledImageContainer = styled.div`
+  height: 50vh;
+  position: relative;
+  background-color: #f1f1f1;
 `;
 
 const StyledTitle = styled.h2`

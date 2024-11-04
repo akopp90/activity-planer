@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 
@@ -12,7 +13,6 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
   return ( 
     <StyledArticle>
     <StyledImageContainer>
-      <Link href={activityLink}>
         <Image
           src={imageUrl}
           alt={title}
@@ -20,7 +20,6 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
           sizes="33vw"
           fill
         />
-      </Link>
     </StyledImageContainer>
     <StyledList>
       {categories.map((category) => (
@@ -28,7 +27,7 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
       ))}
     </StyledList>
     <StyledTitle>
-      <Link href={activityLink}>{title}</Link>
+      <Link href={`/activity/${id}`}>{title}</Link>
     </StyledTitle>
   </StyledArticle>
 );
