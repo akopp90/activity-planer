@@ -9,26 +9,29 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
     router.push(`/activity/${id}`);
   };
 
-  return (
-    <StyledCardSection onClick={handleClick}>
-      <StyledImageDiv>
+  return ( 
+    <StyledArticle>
+    <StyledImageContainer>
+      <Link href={activityLink}>
         <Image
           src={imageUrl}
           alt={title}
-          style={{ objectFit: "cover" }}
-          sizes="33vw"
+          style={{ objectFit: “cover” }}
+          sizes=“33vw”
           fill
         />
-      </StyledImageDiv>
-      <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
-      </StyledList>
-      <StyledTitle>{title}</StyledTitle>
-    </StyledCardSection>
-  );
-}
+      </Link>
+    </StyledImageContainer>
+    <StyledList>
+      {categories.map((category) => (
+        <StyledListItem key={category}>{category}</StyledListItem>
+      ))}
+    </StyledList>
+    <StyledTitle>
+      <Link href={activityLink}>{title}</Link>
+    </StyledTitle>
+  </StyledArticle>
+);
 
 const StyledCardSection = styled.article`
   overflow: hidden;
