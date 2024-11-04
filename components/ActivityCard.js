@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 export default function ActivityCard({ id, title, categories, imageUrl }) {
   const router = useRouter();
-  
+
 
   return ( 
     <StyledArticle>
@@ -23,9 +23,10 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
         <StyledListItem key={category}>{category}</StyledListItem>
       ))}
     </StyledList>
+    <Link href={`/activity/${id}`}>
     <StyledTitle>
-      <Link href={`/activity/${id}`}>{title}</Link>
-    </StyledTitle>
+      {title}
+    </StyledTitle></Link>
   </StyledArticle>
 );
 }
@@ -34,8 +35,7 @@ export default function ActivityCard({ id, title, categories, imageUrl }) {
 const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
-  cursor: pointer;  
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5); 
 `;
 const StyledImageContainer = styled.div`
   height: 200px;
