@@ -1,9 +1,16 @@
 import Image from "next/image";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
-export default function ActivityCard({ title, categories, imageUrl }) {
+export default function ActivityCard({ id, title, categories, imageUrl }) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/activity/${id}`);
+  };
+
   return (
-    <StyledCardSection>
+    <StyledCardSection onClick={handleClick}>
       <StyledImageDiv>
         <Image
           src={imageUrl}
@@ -27,6 +34,7 @@ const StyledCardSection = styled.article`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  cursor: pointer;  /* Zeigt an, dass die Karte klickbar ist */
 `;
 const StyledImageDiv = styled.div`
   height: 200px;
@@ -50,3 +58,4 @@ const StyledTitle = styled.h2`
   font-size: 1.25rem;
   margin: 0 16px 16px;
 `;
+
