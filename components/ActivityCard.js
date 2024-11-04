@@ -1,10 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
-export default function ActivityCard({ title, categories, imageUrl }) {
-  return (
-    <StyledCardSection>
-      <StyledImageDiv>
+export default function ActivityCard({ id, title, categories, imageUrl }) {
+  const router = useRouter();
+
+
+  return ( 
+    <StyledArticle>
+    <StyledImageContainer>
         <Image
           src={imageUrl}
           alt={title}
@@ -12,23 +17,27 @@ export default function ActivityCard({ title, categories, imageUrl }) {
           sizes="33vw"
           fill
         />
-      </StyledImageDiv>
-      <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
-      </StyledList>
-      <StyledTitle>{title}</StyledTitle>
-    </StyledCardSection>
-  );
+    </StyledImageContainer>
+    <StyledList>
+      {categories.map((category) => (
+        <StyledListItem key={category}>{category}</StyledListItem>
+      ))}
+    </StyledList>
+    <Link href={`/activity/${id}`}>
+    <StyledTitle>
+      {title}
+    </StyledTitle></Link>
+  </StyledArticle>
+);
 }
 
-const StyledCardSection = styled.article`
+
+const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5); 
 `;
-const StyledImageDiv = styled.div`
+const StyledImageContainer = styled.div`
   height: 200px;
   position: relative;
   background-color: #f1f1f1;
@@ -48,5 +57,6 @@ const StyledListItem = styled.li`
 const StyledTitle = styled.h2`
   font-weight: bold;
   font-size: 1.25rem;
+  display: inline;
   margin: 0 16px 16px;
 `;
