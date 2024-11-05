@@ -20,8 +20,6 @@ export default function App({ Component, pageProps }) {
       );
       return;
     }
-
-    setActivities([newActivity, ...activities]);
   }
   return (
     <>
