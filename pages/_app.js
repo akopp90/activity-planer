@@ -4,7 +4,11 @@ import { activities as activityData } from "@/lib/activities";
 
 export default function App({ Component, pageProps }) {
   const [activities, setActivities] = useState(activityData);
-  function handleActivity(newActivity) {
+  function handleAddActivity(newActivity) {
+    setActivities([newActivity, ...activities]);
+  }
+
+  function handleEditActivity(newActivity) {
     if (activities.find((activity) => activity.id === newActivity.id)) {
       setActivities(
         activities.map((activity) => {
@@ -19,12 +23,12 @@ export default function App({ Component, pageProps }) {
 
     setActivities([newActivity, ...activities]);
   }
-
   return (
     <>
       <GlobalStyle />
       <Component
-        handleActivity={handleActivity}
+        handleAddActivity={handleAddActivity}
+        handleEditActivity={handleEditActivity}
         activities={activities}
         {...pageProps}
       />

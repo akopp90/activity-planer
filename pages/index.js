@@ -6,7 +6,11 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 
-export default function HomePage({ handleActivity, activities }) {
+export default function HomePage({
+  handleAddActivity,
+  handleEditActivity,
+  activities,
+}) {
   const [showForm, setShowForm] = useState(false);
   const activity = {
     id: "",
@@ -17,6 +21,9 @@ export default function HomePage({ handleActivity, activities }) {
     description: "",
     imageUrl: "",
   };
+  function handleToggleEdit() {
+    setShowForm(!showForm);
+  }
   return (
     <>
       <Head>
@@ -31,8 +38,8 @@ export default function HomePage({ handleActivity, activities }) {
         </StyledSection>
       ) : (
         <ActivityForm
-          handleActivity={handleActivity}
-          setShowForm={setShowForm}
+          handleAddActivity={handleAddActivity}
+          handleToggleEdit={handleToggleEdit}
           activity={activity}
         />
       )}

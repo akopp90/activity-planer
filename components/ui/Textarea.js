@@ -3,7 +3,7 @@ import styled from "styled-components";
 export default function Textarea({ name, children, defaultValue }) {
   return (
     <StyledDiv>
-      <StyledLabel htmlFor={name}>{children}</StyledLabel>
+      <StyledLabel htmlFor={name.toLowerCase()}>{children}</StyledLabel>
       <StyledTextarea
         name={name.toLowerCase()}
         id={name.toLowerCase()}

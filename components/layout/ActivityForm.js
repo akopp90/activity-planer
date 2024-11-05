@@ -8,12 +8,20 @@ import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
 
 export default function ActivityForm({
-  setShowForm,
-  handleActivity,
+  handleToggleEdit,
+  handleAddActivity,
+  handleEditActivity,
   activity,
 }) {
   const [categories, setCategories] = useState(activity.categories);
-
+  function handleActivity(newActivity) {
+    if (activity.id) {
+      handleEditActivity(newActivity);
+      return;
+    }
+    handleAddActivity(newActivity);
+    handleToggleEdit();
+  }
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -28,7 +36,7 @@ export default function ActivityForm({
     };
 
     handleActivity(newActivity);
-    setShowForm(false);
+    handleToggleEdit();
   }
 
   function handleSelectCategory(event) {
@@ -44,7 +52,7 @@ export default function ActivityForm({
   }
 
   function handleCancel() {
-    setShowForm(false);
+    handleToggleEdit();
     setCategories([]);
   }
 

@@ -5,7 +5,11 @@ import { useState } from "react";
 import ActivityForm from "@/components/layout/ActivityForm";
 import styled from "styled-components";
 
-export default function ActivityPage({ activities, handleActivity }) {
+export default function ActivityPage({
+  activities,
+  handleAddActivity,
+  handleEditActivity,
+}) {
   const router = useRouter();
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
@@ -26,8 +30,8 @@ export default function ActivityPage({ activities, handleActivity }) {
         </StyledSection>
       ) : (
         <ActivityForm
-          setShowForm={setShowForm}
-          handleActivity={handleActivity}
+          handleToggleEdit={handleToggleEdit}
+          handleEditActivity={handleEditActivity}
           activity={activity}
         />
       )}
