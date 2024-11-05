@@ -14,14 +14,7 @@ export default function ActivityForm({
   activity,
 }) {
   const [categories, setCategories] = useState(activity.categories);
-  function handleActivity(newActivity) {
-    if (activity.id) {
-      handleEditActivity(newActivity);
-      return;
-    }
-    handleAddActivity(newActivity);
-    handleToggleEdit();
-  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -32,10 +25,14 @@ export default function ActivityForm({
       ...formData,
       id: id || uid(),
       categories: categories,
-      imageUrl: "",
+      imageUrl: activity.imageUrl || "",
     };
 
-    handleActivity(newActivity);
+    if (activity.id) {
+      handleEditActivity(newActivity);
+    } else {
+      handleAddActivity(newActivity);
+    }
     handleToggleEdit();
   }
 
