@@ -11,44 +11,53 @@ export default function ActivityDetails({
   categories,
 }) {
   return (
-    <StyledDetails>
-      <StyledImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            style={{ objectFit: "cover" }}
-            sizes="50vw"
-            fill
-          />
-        ) : (
-          <Image
-            src="/images/no-image.svg"
-            width={40}
-            height={40}
-            alt="Image is missing"
-          />
-        )}
-      </StyledImageContainer>
-      <StyledTitle>{title}</StyledTitle>
-      <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
-      </StyledList>
-      <StyledLocation>
-        {area}, {country}
-      </StyledLocation>
-      <StyledDescription>{description}</StyledDescription>
-      <StyledLink href="/" title="Back to Activities">
-        Back to Activities
-      </StyledLink>
-    </StyledDetails>
+    <StyledContainer>
+      <StyledDetails>
+        <StyledImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="50vw"
+              fill
+            />
+          ) : (
+            <Image
+              src="/images/no-image.svg"
+              width={40}
+              height={40}
+              alt="Image is missing"
+            />
+          )}
+        </StyledImageContainer>
+        <StyledContainer>
+          <StyledTitle>{title}</StyledTitle>
+          <StyledList>
+            {categories.map((category) => (
+              <StyledListItem key={category}>{category}</StyledListItem>
+            ))}
+          </StyledList>
+          <StyledLocation>
+            {area}, {country}
+          </StyledLocation>
+          <StyledDescription>{description}</StyledDescription>
+          <StyledLink href="/" title="Back to Activities">
+            Back to Activities
+          </StyledLink>
+        </StyledContainer>
+      </StyledDetails>
+    </StyledContainer>
   );
 }
 
-const StyledDetails = styled.div`
-  padding: 16px;
+const StyledContainer = styled.div`
+  padding: 24px;
+`;
+const StyledDetails = styled.article`
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
