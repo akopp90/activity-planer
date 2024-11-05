@@ -1,11 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { useRouter } from "next/router";
 
 export default function ActivityCard({ id, title, categories, imageUrl }) {
-  const router = useRouter();
-
   return (
     <StyledArticle>
       <StyledImageContainer>

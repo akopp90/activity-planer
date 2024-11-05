@@ -1,14 +1,9 @@
 import styled from "styled-components";
 import ActivityCard from "@/components/layout/ActivityCard";
-import ActivityForm from "@/components/layout/ActivityCreateForm";
 
-export default function ActivityList({ activities, handleActivities }) {
+export default function ActivityList({ activities }) {
   return (
     <>
-      <ActivityForm
-        activities={activities}
-        onHandleActivities={handleActivities}
-      />
       <main>
         <StyledList>
           {activities.map((activity) => (

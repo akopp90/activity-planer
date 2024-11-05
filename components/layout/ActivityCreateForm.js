@@ -1,3 +1,4 @@
+import { uid } from "uid";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -6,9 +7,8 @@ import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
 
-export default function ActivityForm({ activities, onHandleActivities }) {
+export default function ActivityForm({ setShowForm, handleAddActivity }) {
   const [categories, setCategories] = useState([]);
-  const [toggleForm, setToggleForm] = useState(false);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -17,13 +17,13 @@ export default function ActivityForm({ activities, onHandleActivities }) {
     const formData = Object.fromEntries(formResponse);
     const newActivity = {
       ...formData,
-      id: (activities.length + 1).toString(),
+      id: uid(),
       categories: categories,
       imageUrl: "",
     };
 
-    onHandleActivities(newActivity);
-    setToggleForm(false);
+    handleAddActivity(newActivity);
+    setShowForm(false);
     setCategories([]);
   }
 
@@ -40,18 +40,9 @@ export default function ActivityForm({ activities, onHandleActivities }) {
   }
 
   function handleCancel() {
-    setToggleForm(false);
+    setShowForm(false);
     setCategories([]);
   }
-
-  if (!toggleForm)
-    return (
-      <StyledSection>
-        <Button onClick={() => setToggleForm(true)} isPrimary>
-          New activity
-        </Button>
-      </StyledSection>
-    );
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -108,11 +99,6 @@ export default function ActivityForm({ activities, onHandleActivities }) {
   );
 }
 
-const StyledSection = styled.section`
-  display: flex;
-  padding: 0 24px;
-  justify-content: flex-end;
-`;
 const StyledForm = styled.form`
   gap: 16px;
   padding: 24px;
