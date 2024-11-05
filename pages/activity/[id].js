@@ -4,6 +4,8 @@ import Button from "@/components/ui/Button";
 import { useState } from "react";
 import ActivityForm from "@/components/layout/ActivityForm";
 import styled from "styled-components";
+import Header from "@/components/layout/Header";
+import Head from "next/head";
 
 export default function ActivityPage({
   activities,
@@ -22,6 +24,10 @@ export default function ActivityPage({
 
   return (
     <>
+      <Head>
+        <title>Activity Planner</title>
+      </Head>
+      <Header>Activity Details</Header>
       {!showForm ? (
         <StyledSection>
           <Button onClick={() => setShowForm(true)} isPrimary>
