@@ -6,12 +6,8 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 
-export default function HomePage({ activities, setActivities }) {
+export default function HomePage({ handleAddActivity, activities }) {
   const [showForm, setShowForm] = useState(false);
-
-  function handleAddActivity(newActivity) {
-    setActivities([newActivity, ...activities]);
-  }
 
   return (
     <>
