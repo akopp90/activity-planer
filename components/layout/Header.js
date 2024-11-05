@@ -11,5 +11,6 @@ export default function Header({ children }) {
 const StyledHeader = styled.header`
   padding: 16px 0;
   text-align: center;
+  margin-bottom: 24px;
   border-bottom: 1px solid #ccc;
 `;
