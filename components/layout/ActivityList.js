@@ -1,19 +1,21 @@
 import styled from "styled-components";
 import ActivityCard from "@/components/layout/ActivityCard";
 
-export default function ActivityList({ activities }) {
+export default function ActivityList({ activities, bookmarks, toggleBookmark }) {
   return (
-    <>
-      <main>
-        <StyledList>
-          {activities.map((activity) => (
-            <li key={activity.id}>
-              <ActivityCard {...activity} />
-            </li>
-          ))}
-        </StyledList>
-      </main>
-    </>
+    <main>
+      <StyledList>
+        {activities.map((activity) => (
+          <li key={activity.id}>
+            <ActivityCard
+              {...activity}
+              bookmarks={bookmarks}
+              toggleBookmark={toggleBookmark}
+            />
+          </li>
+        ))}
+      </StyledList>
+    </main>
   );
 }
 

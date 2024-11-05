@@ -1,13 +1,15 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 
-export default function HomePage({ handleAddActivity, activities }) {
+export default function HomePage({ handleAddActivity, activities, bookmarks,  toggleBookmark }) {
   const [showForm, setShowForm] = useState(false);
+  
+
 
   return (
     <>
@@ -15,19 +17,25 @@ export default function HomePage({ handleAddActivity, activities }) {
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-      {!showForm ? (
-        <StyledSection>
+      
+      <StyledSection>
+        {!showForm ? (
           <Button onClick={() => setShowForm(true)} isPrimary>
             New activity
           </Button>
-        </StyledSection>
-      ) : (
-        <ActivityForm
-          handleAddActivity={handleAddActivity}
-          setShowForm={setShowForm}
-        />
-      )}
-      <ActivityList activities={activities} />
+        ) : (
+          <ActivityForm
+            handleAddActivity={handleAddActivity}
+            setShowForm={setShowForm}
+          />
+        )}
+      </StyledSection>
+
+      <ActivityList
+        activities={activities}
+        bookmarks={bookmarks}
+        toggleBookmark={toggleBookmark}
+      />
     </>
   );
 }
