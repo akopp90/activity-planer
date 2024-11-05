@@ -1,24 +1,45 @@
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { FaHeart, FaRegHeart } from "react-icons/fa";  
+import { FaHeart } from "react-icons/fa";
 
-export default function ActivityCard({ id, title, categories, imageUrl, bookmarks, toggleBookmark }) {
-  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id);
-
+export default function ActivityCard({
+  id,
+  title,
+  categories,
+  imageUrl,
+  bookmarks,
+  toggleBookmark,
+}) {
+  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id); 
+  
   return (
     <StyledArticle>
       <StyledImageContainer>
         {imageUrl ? (
-          <Image src={imageUrl} alt={title} style={{ objectFit: "cover" }} sizes="33vw" fill />
+          <Image
+            src={imageUrl}
+            alt={title}
+            style={{ objectFit: "cover" }}
+            sizes="33vw"
+            fill
+          />
         ) : (
-          <Image src="/images/no-image.svg" width={40} height={40} alt="Image is missing" />
+          <Image
+            src="/images/no-image.svg"
+            width={40}
+            height={40}
+            alt="Image is missing"
+          />
         )}
 
         {/* Heart Icon for Bookmarking */}
-        <StyledHeartIcon onClick={() => toggleBookmark(id)} $isbookmarked={isBookmarked}>
-          {isBookmarked ? <FaHeart className="bookmarked" /> : <FaHeart />}  {/* Filled vs Outline Heart */}
+        <StyledHeartIcon onClick={() => toggleBookmark(id)}>
+          {isBookmarked ? (
+            <FaHeart className="bookmarked" />
+          ) : (
+            <FaHeart className="white" />
+          )}
         </StyledHeartIcon>
       </StyledImageContainer>
 
@@ -53,12 +74,12 @@ const StyledHeartIcon = styled.div`
   top: 16px;
   right: 16px;
   font-size: 1.5rem;
-  color: ${(props) => (props.isbookmarked ? "#ff4d4d" : "#fff")};  
+  color: #fff;
   cursor: pointer;
   transition: color 0.3s ease;
-  
+
   &:hover {
-    color: #ff4d4d;  // Hover effect to show red
+    color: #ff4d4d; // Hover effect to show red
   }
 `;
 

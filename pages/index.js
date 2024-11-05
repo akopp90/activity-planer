@@ -6,10 +6,13 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 
-export default function HomePage({ handleAddActivity, activities, bookmarks,  toggleBookmark }) {
+export default function HomePage({
+  handleAddActivity,
+  activities,
+  bookmarks,
+  toggleBookmark,
+}) {
   const [showForm, setShowForm] = useState(false);
-  
-
 
   return (
     <>
@@ -17,7 +20,7 @@ export default function HomePage({ handleAddActivity, activities, bookmarks,  to
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-      
+
       <StyledSection>
         {!showForm ? (
           <Button onClick={() => setShowForm(true)} isPrimary>
