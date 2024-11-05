@@ -47,6 +47,6 @@ export default function ActivityPage({
 }
 const StyledSection = styled.section`
   display: flex;
-  padding: 24px;
+  padding: 0 24px;
   justify-content: flex-end;
 `;
