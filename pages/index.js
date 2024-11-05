@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
-import ActivityCreateForm from "@/components/layout/ActivityCreateForm";
+import ActivityForm from "@/components/layout/ActivityForm";
 
 export default function HomePage({ activities, setActivities }) {
   const [showForm, setShowForm] = useState(false);
@@ -26,7 +26,7 @@ export default function HomePage({ activities, setActivities }) {
           </Button>
         </StyledSection>
       ) : (
-        <ActivityCreateForm
+        <ActivityForm
           handleAddActivity={handleAddActivity}
           setShowForm={setShowForm}
         />
