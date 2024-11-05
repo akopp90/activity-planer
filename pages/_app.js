@@ -4,14 +4,27 @@ import { activities as activityData } from "@/lib/activities";
 
 export default function App({ Component, pageProps }) {
   const [activities, setActivities] = useState(activityData);
-  function handleAddActivity(newActivity) {
+  function handleActivity(newActivity) {
+    if (activities.find((activity) => activity.id === newActivity.id)) {
+      setActivities(
+        activities.map((activity) => {
+          if (activity.id === newActivity.id) {
+            return newActivity;
+          }
+          return activity;
+        })
+      );
+      return;
+    }
+
     setActivities([newActivity, ...activities]);
   }
+
   return (
     <>
       <GlobalStyle />
       <Component
-        handleAddActivity={handleAddActivity}
+        handleActivity={handleActivity}
         activities={activities}
         {...pageProps}
       />

@@ -6,9 +6,17 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 
-export default function HomePage({ handleAddActivity, activities }) {
+export default function HomePage({ handleActivity, activities }) {
   const [showForm, setShowForm] = useState(false);
-
+  const activity = {
+    id: "",
+    title: "",
+    categories: [],
+    area: "",
+    country: "",
+    description: "",
+    imageUrl: "",
+  };
   return (
     <>
       <Head>
@@ -23,8 +31,9 @@ export default function HomePage({ handleAddActivity, activities }) {
         </StyledSection>
       ) : (
         <ActivityForm
-          handleAddActivity={handleAddActivity}
+          handleActivity={handleActivity}
           setShowForm={setShowForm}
+          activity={activity}
         />
       )}
       <ActivityList activities={activities} />
