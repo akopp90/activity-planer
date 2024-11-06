@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import Button from "../ui/Button";
+import { useState } from "react";
 
 export default function ActivityDetails({
   title,
@@ -9,45 +11,72 @@ export default function ActivityDetails({
   description,
   country,
   categories,
+  id,
+  deleteActivity,
 }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  function handleDelete() {
+    setShowConfirm(true);
+  }
+  function cancelDelete() {
+    setShowConfirm(false);
+  }
+  function confirmDelete() {
+    deleteActivity(id);
+    setShowConfirm(false);
+  }
   return (
     <StyledContainer>
-      <StyledDetails>
-        <StyledImageContainer>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              style={{ objectFit: "cover" }}
-              sizes="50vw"
-              fill
-            />
-          ) : (
-            <Image
-              src="/images/no-image.svg"
-              width={40}
-              height={40}
-              alt="Image is missing"
-            />
-          )}
-        </StyledImageContainer>
-        <StyledContainer>
-          <StyledTitle>{title}</StyledTitle>
-          <StyledList>
-            {categories.map((category) => (
-              <StyledListItem key={category}>{category}</StyledListItem>
-            ))}
-          </StyledList>
-          <StyledLocation>
-            {area}, {country}
-          </StyledLocation>
-          <StyledDescription>{description}</StyledDescription>
-          <StyledLink href="/" title="Back to Activities">
-            Back to Activities
-          </StyledLink>
-        </StyledContainer>
-      </StyledDetails>
-    </StyledContainer>
+    <StyledDetails>
+      <StyledImageContainer>
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={title}
+            style={{ objectFit: "cover" }}
+            sizes="50vw"
+            fill
+          />
+        ) : (
+          <Image
+            src="/images/no-image.svg"
+            width={40}
+            height={40}
+            alt="Image is missing"
+          />
+        )}
+      </StyledImageContainer>
+<StyledContainer>
+      <StyledTitle>{title}</StyledTitle>
+      <StyledList>
+        {categories.map((category) => (
+          <StyledListItem key={category}>{category}</StyledListItem>
+        ))}
+      </StyledList>
+      <StyledLocation>
+        {area}, {country}
+      </StyledLocation>
+      <StyledDescription>{description}</StyledDescription>
+      <StyledLink href="/" title="Back to Activities">
+        Back to Activities
+      </StyledLink>
+      {!showConfirm ? (
+        <StyledDeleteContainer>
+          <Button onClick={handleDelete}>Delete</Button>
+        </StyledDeleteContainer>
+      ) : (
+        <StyledDeleteContainer $isDelete>
+          <div>
+            <p>Are you sure, that you want to delete?</p>
+          </div>
+          <Button onClick={cancelDelete}>Cancel</Button>
+          <Button isDelete onClick={confirmDelete}>Confirm</Button>
+        </StyledDeleteContainer>
+      )}
+      </StyledContainer>
+    </StyledDetails>
+</StyledContainer>
+
   );
 }
 
@@ -100,3 +129,11 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+const StyledDeleteContainer = styled.div`
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 16px;
+border: 1px solid ${(props) => (props.$isDelete? "#ff0000" : "#fff")};
+padding: 8px;
+`

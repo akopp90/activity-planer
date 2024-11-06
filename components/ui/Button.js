@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export default function Button({ type = "button", onClick, isPrimary, children }) {
+export default function Button({ type = "button", onClick, isPrimary, isDelete, children }) {
   return (
-    <StyledButton type={type} onClick={onClick} $primary={isPrimary}>
+    <StyledButton type={type} onClick={onClick} $primary={isPrimary} $delete={isDelete}>
       {children}
     </StyledButton>
   );
@@ -21,5 +21,5 @@ const StyledButton = styled.button`
   align-items: center;
   color: ${(props) => (props.$primary ? "#fff" : "#000")};
   border: 1px solid ${(props) => (props.$primary ? "#000" : "#ccc")};
-  background-color: ${(props) => (props.$primary ? "#000" : "#fff")};
+  background-color: ${(props) => (props.$primary ? (props.$delete? "#ff0000" : "#000") : (props.$delete? "#ff0000" : "#fff"))};
 `;

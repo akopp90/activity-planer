@@ -11,11 +11,17 @@ export default function ActivityPage({
   activities,
   handleAddActivity,
   handleEditActivity,
+  handleDeleteActivity
 }) {
+
   const router = useRouter();
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
   const [showForm, setShowForm] = useState(false);
+
+  function deleteActivity(id) {
+    handleDeleteActivity(id);
+  }
 
   if (!activity) return <p>Loading...</p>;
   function handleToggleEdit() {
@@ -41,9 +47,10 @@ export default function ActivityPage({
           activity={activity}
         />
       )}
-      <ActivityDetails {...activity} />
+      <ActivityDetails {...activity} deleteActivity={deleteActivity}/>
     </>
   );
+
 }
 const StyledSection = styled.section`
   display: flex;
