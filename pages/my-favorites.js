@@ -5,6 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import styled from "styled-components";
 
 export default function MyFavoriteActivitiesPage({
+  activities,
   bookmarks,
   toggleBookmark,
 }) {
@@ -18,10 +19,11 @@ export default function MyFavoriteActivitiesPage({
       </Button>
       <Container>
         {hasBookmarks ? (
-          bookmarks.map((activity) => (
+          activities.map((activity) => (
             <FavoriteActivityCard
               key={activity.id}
               {...activity}
+              bookmarks={bookmarks}
               toggleBookmark={toggleBookmark}
             />
           ))

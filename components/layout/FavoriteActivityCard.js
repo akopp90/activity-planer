@@ -9,7 +9,9 @@ export default function FavoriteActivityCard({
   categories,
   imageUrl,
   toggleBookmark,
+  bookmarks,
 }) {
+  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id); 
   return (
     <StyledFavoriteCard
       style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: "cover" }}

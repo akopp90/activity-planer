@@ -14,24 +14,13 @@ export default function App({ Component, pageProps }) {
     setActivities([newActivity, ...activities]);
   }
 
-  const toggleBookmark = (activityId) => {
-    let currentBookmarkedActivities = [...bookmarkedActivities];
-    const toBookmarkAc = activities.find((ac) => ac.id === activityId);
-
-    const foundActivity = currentBookmarkedActivities.find(
-      (ac) => ac.id === activityId
+  function toggleBookmark(activityId) {
+    setBookmarkedActivities((prevBookmarks) =>
+      prevBookmarks.includes(activityId)
+        ? prevBookmarks.filter((id) => id !== activityId)
+        : [...prevBookmarks, activityId]
     );
-
-    if (!foundActivity) {
-      currentBookmarkedActivities.push(toBookmarkAc);
-    } else {
-      currentBookmarkedActivities = currentBookmarkedActivities.filter(
-        (ac) => ac.id !== activityId
-      );
-    }
-
-    setBookmarkedActivities(currentBookmarkedActivities);
-  };
+  }
 
   return (
     <>
