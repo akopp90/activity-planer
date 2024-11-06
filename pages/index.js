@@ -38,7 +38,7 @@ export default function HomePage({
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-
+    
       <StyledSection>
         <Button onClick={handleToggleEdit} isPrimary>
           New activity
@@ -58,17 +58,20 @@ export default function HomePage({
       {showFilter && (
         <ActivityFilter filter={filter} handleFilter={handleFilter} />
       )}
+
       <ActivityList
         activities={activities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}
       />
+
     </>
   );
 }
 
 const StyledSection = styled.section`
+  gap: 16px;
   display: flex;
   padding: 0 24px;
   justify-content: flex-end;

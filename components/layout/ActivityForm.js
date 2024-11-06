@@ -14,6 +14,7 @@ export default function ActivityForm({
   activity,
 }) {
   const [categories, setCategories] = useState(activity.categories);
+
   function handleSubmit(event) {
     event.preventDefault();
 

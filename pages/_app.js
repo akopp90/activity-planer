@@ -1,5 +1,6 @@
 import { useState } from "react";
 import GlobalStyle from "@/lib/styles";
+import { useRouter } from "next/router";
 import { activities as activityData } from "@/lib/activities";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
@@ -17,6 +18,7 @@ export default function App({ Component, pageProps }) {
     setActivities([newActivity, ...activities]);
   }
 
+
   function toggleBookmark(activityId) {
     setBookmarkedActivities((prevBookmarks) =>
       prevBookmarks.includes(activityId)
@@ -24,6 +26,7 @@ export default function App({ Component, pageProps }) {
         : [...prevBookmarks, activityId]
     );
   }
+
   function handleDeleteActivity(id) {
     setActivities(activities.filter((activity) => activity.id !== id));
     alert("deleted successfully");

@@ -27,57 +27,58 @@ export default function ActivityDetails({
   }
   return (
     <StyledContainer>
-      <StyledDetails>
-        <StyledImageContainer>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              style={{ objectFit: "cover" }}
-              sizes="50vw"
-              fill
-            />
-          ) : (
-            <Image
-              src="/images/no-image.svg"
-              width={40}
-              height={40}
-              alt="Image is missing"
-            />
-          )}
-        </StyledImageContainer>
-        <StyledContainer>
-          <StyledTitle>{title}</StyledTitle>
-          <StyledList>
-            {categories.map((category) => (
-              <StyledListItem key={category}>{category}</StyledListItem>
-            ))}
-          </StyledList>
-          <StyledLocation>
-            {area}, {country}
-          </StyledLocation>
-          <StyledDescription>{description}</StyledDescription>
-          <StyledLink href="/" title="Back to Activities">
-            Back to Activities
-          </StyledLink>
-          {!showConfirm ? (
-            <StyledDeleteContainer>
-              <Button onClick={handleDelete}>Delete</Button>
-            </StyledDeleteContainer>
-          ) : (
-            <StyledDeleteContainer $isDelete>
-              <p>Are you sure, that you want to delete?</p>
-              <StyledButtonContainer>
-                <Button onClick={cancelDelete}>Cancel</Button>
-                <Button isDelete onClick={confirmDelete}>
-                  Confirm
-                </Button>
-              </StyledButtonContainer>
-            </StyledDeleteContainer>
-          )}
-        </StyledContainer>
-      </StyledDetails>
-    </StyledContainer>
+
+    <StyledDetails>
+      <StyledImageContainer>
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={title}
+            style={{ objectFit: "cover" }}
+            sizes="50vw"
+            fill
+          />
+        ) : (
+          <Image
+            src="/images/no-image.svg"
+            width={40}
+            height={40}
+            alt="Image is missing"
+          />
+        )}
+      </StyledImageContainer>
+<StyledContainer>
+      <StyledTitle>{title}</StyledTitle>
+      <StyledList>
+        {categories.map((category) => (
+          <StyledListItem key={category}>{category}</StyledListItem>
+        ))}
+      </StyledList>
+      <StyledLocation>
+        {area}, {country}
+      </StyledLocation>
+      <StyledDescription>{description}</StyledDescription>
+      <StyledLink href="/" title="Back to Activities">
+        Back to Activities
+      </StyledLink>
+      {!showConfirm ? (
+        <StyledDeleteContainer>
+          <Button onClick={handleDelete}>Delete</Button>
+        </StyledDeleteContainer>
+      ) : (
+        <StyledDeleteContainer $isDelete>
+          <div>
+            <p>Are you sure, that you want to delete?</p>
+          </div>
+          <Button onClick={cancelDelete}>Cancel</Button>
+          <Button isDelete onClick={confirmDelete}>Confirm</Button>
+        </StyledDeleteContainer>
+      )}
+      </StyledContainer>
+    </StyledDetails>
+</StyledContainer>
+
+
   );
 }
 
