@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import ActivityCard from "@/components/layout/ActivityCard";
 
-export default function ActivityList({ activities, bookmarks, toggleBookmark }) {
+export default function ActivityList({
+  activities,
+  bookmarks,
+  toggleBookmark,
+}) {
   return (
     <main>
       <StyledList>
@@ -25,4 +29,5 @@ const StyledList = styled.ul`
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+  margin-bottom: 50px;
 `;

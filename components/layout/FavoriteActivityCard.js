@@ -21,7 +21,6 @@ export default function FavoriteActivityCard({
           ))}
         </TagsContainer>
 
-        {/* Heart Icon zum Entfernen des Bookmarks */}
         <HeartContainer onClick={() => toggleBookmark(id)}>
           <FaHeart style={{ color: "red" }} />
         </HeartContainer>
@@ -56,6 +55,7 @@ const StyledTag = styled.div`
 const TitleContainer = styled.div`
   color: #fff;
   font-size: 22px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.85);
 `;
 
 const CountryContainer = styled.div`
@@ -75,7 +75,9 @@ const CardHeader = styled.div`
   align-items: center;
 `;
 
-const HeartContainer = styled.div``;
+const HeartContainer = styled.div`
+  cursor: pointer;
+`;
 
 const CardFooter = styled.div`
   display: flex;
