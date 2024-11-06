@@ -13,9 +13,8 @@ export default function FavoriteActivityCard({
   isBookmarked,
 }) {
   return (
-    <StyledFavoriteCard
-      style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: "cover" }}
-    >
+    <StyledFavoriteCard>
+      <StyledImage src={imageUrl} alt={title} sizes="50vw" fill />
       <CardHeader>
         <div>
           {categories.map((category) => (
@@ -38,12 +37,14 @@ export default function FavoriteActivityCard({
 
 const StyledFavoriteCard = styled.div`
   margin-bottom: 12px;
-  height: 125px;
+  height: 20vh;
   padding: 6px 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
 `;
 const StyledTag = styled.div`
   padding: 4px 8px;
@@ -85,4 +86,17 @@ const CardFooter = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-top: 8px;
+`;
+const StyledImageWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+`;
+const StyledImage = styled(Image)`
+  z-index: -1;
+  object-fit: cover;
+  object-position: 50% 30%;
 `;
