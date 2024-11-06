@@ -15,14 +15,14 @@ export default function FavoriteActivityCard({
       style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: "cover" }}
     >
       <CardHeader>
-        <TagsContainer>
+        <div>
           {categories.map((category) => (
             <StyledTag key={category}>{category}</StyledTag>
           ))}
-        </TagsContainer>
+        </div>
 
         <HeartContainer onClick={() => toggleBookmark(id)}>
-          <FaHeart style={{ color: "red" }} />
+        <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"}/>
         </HeartContainer>
       </CardHeader>
 

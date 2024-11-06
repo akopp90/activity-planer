@@ -33,9 +33,9 @@ export default function ActivityCard({
           />
         )}
 
-        {/* Heart Icon for Bookmarking */}
+        
         <StyledHeartIcon onClick={() => toggleBookmark(id)}>
-          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} 
+          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"}/>
         </StyledHeartIcon>
       </StyledImageContainer>
 
