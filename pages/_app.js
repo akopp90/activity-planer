@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
-import { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }) {
   const [activities, setActivities] = useState(activityData);
@@ -17,7 +16,6 @@ export default function App({ Component, pageProps }) {
   function handleAddActivity(newActivity) {
     setActivities([newActivity, ...activities]);
   }
-
 
   function toggleBookmark(activityId) {
     setBookmarkedActivities((prevBookmarks) =>

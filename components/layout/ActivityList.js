@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import ActivityCard from "@/components/layout/ActivityCard";
-import Button from "../ui/Button";
-
 
 export default function ActivityList({
   activities,
   bookmarks,
   toggleBookmark,
-  handleFilter,
   handleFilter,
 }) {
   function handleResetFilter() {
@@ -39,7 +36,6 @@ export default function ActivityList({
           })}
         </StyledList>
       )}
-
     </main>
   );
 }
@@ -58,12 +54,4 @@ const StyledList = styled.ul`
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
-`;
-const StyledSection = styled.section`
-  gap: 16px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
 `;
