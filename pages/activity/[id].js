@@ -9,11 +9,9 @@ import Head from "next/head";
 
 export default function ActivityPage({
   activities,
-  handleAddActivity,
   handleEditActivity,
-  handleDeleteActivity
+  handleDeleteActivity,
 }) {
-
   const router = useRouter();
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
@@ -47,10 +45,9 @@ export default function ActivityPage({
           activity={activity}
         />
       )}
-      <ActivityDetails {...activity} deleteActivity={deleteActivity}/>
+      <ActivityDetails {...activity} deleteActivity={deleteActivity} />
     </>
   );
-
 }
 const StyledSection = styled.section`
   display: flex;
