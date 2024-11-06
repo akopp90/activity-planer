@@ -35,7 +35,7 @@ export default function FavoriteActivityCard({
   );
 }
 
-const StyledFavoriteCard = styled.div`
+const StyledFavoriteCard = styled.li`
   margin-bottom: 12px;
   height: 20vh;
   padding: 6px 12px;
