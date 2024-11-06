@@ -3,10 +3,12 @@ import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 
 export default function FavoriteActivityCard({
+  id,
   title,
   country,
   categories,
   imageUrl,
+  toggleBookmark,
 }) {
   return (
     <StyledFavoriteCard
@@ -19,7 +21,8 @@ export default function FavoriteActivityCard({
           ))}
         </TagsContainer>
 
-        <HeartContainer>
+        {/* Heart Icon zum Entfernen des Bookmarks */}
+        <HeartContainer onClick={() => toggleBookmark(id)}>
           <FaHeart style={{ color: "red" }} />
         </HeartContainer>
       </CardHeader>
