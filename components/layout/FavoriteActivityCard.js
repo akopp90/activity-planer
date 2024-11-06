@@ -66,7 +66,6 @@ const CountryContainer = styled.div`
   font-size: 16px;
 `;
 
-const TagsContainer = styled.div``;
 
 const CardHeader = styled.div`
   width: 100%;
