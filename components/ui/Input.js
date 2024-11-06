@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Input({ name, isRequired, children }) {
+export default function Input({ name, isRequired, children, defaultValue }) {
   return (
     <StyledDiv>
       <StyledLabel htmlFor={name}>{children}</StyledLabel>
@@ -9,6 +9,7 @@ export default function Input({ name, isRequired, children }) {
         name={name.toLowerCase()}
         id={name}
         required={isRequired}
+        defaultValue={defaultValue}
       />
     </StyledDiv>
   );

@@ -7,24 +7,33 @@ import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
 
-export default function ActivityForm({ setShowForm, handleAddActivity }) {
-  const [categories, setCategories] = useState([]);
+export default function ActivityForm({
+  handleToggleEdit,
+  handleAddActivity,
+  handleEditActivity,
+  activity,
+}) {
+  const [categories, setCategories] = useState(activity.categories);
 
   function handleSubmit(event) {
     event.preventDefault();
 
+    const id = activity.id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
     const newActivity = {
       ...formData,
-      id: uid(),
+      id: id || uid(),
       categories: categories,
-      imageUrl: "",
+      imageUrl: activity.imageUrl || "",
     };
 
-    handleAddActivity(newActivity);
-    setShowForm(false);
-    setCategories([]);
+    if (activity.id) {
+      handleEditActivity(newActivity);
+    } else {
+      handleAddActivity(newActivity);
+    }
+    handleToggleEdit();
   }
 
   function handleSelectCategory(event) {
@@ -40,14 +49,14 @@ export default function ActivityForm({ setShowForm, handleAddActivity }) {
   }
 
   function handleCancel() {
-    setShowForm(false);
+    handleToggleEdit();
     setCategories([]);
   }
 
   return (
     <StyledForm onSubmit={handleSubmit}>
       <h2>Add new activity</h2>
-      <Input name="Title" isRequired>
+      <Input name="Title" defaultValue={activity.title} isRequired>
         Activity title *
       </Input>
       <StyledSelectDiv>
@@ -74,7 +83,7 @@ export default function ActivityForm({ setShowForm, handleAddActivity }) {
           {categories.map((category) => (
             <li key={category}>
               <Button onClick={() => handleDeleteCategory(category)}>
-                {category}{" "}
+                {category}
                 <Image
                   src="/images/delete.svg"
                   width={16}
@@ -86,13 +95,19 @@ export default function ActivityForm({ setShowForm, handleAddActivity }) {
           ))}
         </StyledList>
       )}
-      <Input name="Area">Activity area</Input>
-      <Input name="Country">Activity country</Input>
-      <Textarea name="Description">Activity description</Textarea>
+      <Input name="Area" defaultValue={activity.area}>
+        Activity area
+      </Input>
+      <Input name="Country" defaultValue={activity.country}>
+        Activity country
+      </Input>
+      <Textarea name="Description" defaultValue={activity.description}>
+        Activity description
+      </Textarea>
       <StyledBottomDiv>
         <Button onClick={handleCancel}>Cancel</Button>
         <Button type="submit" isPrimary>
-          Create
+          {activity.id != "" ? "Save" : "Create"}
         </Button>
       </StyledBottomDiv>
     </StyledForm>

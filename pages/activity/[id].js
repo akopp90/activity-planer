@@ -1,16 +1,59 @@
 import { useRouter } from "next/router";
 import ActivityDetails from "@/components/layout/ActivityDetails";
+import Button from "@/components/ui/Button";
+import { useState } from "react";
+import ActivityForm from "@/components/layout/ActivityForm";
+import styled from "styled-components";
+import Header from "@/components/layout/Header";
+import Head from "next/head";
 
-export default function ActivityPage({ activities, handleDeleteActivity }) {
+export default function ActivityPage({
+  activities,
+  handleAddActivity,
+  handleEditActivity,
+  handleDeleteActivity
+}) {
+
   const router = useRouter();
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
+  const [showForm, setShowForm] = useState(false);
 
   function deleteActivity(id) {
     handleDeleteActivity(id);
   }
 
   if (!activity) return <p>Loading...</p>;
+  function handleToggleEdit() {
+    setShowForm(!showForm);
+  }
 
-  return <ActivityDetails {...activity} deleteActivity={deleteActivity} />;
+  return (
+    <>
+      <Head>
+        <title>Activity Planner</title>
+      </Head>
+      <Header>Activity Details</Header>
+      {!showForm ? (
+        <StyledSection>
+          <Button onClick={() => setShowForm(true)} isPrimary>
+            Edit activity
+          </Button>
+        </StyledSection>
+      ) : (
+        <ActivityForm
+          handleToggleEdit={handleToggleEdit}
+          handleEditActivity={handleEditActivity}
+          activity={activity}
+        />
+      )}
+      <ActivityDetails {...activity} deleteActivity={deleteActivity}/>
+    </>
+  );
+
 }
+const StyledSection = styled.section`
+  display: flex;
+  padding: 0 24px;
+  justify-content: flex-end;
+`;

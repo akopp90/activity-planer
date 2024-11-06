@@ -26,6 +26,7 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   return (
+    <StyledContainer>
     <StyledDetails>
       <StyledImageContainer>
         {imageUrl ? (
@@ -45,6 +46,7 @@ export default function ActivityDetails({
           />
         )}
       </StyledImageContainer>
+<StyledContainer>
       <StyledTitle>{title}</StyledTitle>
       <StyledList>
         {categories.map((category) => (
@@ -71,12 +73,20 @@ export default function ActivityDetails({
           <Button isDelete onClick={confirmDelete}>Confirm</Button>
         </StyledDeleteContainer>
       )}
+      </StyledContainer>
     </StyledDetails>
+</StyledContainer>
+
   );
 }
 
-const StyledDetails = styled.div`
-  padding: 16px;
+const StyledContainer = styled.div`
+  padding: 24px;
+`;
+const StyledDetails = styled.article`
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
