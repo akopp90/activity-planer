@@ -54,4 +54,5 @@ const StyledList = styled.ul`
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+  margin-bottom: 50px;
 `;
