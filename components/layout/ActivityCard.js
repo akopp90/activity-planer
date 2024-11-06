@@ -70,7 +70,6 @@ const StyledHeartIcon = styled.div`
   top: 16px;
   right: 16px;
   font-size: 1.5rem;
-  color: #fff;
   cursor: pointer;
   transition: color 0.3s ease;
 
