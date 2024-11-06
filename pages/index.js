@@ -5,13 +5,17 @@ import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
+import ActivityFilter from "@/components/layout/ActivityFilter";
 
 export default function HomePage({
   handleAddActivity,
-  handleEditActivity,
   activities,
+  handleFilter,
+  filter,
 }) {
   const [showForm, setShowForm] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+
   const activity = {
     id: "",
     title: "",
@@ -21,34 +25,43 @@ export default function HomePage({
     description: "",
     imageUrl: "",
   };
+
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
+
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-      {!showForm ? (
-        <StyledSection>
-          <Button onClick={() => setShowForm(true)} isPrimary>
-            New activity
-          </Button>
-        </StyledSection>
-      ) : (
+      <StyledSection>
+        <Button onClick={handleToggleEdit} isPrimary>
+          New activity
+        </Button>
+        <Button onClick={() => setShowFilter(!showFilter)}>
+          Filter ({filter.length})
+        </Button>
+      </StyledSection>
+      {showForm && (
         <ActivityForm
           handleAddActivity={handleAddActivity}
           handleToggleEdit={handleToggleEdit}
+          setShowForm={setShowForm}
           activity={activity}
         />
       )}
-      <ActivityList activities={activities} />
+      {showFilter && (
+        <ActivityFilter filter={filter} handleFilter={handleFilter} />
+      )}
+      <ActivityList activities={activities} handleFilter={handleFilter} />
     </>
   );
 }
 
 const StyledSection = styled.section`
+  gap: 16px;
   display: flex;
   padding: 0 24px;
   justify-content: flex-end;
