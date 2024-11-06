@@ -1,24 +1,41 @@
 import styled from "styled-components";
 import ActivityCard from "@/components/layout/ActivityCard";
+import Button from "../ui/Button";
 
 export default function ActivityList({
   activities,
   bookmarks,
   toggleBookmark,
+  handleFilter,
 }) {
+  function handleResetFilter() {
+    handleFilter();
+  }
   return (
     <main>
-      <StyledList>
-        {activities.map((activity) => (
-          <li key={activity.id}>
-            <ActivityCard
-              {...activity}
-              bookmarks={bookmarks}
-              toggleBookmark={toggleBookmark}
-            />
-          </li>
-        ))}
-      </StyledList>
+      {activities.length === 0 ? (
+        <StyledSection>
+          <h2>No activities found</h2>
+          <Button onClick={handleResetFilter}>Reset filter</Button>
+        </StyledSection>
+      ) : (
+        <StyledList>
+          {activities.map((activity) => {
+            const isBookmarked = bookmarks?.includes(activity.id) || false;
+
+            return (
+              <li key={activity.id}>
+                <ActivityCard
+                  {...activity}
+                  isBookmarked={isBookmarked}
+                  toggleBookmark={() => toggleBookmark(activity.id)}
+                />
+              </li>
+            );
+          })}
+        </StyledList>
+      )}
+      <StyledList></StyledList>
     </main>
   );
 }
@@ -29,5 +46,12 @@ const StyledList = styled.ul`
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
-  margin-bottom: 50px;
+`;
+const StyledSection = styled.section`
+  gap: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `;

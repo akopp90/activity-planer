@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
+import Button from "../ui/Button";
+import { useState } from "react";
 
 export default function ActivityDetails({
   title,
@@ -9,46 +11,84 @@ export default function ActivityDetails({
   description,
   country,
   categories,
+  id,
+  deleteActivity,
 }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  function handleDelete() {
+    setShowConfirm(true);
+  }
+  function cancelDelete() {
+    setShowConfirm(false);
+  }
+  function confirmDelete() {
+    deleteActivity(id);
+    setShowConfirm(false);
+  }
   return (
-    <StyledDetails>
-      <StyledImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            style={{ objectFit: "cover" }}
-            sizes="50vw"
-            fill
-          />
-        ) : (
-          <Image
-            src="/images/no-image.svg"
-            width={40}
-            height={40}
-            alt="Image is missing"
-          />
-        )}
-      </StyledImageContainer>
-      <StyledTitle>{title}</StyledTitle>
-      <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
-      </StyledList>
-      <StyledLocation>
-        {area}, {country}
-      </StyledLocation>
-      <StyledDescription>{description}</StyledDescription>
-      <StyledLink href="/" title="Back to Activities">
-        Back to Activities
-      </StyledLink>
-    </StyledDetails>
+    <StyledContainer>
+      <StyledDetails>
+        <StyledImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="50vw"
+              fill
+            />
+          ) : (
+            <Image
+              src="/images/no-image.svg"
+              width={40}
+              height={40}
+              alt="Image is missing"
+            />
+          )}
+        </StyledImageContainer>
+        <StyledContainer>
+          <StyledTitle>{title}</StyledTitle>
+          <StyledList>
+            {categories.map((category) => (
+              <StyledListItem key={category}>{category}</StyledListItem>
+            ))}
+          </StyledList>
+          <StyledLocation>
+            {area}, {country}
+          </StyledLocation>
+          <StyledDescription>{description}</StyledDescription>
+          <StyledLink href="/" title="Back to Activities">
+            Back to Activities
+          </StyledLink>
+          {!showConfirm ? (
+            <StyledDeleteContainer>
+              <Button onClick={handleDelete}>Delete</Button>
+            </StyledDeleteContainer>
+          ) : (
+            <StyledDeleteContainer $isDelete>
+              <p>Are you sure, that you want to delete?</p>
+              <StyledButtonContainer>
+                <Button onClick={cancelDelete}>Cancel</Button>
+                <Button isDelete onClick={confirmDelete}>
+                  Confirm
+                </Button>
+              </StyledButtonContainer>
+            </StyledDeleteContainer>
+          )}
+        </StyledContainer>
+      </StyledDetails>
+    </StyledContainer>
   );
 }
 
-const StyledDetails = styled.div`
-  padding: 16px;
+const StyledContainer = styled.div`
+  padding: 24px;
+`;
+const StyledDetails = styled.article`
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 50px;
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -90,4 +130,21 @@ const StyledLink = styled(Link)`
   &:hover {
     text-decoration: none;
   }
+`;
+const StyledDeleteContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  border: 1px solid ${(props) => (props.$isDelete ? "#ff0000" : "#fff")};
+  padding: 8px;
+`;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: flex-end;
+  position: relative;
 `;

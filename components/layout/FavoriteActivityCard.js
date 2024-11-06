@@ -1,3 +1,4 @@
+import { activities } from "@/lib/activities";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
@@ -9,9 +10,8 @@ export default function FavoriteActivityCard({
   categories,
   imageUrl,
   toggleBookmark,
-  bookmarks,
+  isBookmarked,
 }) {
-  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id); 
   return (
     <StyledFavoriteCard
       style={{ backgroundImage: `url(${imageUrl})`, backgroundSize: "cover" }}
@@ -24,7 +24,7 @@ export default function FavoriteActivityCard({
         </div>
 
         <HeartContainer onClick={() => toggleBookmark(id)}>
-        <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"}/>
+          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
         </HeartContainer>
       </CardHeader>
 
@@ -43,6 +43,7 @@ const StyledFavoriteCard = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
 const StyledTag = styled.div`
   padding: 4px 8px;
@@ -67,7 +68,6 @@ const CountryContainer = styled.div`
   color: #000000;
   font-size: 16px;
 `;
-
 
 const CardHeader = styled.div`
   width: 100%;

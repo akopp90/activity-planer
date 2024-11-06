@@ -8,11 +8,11 @@ export default function ActivityCard({
   title,
   categories,
   imageUrl,
-  bookmarks,
+  isBookmarked,
   toggleBookmark,
 }) {
-  const isBookmarked = bookmarks.some((bookmark) => bookmark.id === id); 
-  
+
+
   return (
     <StyledArticle>
       <StyledImageContainer>
@@ -33,9 +33,8 @@ export default function ActivityCard({
           />
         )}
 
-        
         <StyledHeartIcon onClick={() => toggleBookmark(id)}>
-          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"}/>
+          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
         </StyledHeartIcon>
       </StyledImageContainer>
 
