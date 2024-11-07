@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
@@ -10,6 +10,8 @@ import ActivityFilter from "@/components/layout/ActivityFilter";
 export default function HomePage({
   handleAddActivity,
   activities,
+  bookmarks,
+  toggleBookmark,
   handleFilter,
   filter,
 }) {
@@ -36,6 +38,7 @@ export default function HomePage({
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
+    
       <StyledSection>
         <Button onClick={handleToggleEdit} isPrimary>
           New activity
@@ -55,7 +58,14 @@ export default function HomePage({
       {showFilter && (
         <ActivityFilter filter={filter} handleFilter={handleFilter} />
       )}
-      <ActivityList activities={activities} handleFilter={handleFilter} />
+
+      <ActivityList
+        activities={activities}
+        handleFilter={handleFilter}
+        bookmarks={bookmarks}
+        toggleBookmark={toggleBookmark}
+      />
+
     </>
   );
 }

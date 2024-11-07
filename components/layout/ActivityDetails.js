@@ -27,56 +27,57 @@ export default function ActivityDetails({
   }
   return (
     <StyledContainer>
-    <StyledDetails>
-      <StyledImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            style={{ objectFit: "cover" }}
-            sizes="50vw"
-            fill
-          />
-        ) : (
-          <Image
-            src="/images/no-image.svg"
-            width={40}
-            height={40}
-            alt="Image is missing"
-          />
-        )}
-      </StyledImageContainer>
-<StyledContainer>
-      <StyledTitle>{title}</StyledTitle>
-      <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
-      </StyledList>
-      <StyledLocation>
-        {area}, {country}
-      </StyledLocation>
-      <StyledDescription>{description}</StyledDescription>
-      <StyledLink href="/" title="Back to Activities">
-        Back to Activities
-      </StyledLink>
-      {!showConfirm ? (
-        <StyledDeleteContainer>
-          <Button onClick={handleDelete}>Delete</Button>
-        </StyledDeleteContainer>
-      ) : (
-        <StyledDeleteContainer $isDelete>
-          <div>
-            <p>Are you sure, that you want to delete?</p>
-          </div>
-          <Button onClick={cancelDelete}>Cancel</Button>
-          <Button isDelete onClick={confirmDelete}>Confirm</Button>
-        </StyledDeleteContainer>
-      )}
-      </StyledContainer>
-    </StyledDetails>
-</StyledContainer>
-
+      <StyledDetails>
+        <StyledImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="50vw"
+              fill
+            />
+          ) : (
+            <Image
+              src="/images/no-image.svg"
+              width={40}
+              height={40}
+              alt="Image is missing"
+            />
+          )}
+        </StyledImageContainer>
+        <StyledContainer>
+          <StyledTitle>{title}</StyledTitle>
+          <StyledList>
+            {categories.map((category) => (
+              <StyledListItem key={category}>{category}</StyledListItem>
+            ))}
+          </StyledList>
+          <StyledLocation>
+            {area}, {country}
+          </StyledLocation>
+          <StyledDescription>{description}</StyledDescription>
+          <StyledLink href="/" title="Back to Activities">
+            Back to Activities
+          </StyledLink>
+          {!showConfirm ? (
+            <StyledDeleteContainer>
+              <Button onClick={handleDelete}>Delete</Button>
+            </StyledDeleteContainer>
+          ) : (
+            <StyledDeleteContainer $isDelete>
+              <p>Are you sure, that you want to delete?</p>
+              <StyledButtonContainer>
+                <Button onClick={cancelDelete}>Cancel</Button>
+                <Button isDeleting onClick={confirmDelete}>
+                  Confirm
+                </Button>
+              </StyledButtonContainer>
+            </StyledDeleteContainer>
+          )}
+        </StyledContainer>
+      </StyledDetails>
+    </StyledContainer>
   );
 }
 
@@ -87,6 +88,7 @@ const StyledDetails = styled.article`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 50px;
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -130,10 +132,19 @@ const StyledLink = styled(Link)`
   }
 `;
 const StyledDeleteContainer = styled.div`
-display: flex;
-justify-content: flex-end;
-align-items: center;
-gap: 16px;
-border: 1px solid ${(props) => (props.$isDelete? "#ff0000" : "#fff")};
-padding: 8px;
-`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  border: 1px solid ${(props) => (props.$isDelete ? "#ff0000" : "#fff")};
+  padding: 8px;
+`;
+const StyledButtonContainer = styled.div`
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: flex-end;
+  position: relative;
+`;

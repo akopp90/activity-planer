@@ -2,7 +2,12 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import ActivityCard from "@/components/layout/ActivityCard";
 
-export default function ActivityList({ activities, handleFilter }) {
+export default function ActivityList({
+  activities,
+  bookmarks,
+  toggleBookmark,
+  handleFilter,
+}) {
   function handleResetFilter() {
     handleFilter();
   }
@@ -16,11 +21,19 @@ export default function ActivityList({ activities, handleFilter }) {
         </StyledSection>
       ) : (
         <StyledList>
-          {activities.map((activity) => (
-            <li key={activity.id}>
-              <ActivityCard {...activity} />
-            </li>
-          ))}
+          {activities.map((activity) => {
+            const isBookmarked = bookmarks?.includes(activity.id) || false;
+
+            return (
+              <li key={activity.id}>
+                <ActivityCard
+                  {...activity}
+                  isBookmarked={isBookmarked}
+                  toggleBookmark={() => toggleBookmark(activity.id)}
+                />
+              </li>
+            );
+          })}
         </StyledList>
       )}
     </main>
@@ -41,4 +54,5 @@ const StyledList = styled.ul`
   display: grid;
   list-style: none;
   grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+  margin-bottom: 50px;
 `;
