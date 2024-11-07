@@ -43,6 +43,7 @@ const StyledFavoriteCard = styled.li`
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
   position: relative;
   overflow: hidden;
 `;

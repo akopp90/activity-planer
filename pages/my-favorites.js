@@ -17,10 +17,11 @@ export default function MyFavoriteActivitiesPage({
   return (
     <>
       <Header>My Favorites</Header>
-      <Button onClick={() => window.history.back()}>
-        <FaArrowLeft />
-      </Button>
+
       <Container>
+        <Button onClick={() => window.history.back()}>
+          <FaArrowLeft />
+        </Button>
         <StyledFavoriteList>
           {hasBookmarks ? (
             bookmarkedActivities.map((activity) => (
@@ -44,6 +45,7 @@ export default function MyFavoriteActivitiesPage({
 
 const Container = styled.div`
   padding: 16px;
+  margin: 16px;
   margin-bottom: 50px;
 `;
 
@@ -53,8 +55,9 @@ const NoBookmarksContainer = styled.div`
 `;
 const StyledFavoriteList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
+  margin-top: 16px;
   margin-bottom: 50px;
   list-style: none;
   @media screen and (min-width: 768px) {
