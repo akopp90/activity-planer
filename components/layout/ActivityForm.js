@@ -52,7 +52,7 @@ export default function ActivityForm({
     handleToggleEdit();
     setCategories([]);
   }
-  console.log(activity);
+
   return (
     <StyledForm onSubmit={handleSubmit}>
       <h2>Add new activity</h2>

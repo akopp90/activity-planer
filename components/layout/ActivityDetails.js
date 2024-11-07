@@ -69,7 +69,7 @@ export default function ActivityDetails({
               <p>Are you sure, that you want to delete?</p>
               <StyledButtonContainer>
                 <Button onClick={cancelDelete}>Cancel</Button>
-                <Button isDelete onClick={confirmDelete}>
+                <Button isDeleting onClick={confirmDelete}>
                   Confirm
                 </Button>
               </StyledButtonContainer>
