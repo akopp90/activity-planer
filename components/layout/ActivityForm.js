@@ -41,28 +41,23 @@ export default function ActivityForm({
   }
 
   async function handleUpload(event) {
-    try {
-      const formData = new FormData();
-      const image = event.target.files[0];
+    const formData = new FormData();
+    const image = event.target.files[0];
 
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-      formData.append("image", image);
-      if (image.size > maxSize) {
-        showToast("File size must be less than 5MB", "error");
-        return;
-      }
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const { url } = await response.json();
-      setUrl(url);
-      return;
-    } catch (error) {
-      showToast("Something went wrong!", "error");
+    const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+    formData.append("image", image);
+    if (image.size > maxSize) {
+      showToast("File size must be less than 5MB", "error");
       return;
     }
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    const { url } = await response.json();
+    setUrl(url);
+    return;
   }
 
   function handleSelectCategory(event) {
