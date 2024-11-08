@@ -134,12 +134,15 @@ export default function ActivityForm({
       <Upload name="Image" onChange={handleUpload}>
         Activity Image
       </Upload>
-      <Image
-        src={url ? url : "/images/no-image.svg"}
-        alt="Uploaded image"
-        width={150}
-        height={100}
-      />
+      {url && (
+        <Image
+          src={url ? url : "/images/no-image.svg"}
+          alt="Uploaded image"
+          width={150}
+          height={100}
+        />
+      )}
+
       <Textarea name="Description" defaultValue={activity.description}>
         Activity description
       </Textarea>
