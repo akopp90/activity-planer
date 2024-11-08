@@ -11,7 +11,6 @@ function Upload({ name, isRequired, children, onChange }) {
         required={isRequired}
         onChange={onChange}
         accept="image/png, image/jpeg, image/jpg"
-        
       />
     </StyledDiv>
   );
@@ -29,9 +28,10 @@ const StyledLabel = styled.label`
   font-size: 0.75rem;
 `;
 const StyledInput = styled.input`
+  width: 100%;
   font: inherit;
-  padding: 8px 12px;
+  padding: 0;
   border-radius: 4px;
   font-size: 0.875rem;
-  border: 1px solid #ccc;
+  border: 0;
 `;
