@@ -1,6 +1,6 @@
 import { uid } from "uid";
 import Image from "next/image";
-import { act, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -135,9 +135,9 @@ export default function ActivityForm({
         Activity Image
       </Upload>
       <Image
-        src={url ? url : activity.imageUrl}
+        src={url ? url : "/images/no-image.svg"}
         alt="Uploaded image"
-        width={150}
+        width={100}
         height={100}
       />
       <Textarea name="Description" defaultValue={activity.description}>
