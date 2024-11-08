@@ -60,7 +60,7 @@ export default function ActivityForm({
       setUrl(url);
       return;
     } catch (error) {
-      showToast("Please select a fiile.", "info");
+      showToast("Something went wrong!", "error");
       return;
     }
   }
