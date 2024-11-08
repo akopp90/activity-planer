@@ -137,7 +137,7 @@ export default function ActivityForm({
       <Image
         src={url ? url : "/images/no-image.svg"}
         alt="Uploaded image"
-        width={100}
+        width={150}
         height={100}
       />
       <Textarea name="Description" defaultValue={activity.description}>
