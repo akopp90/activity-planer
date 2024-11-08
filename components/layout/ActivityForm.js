@@ -58,6 +58,7 @@ export default function ActivityForm({
 
       const { url } = await response.json();
       setUrl(url);
+      showToast("Image uploaded successfully", "success");
       return;
     } catch (error) {
       showToast("Please selevt a file!", "info");
