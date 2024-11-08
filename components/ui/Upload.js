@@ -27,11 +27,14 @@ const StyledLabel = styled.label`
   font-weight: bold;
   font-size: 0.75rem;
 `;
+
 const StyledInput = styled.input`
-  width: 100%;
   font: inherit;
   padding: 0;
   border-radius: 4px;
   font-size: 0.875rem;
-  border: 0;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  margin: 0;
 `;
