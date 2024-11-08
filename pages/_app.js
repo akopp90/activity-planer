@@ -3,18 +3,33 @@ import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import { activities as activityData } from "@/lib/activities";
 import styled from "styled-components";
-import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { showToast } from "../components/ui/ToastMessage";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function App({ Component, pageProps }) {
-  const [activities, setActivities] = useState(activityData);
-  const [bookmarkedActivities, setBookmarkedActivities] = useState([]);
+  const [activities, setActivities] = useLocalStorageState("activities", {
+    defaultValue: activityData,
+  });
+  const [bookmarkedActivities, setBookmarkedActivities] = useLocalStorageState(
+    "bookmarkedActivities",
+    {
+      defaultValue: [],
+    }
+  );
   const [filter, setFilter] = useState([]);
   const router = useRouter();
 
   function handleAddActivity(newActivity) {
-    setActivities([newActivity, ...activities]);
+    try {
+      setActivities([newActivity, ...activities]);
+      showToast("Activity added successfully", "success");
+    } catch {
+      return showToast("something went wrong!", "error");
+    }
   }
 
   function toggleBookmark(activityId) {
@@ -26,21 +41,31 @@ export default function App({ Component, pageProps }) {
   }
 
   function handleDeleteActivity(id) {
-    setActivities(activities.filter((activity) => activity.id !== id));
-    alert("deleted successfully");
-    router.push("/");
+    try {
+      setActivities(activities.filter((activity) => activity.id !== id));
+      showToast("Activity deleted successfully", "success");
+
+      router.push("/");
+    } catch {
+      return showToast("something went wrong!", "error");
+    }
   }
   function handleEditActivity(newActivity) {
-    if (activities.find((activity) => activity.id === newActivity.id)) {
-      setActivities(
-        activities.map((activity) => {
-          if (activity.id === newActivity.id) {
-            return newActivity;
-          }
-          return activity;
-        })
-      );
-      return;
+    try {
+      if (activities.find((activity) => activity.id === newActivity.id)) {
+        setActivities(
+          activities.map((activity) => {
+            if (activity.id === newActivity.id) {
+              showToast("Activity edited successfully", "success");
+              return newActivity;
+            }
+            return activity;
+          })
+        );
+        return;
+      }
+    } catch {
+      return showToast("something went wrong!", "error");
     }
   }
 
@@ -63,7 +88,6 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <GlobalStyle />
-
       <Component
         bookmarks={bookmarkedActivities}
         toggleBookmark={toggleBookmark}
@@ -75,6 +99,7 @@ export default function App({ Component, pageProps }) {
         filter={filter}
         {...pageProps}
       />
+      <ToastContainer />
       <MenuFooterContainer>
         <StyledUl>
           <StyledLi>

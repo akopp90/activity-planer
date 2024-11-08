@@ -38,7 +38,7 @@ export default function HomePage({
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-    
+
       <StyledSection>
         <Button onClick={handleToggleEdit} isPrimary>
           New activity
@@ -65,7 +65,6 @@ export default function HomePage({
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}
       />
-
     </>
   );
 }
