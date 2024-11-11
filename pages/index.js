@@ -91,7 +91,8 @@ const SearchBarContainer = styled.div`
   border-radius: 0.5rem;
   padding: 0.5rem;
   background-color: white;
-  width: 90%;  
+  width: 90%; 
+  max-width: 600px 
 `;
 
 const SearchIconContainer = styled.div`
@@ -113,21 +114,22 @@ const SearchInput = styled.input`
   border: none;
   flex-grow: 1; 
   padding: 0.5rem;
+  width: 100%;
 `;
 
 
 
 const RandomActivitiesContainer = styled.div`
-  display: grid;
-  gap: 0.5rem;
-
-  grid-template-columns: 1fr;
+   display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr; /* Default to 1 column on small screens */
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* 2 columns for medium screens */
   }
 
   @media (min-width: 1050px) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; /* 3 columns for larger screens */
   }
 `;
+
