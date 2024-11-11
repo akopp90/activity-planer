@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { activities as activityData } from "@/lib/activities";
 import styled from "styled-components";
 import Link from "next/link";
-import { FaHome } from "react-icons/fa";
+import { FaAddressCard, FaAdjust, FaAnkh, FaAtlas, FaHome, FaWalking } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../components/ui/ToastMessage";
@@ -103,8 +103,8 @@ export default function App({ Component, pageProps }) {
       <MenuFooterContainer>
         <StyledUl>
           <StyledLi>
-            <Link href="/">
-              Home <FaHome />
+            <Link href="/activities">
+              Activities <FaWalking />
             </Link>
           </StyledLi>
           <StyledLi>

@@ -10,6 +10,7 @@ export default function ActivityCard({
   imageUrl,
   isBookmarked,
   toggleBookmark,
+  showHeart = true,
 }) {
   return (
     <StyledArticle>
@@ -31,9 +32,13 @@ export default function ActivityCard({
           />
         )}
 
-        <StyledHeartIcon onClick={() => toggleBookmark(id)}>
-          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-        </StyledHeartIcon>
+        {showHeart ? (
+          <StyledHeartIcon onClick={() => toggleBookmark(id)}>
+            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+          </StyledHeartIcon>
+        ) : (
+          <></>
+        )}
       </StyledImageContainer>
 
       <StyledList>
@@ -72,7 +77,7 @@ const StyledHeartIcon = styled.div`
   text-shadow: 0 2px 2px #000;
 
   &:hover {
-    color: #ff4d4d; // Hover effect to show red
+    color: #ff4d4d; 
   }
 `;
 
