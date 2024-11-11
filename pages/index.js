@@ -108,7 +108,7 @@ const SearchButtonContainer = styled.div`
 
 
 const SearchInput = styled.input`
-  font-size: 1.25rem;
+  font-size: 0.9rem;
   border-radius: 0.5rem;
   outline: none;
   border: none;
