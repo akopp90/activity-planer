@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
   function handleAddActivity(newActivity) {
     try {
       setActivities([newActivity, ...activities]);
-      showToast("Activity added successfully", "success");
+      showToast("Activity successfully created!", "success");
     } catch {
       return showToast("something went wrong!", "error");
     }
@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }) {
   function handleDeleteActivity(id) {
     try {
       setActivities(activities.filter((activity) => activity.id !== id));
-      showToast("Activity deleted successfully", "success");
+      showToast("Activity successfully deleted!", "success");
 
       router.push("/");
     } catch {
@@ -56,7 +56,7 @@ export default function App({ Component, pageProps }) {
         setActivities(
           activities.map((activity) => {
             if (activity.id === newActivity.id) {
-              showToast("Activity edited successfully", "success");
+              showToast("Activity successfully updated!", "success");
               return newActivity;
             }
             return activity;
