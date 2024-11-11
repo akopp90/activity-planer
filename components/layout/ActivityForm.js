@@ -24,9 +24,10 @@ export default function ActivityForm({
     const id = activity.id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
+    const { image, ...activityData } = formData;
 
     const newActivity = {
-      ...formData,
+      ...activityData,
       id: id || uid(),
       categories: categories,
       imageUrl: url,
