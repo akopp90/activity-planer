@@ -1,11 +1,18 @@
-import { useRouter } from "next/router";
-import ActivityDetails from "@/components/layout/ActivityDetails";
-import Button from "@/components/ui/Button";
-import { useState } from "react";
-import ActivityForm from "@/components/layout/ActivityForm";
-import styled from "styled-components";
-import Header from "@/components/layout/Header";
 import Head from "next/head";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+import styled from "styled-components";
+import { useRouter } from "next/router";
+import Button from "@/components/ui/Button";
+import Header from "@/components/layout/Header";
+import ActivityForm from "@/components/layout/ActivityForm";
+
+const ActivityDetails = dynamic(
+  () => import("@/components/layout/ActivityDetails"),
+  {
+    ssr: false,
+  }
+);
 
 export default function ActivityPage({
   activities,
@@ -54,4 +61,3 @@ const StyledSection = styled.section`
   padding: 0 24px;
   justify-content: flex-end;
 `;
-
