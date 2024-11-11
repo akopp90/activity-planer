@@ -54,4 +54,3 @@ const StyledSection = styled.section`
   padding: 0 24px;
   justify-content: flex-end;
 `;
-

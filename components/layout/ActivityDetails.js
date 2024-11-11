@@ -13,6 +13,13 @@ export default function ActivityDetails({
   categories,
   id,
   deleteActivity,
+  duration,
+  numberOfPeople,
+  fullDescription,
+  includes,
+  notSuitableFor,
+  importantInformation,
+  notAllowed,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   function handleDelete() {
@@ -57,6 +64,15 @@ export default function ActivityDetails({
             {area}, {country}
           </StyledLocation>
           <StyledDescription>{description}</StyledDescription>
+          <StyledSubtitle>About this Activity</StyledSubtitle>
+          <StyledDescription>{duration}</StyledDescription>
+          <StyledDescription>{numberOfPeople}</StyledDescription>
+          <StyledSubtitle>About this Experience</StyledSubtitle>
+          <StyledDescription>{fullDescription}</StyledDescription>
+          <StyledDescription>{includes}</StyledDescription>
+          <StyledDescription>{notSuitableFor}</StyledDescription>
+          <StyledDescription>{importantInformation}</StyledDescription>
+          <StyledDescription>{notAllowed}</StyledDescription>
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
@@ -102,6 +118,12 @@ const StyledTitle = styled.h2`
   font-size: 1.5rem;
   margin: 16px 0;
 `;
+
+const StyledSubtitle = styled.h3`
+  font-size: 1.2rem;
+  margin: 16px 0;
+`;
+
 const StyledList = styled.ul`
   gap: 8px;
   display: flex;
