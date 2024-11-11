@@ -54,6 +54,7 @@ export default function ActivityPage({ activities, toggleBookmark }) {
           </SearchButtonContainer>
         </SearchBarContainer>
 
+        <ActivitiesTitle>Activities</ActivitiesTitle>
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => (
@@ -105,7 +106,16 @@ const SearchButtonContainer = styled.div`
   align-items: center;
   padding: 0.5rem;
 `;
-
+const ActivitiesTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  color: #333;
+  text-align: left; 
+  width: 100%;
+  padding-left: 16px;
+`;
 
 const SearchInput = styled.input`
   font-size: 0.9rem;
