@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Button from "@/components/ui/Button";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { FaSearch } from "react-icons/fa";
 
 export default function ActivityPage({ activities, toggleBookmark }) {
   const [randomActivities, setRandomActivities] = useState([]);
@@ -41,13 +42,18 @@ export default function ActivityPage({ activities, toggleBookmark }) {
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <SearchContainer>
-          <SearchInput />
-
+         
+         <SearchBarContainer>
+         
+          <SearchIconContainer>
+            <FaSearch size={20} />
+          </SearchIconContainer>
+          <SearchInput placeholder="Search activities..." />
           <SearchButtonContainer>
-            <Button isPrimary>Suchen</Button>
+            <Button isPrimary>Search</Button>
           </SearchButtonContainer>
-        </SearchContainer>
+        </SearchBarContainer>
+
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => (
@@ -77,28 +83,39 @@ const SloganContainer = styled.section`
   text-align: center;
 `;
 
-const SearchContainer = styled.section`
+const SearchBarContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  justify-self: center;
-  width: 90%;
+  align-items: center;
+  justify-content: space-between; 
+  border: solid 1px gray;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: white;
+  width: 90%;  
+`;
+
+const SearchIconContainer = styled.div`
+  margin-right: 0.5rem;  
 `;
 
 const SearchButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.25rem;
+  padding: 0.5rem;
 `;
+
 
 const SearchInput = styled.input`
   font-size: 1.25rem;
   border-radius: 0.5rem;
   outline: none;
-  border: solid 1px gray;
+  border: none;
+  flex-grow: 1; 
   padding: 0.5rem;
 `;
+
+
 
 const RandomActivitiesContainer = styled.div`
   display: grid;
