@@ -148,6 +148,28 @@ export default function ActivityForm({
       <Textarea name="Description" defaultValue={activity.description}>
         Activity description
       </Textarea>
+      <Input name="Duration" defaultValue={activity.duration}>
+        Duration
+      </Input>
+      <Input name="NumberOfPeople" defaultValue={activity.numberOfPeople}>
+        Number of People
+      </Input>
+      <Textarea name="FullDescription" defaultValue={activity.fullDescription}>
+        Full Description
+      </Textarea>
+      <Input name="Includes" defaultValue={activity.includes}>
+        Includes
+      </Input>
+      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor}>
+        Not suitable for
+      </Input>
+      <Textarea
+        name="ImportantInformation"
+        defaultValue={activity.importantInformation}
+      >
+        Important Information
+      </Textarea>
+
       <StyledBottomDiv>
         <Button onClick={handleCancel}>Cancel</Button>
         <Button type="submit" isPrimary>

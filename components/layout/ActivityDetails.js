@@ -19,6 +19,7 @@ export default function ActivityDetails({
   includes,
   notSuitableFor,
   importantInformation,
+  whatToBring,
   notAllowed,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -72,6 +73,7 @@ export default function ActivityDetails({
           <StyledDescription>{includes}</StyledDescription>
           <StyledDescription>{notSuitableFor}</StyledDescription>
           <StyledDescription>{importantInformation}</StyledDescription>
+          <StyledDescription>{whatToBring}</StyledDescription>
           <StyledDescription>{notAllowed}</StyledDescription>
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
