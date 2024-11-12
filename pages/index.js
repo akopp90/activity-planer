@@ -7,7 +7,7 @@ import { FaSearch } from "react-icons/fa";
 
 export default function ActivityPage({ activities, toggleBookmark }) {
   const [randomActivities, setRandomActivities] = useState([]);
-  const NUM_OF_RANDOM_ACTIVITIES = 5;
+  const NUM_OF_RANDOM_ACTIVITIES = 6;
 
   useEffect(() => {
     const randomActivities = getRandomActivities();
