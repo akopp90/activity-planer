@@ -54,7 +54,7 @@ export default function ActivityPage({ activities, toggleBookmark }) {
           </SearchButtonContainer>
         </SearchBarContainer>
 
-        <ActivitiesTitle>Activities</ActivitiesTitle>
+        <ActivitiesTitle>Random Activities</ActivitiesTitle>
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => (
@@ -112,7 +112,7 @@ const ActivitiesTitle = styled.h2`
   margin-top: 24px;
   margin-bottom: 16px;
   color: #333;
-  text-align: left; 
+  text-align: center; 
   width: 100%;
   padding-left: 16px;
 `;

@@ -4,9 +4,7 @@ import styled from "styled-components";
 export default function Header({ children }) {
   return (
     <StyledHeader>
-       <Link href="/">
       <h1>{children}</h1>
-      </Link>
     </StyledHeader>
   );
 }
