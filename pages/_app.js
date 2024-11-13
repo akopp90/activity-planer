@@ -3,6 +3,7 @@ import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import { activities as activityData } from "@/lib/activities";
 import styled from "styled-components";
+import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import { FaAddressCard, FaAdjust, FaAnkh, FaAtlas, FaHome, FaWalking } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
@@ -100,24 +101,8 @@ export default function App({ Component, pageProps }) {
         {...pageProps}
       />
       <ToastContainer />
-      <MenuFooterContainer>
-        <StyledUl>
-          <StyledLi>
-            <Link href="/activities">
-              Activities <FaWalking />
-            </Link>
-          </StyledLi>
-          <StyledHome>
-            <Link href={"/"}>
-             <FaHome/>
-            </Link>
-          </StyledHome>
-          <StyledLi>
-            <Link href="/my-favorites">My Favorites</Link>
-          </StyledLi>
-        </StyledUl>
-      </MenuFooterContainer>
-    </>
+      <Footer/>
+      </>
   );
 }
 
