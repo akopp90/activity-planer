@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 
-export default function ActivityPage({ activities, toggleBookmark }) {
+export default function ActivityPage({ activities, toggleBookmark,bookmarks,deleteActivity,showHeart }) {
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
@@ -57,19 +57,31 @@ export default function ActivityPage({ activities, toggleBookmark }) {
         <ActivitiesTitle>Random Activities</ActivitiesTitle>
 
         <RandomActivitiesContainer>
-          {randomActivities.map((activity) => (
+          {randomActivities.map((activity) => {
+             const isBookmarked = bookmarks?.includes(activity.id) || false;
+
+             return (
             <ActivityCard
               key={activity.id}
               {...activity}
+              deleteActivity={deleteActivity}
               toggleBookmark={() => toggleBookmark(activity.id)}
-              showHeart={false}
+              isBookmarked={isBookmarked}
+              showHeart={showHeart}
             />
-          ))}
+             );
+            })}
         </RandomActivitiesContainer>
       </Container>
     </>
   );
 }
+
+const StyledSection = styled.section`
+display: flex;
+padding: 0 24px;
+justify-content:flex-end;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -112,7 +124,7 @@ const ActivitiesTitle = styled.h2`
   margin-top: 24px;
   margin-bottom: 16px;
   color: #333;
-  text-align: center; 
+  text-align: left; 
   width: 100%;
   padding-left: 16px;
 `;
@@ -132,14 +144,17 @@ const SearchInput = styled.input`
 const RandomActivitiesContainer = styled.div`
    display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr; /* Default to 1 column on small screens */
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin-bottom: 50px;
+
 
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr; /* 2 columns for medium screens */
+    grid-template-columns: 1fr 1fr; 
   }
 
   @media (min-width: 1050px) {
-    grid-template-columns: 1fr 1fr 1fr; /* 3 columns for larger screens */
+    grid-template-columns: 1fr 1fr 1fr; 
   }
 `;
 

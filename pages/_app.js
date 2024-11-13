@@ -107,6 +107,11 @@ export default function App({ Component, pageProps }) {
               Activities <FaWalking />
             </Link>
           </StyledLi>
+          <StyledHome>
+            <Link href={"/"}>
+             <FaHome/>
+            </Link>
+          </StyledHome>
           <StyledLi>
             <Link href="/my-favorites">My Favorites</Link>
           </StyledLi>
@@ -143,6 +148,14 @@ const StyledUl = styled.ul`
 const StyledLi = styled.li`
   border: solid 1px #ccc;
   width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 10px;
+`;
+
+const StyledHome = styled.li`
+  border: solid 1px #ccc;
+  width: 30%;
   height: 100%;
   text-align: center;
   padding: 10px;
