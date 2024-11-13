@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";

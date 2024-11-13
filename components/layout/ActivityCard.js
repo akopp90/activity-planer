@@ -32,12 +32,10 @@ export default function ActivityCard({
           />
         )}
 
-        {showHeart ? (
+        {showHeart && (
           <StyledHeartIcon onClick={() => toggleBookmark(id)}>
             <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
           </StyledHeartIcon>
-        ) : (
-          <></>
         )}
       </StyledImageContainer>
 

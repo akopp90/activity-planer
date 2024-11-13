@@ -31,7 +31,6 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   
-  console.log('toggleBookmark:', toggleBookmark);
   return (
     <StyledContainer>
       <StyledDetails>
@@ -54,12 +53,11 @@ export default function ActivityDetails({
             />
           )}
 
-        {showHeart ? (
-          <StyledHeartIcon onClick={() => toggleBookmark(id)}>
+        {showHeart && (
+          <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
             <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-          </StyledHeartIcon>
-        ) : (
-          <></>
+          </StyledHeartIconContainer>
+          
         )}
         </StyledImageContainer>
         <StyledContainer>
@@ -147,7 +145,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
-const StyledHeartIcon = styled.div`
+const StyledHeartIconContainer = styled.div`
   position: absolute;
   top: 16px;
   right: 16px;

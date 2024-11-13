@@ -1,7 +1,7 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
 import Button from "@/components/ui/Button";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 
@@ -9,31 +9,32 @@ export default function ActivityPage({ activities, toggleBookmark,bookmarks,dele
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
-  useEffect(() => {
-    const randomActivities = getRandomActivities();
-    setRandomActivities(randomActivities);
-  }, []);
 
-  function getRandomActivities() {
-    const randomActivities = [];
 
-    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+   useEffect(() => {
+    function getRandomActivities() {
+      const randomActivitiesList = [];
+      
+      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
-    while (randomActivities.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * activities.length); 
-      const randomActivity = activities[randomIndex];
+      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        const randomActivity = activities[randomIndex];
 
-      const isAlreadyIncluded = randomActivities.some(
-        (ac) => randomActivity.id === ac.id
-      );
+        const isAlreadyIncluded = randomActivitiesList.some(
+          (ac) => randomActivity.id === ac.id
+        );
 
-      if (!isAlreadyIncluded) {
-        randomActivities.push(randomActivity); 
+        if (!isAlreadyIncluded) {
+          randomActivitiesList.push(randomActivity);
+        }
       }
+
+      return randomActivitiesList;
     }
 
-    return randomActivities;
-  }
+    setRandomActivities(getRandomActivities());
+  }, [activities]);
 
   return (
     <>

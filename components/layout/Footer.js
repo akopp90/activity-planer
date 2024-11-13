@@ -8,19 +8,19 @@ export default function Footer(){
     <MenuFooterContainer>
       <StyledUl>
         <StyledLi>
-          <Link href="/activity">
+          <StyledLink href="/activity">
             Activities <FaWalking />
-          </Link>
+          </StyledLink>
         </StyledLi>
         <StyledHome>
-          <Link href={"/"}>
+          <StyledLink href={"/"}>
             <FaHome />
-          </Link>
+          </StyledLink>
         </StyledHome>
         <StyledLi>
-          <Link href="/my-favorites">
-          My Favorites <FaStar />
-          </Link>
+          <StyledLink href="/my-favorites">
+          Favorites <FaStar />
+          </StyledLink>
         </StyledLi>
       </StyledUl>
     </MenuFooterContainer>
