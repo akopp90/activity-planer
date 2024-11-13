@@ -3,12 +3,12 @@ import Link from "next/link";
 import { FaHome, FaStar, FaWalking } from "react-icons/fa";
 
 
-const Footer = () => {
+export default function Footer(){
   return (
     <MenuFooterContainer>
       <StyledUl>
         <StyledLi>
-          <Link href="/activities">
+          <Link href="/activity">
             Activities <FaWalking />
           </Link>
         </StyledLi>
@@ -58,7 +58,7 @@ const StyledLi = styled.li`
   width: 100%;
   height: 100%;
   text-align: center;
-  padding: 15px;
+  padding: 17px;
 `;
 
 const StyledHome = styled.li`
@@ -66,7 +66,15 @@ const StyledHome = styled.li`
   width: 30%;
   height: 100%;
   text-align: center;
-  padding: 15px;
+  padding: 17px;
 `;
 
-export default Footer;
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+`;
