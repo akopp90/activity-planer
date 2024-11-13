@@ -1,4 +1,5 @@
 import L from "leaflet";
+import Link from "next/link";
 import "leaflet/dist/leaflet.css";
 import styled from "styled-components";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -36,7 +37,14 @@ export default function ActivityMap({ address, lat, lon }) {
         />
         <Marker position={position} icon={icon}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            View on{" "}
+            <Link
+              href={`https://www.google.de/maps/place/${address}`}
+              title="Open address in Google Maps"
+            >
+              Google Maps
+            </Link>{" "}
+            to plan your Trip.
           </Popup>
         </Marker>
       </StyledMapContainer>
