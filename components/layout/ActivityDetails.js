@@ -1,15 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
-import styled from "styled-components";
-import Button from "../ui/Button";
 import { useState } from "react";
+import Button from "../ui/Button";
+import dynamic from "next/dynamic";
+import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 
+const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
+  ssr: false,
+});
 
 export default function ActivityDetails({
   title,
   imageUrl,
   area,
+  location,
   description,
   country,
   categories,
@@ -71,6 +76,7 @@ export default function ActivityDetails({
             {area}, {country}
           </StyledLocation>
           <StyledDescription>{description}</StyledDescription>
+          <ActivityMap {...location} />
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>

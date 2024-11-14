@@ -16,6 +16,7 @@ export default function ActivityForm({
   activity,
 }) {
   const [categories, setCategories] = useState(activity.categories);
+  const [error, setError] = useState(false);
   const [url, setUrl] = useState(activity.imageUrl);
 
   async function handleSubmit(event) {
@@ -33,12 +34,39 @@ export default function ActivityForm({
       imageUrl: url,
     };
 
-    if (activity.id) {
-      handleEditActivity(newActivity);
-    } else {
-      handleAddActivity(newActivity);
+    const coordinatesRessource = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${formData.location}&format=jsonv2&limit=1&accept-language=en-US`
+    );
+
+    if (!coordinatesRessource.ok) {
+      throw new Error(
+        `HTTPS error! status: ${coordinatesRessource.status} for URL: ${coordinatesRessource.url}`
+      );
     }
-    handleToggleEdit();
+    const coordinatesResponse = await coordinatesRessource.json();
+
+    if (coordinatesResponse[0]) {
+      const newActivity = {
+        ...formData,
+        location: {
+          address: formData.location,
+          lat: coordinatesResponse[0].lat,
+          lon: coordinatesResponse[0].lon,
+        },
+        id: id || uid(),
+        categories: categories,
+        imageUrl: activity.imageUrl || "",
+      };
+
+      if (activity.id) {
+        handleEditActivity(newActivity);
+      } else {
+        handleAddActivity(newActivity);
+      }
+      handleToggleEdit();
+    } else {
+      setError(true);
+    }
   }
 
   async function handleUpload(event) {
@@ -90,6 +118,18 @@ export default function ActivityForm({
       <Input name="Title" defaultValue={activity.title} isRequired>
         Activity title *
       </Input>
+      <Input
+        name="Location"
+        defaultValue={activity.location.address}
+        isRequired
+      >
+        Activity location *
+      </Input>
+      {error && (
+        <StyledParagraph>
+          Please enter a valid address (e.g. Berlin)
+        </StyledParagraph>
+      )}
       <StyledSelectDiv>
         <StyledLabel htmlFor="Categories">Activity category *</StyledLabel>
         <StyledSelect
@@ -158,6 +198,9 @@ export default function ActivityForm({
   );
 }
 
+const StyledParagraph = styled.p`
+  color: red;
+`;
 const StyledForm = styled.form`
   gap: 16px;
   padding: 24px;
