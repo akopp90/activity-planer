@@ -11,6 +11,10 @@ export default function ActivityPage({
   activities,
   handleEditActivity,
   handleDeleteActivity,
+  toggleBookmark,
+  bookmarks,
+  showHeart = true,
+
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -26,12 +30,16 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
+  const isBookmarked = bookmarks?.includes(activity.id) || false;
+
+ 
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Details</Header>
+
       {!showForm ? (
         <StyledSection>
           <Button onClick={() => setShowForm(true)} isPrimary>
@@ -45,7 +53,12 @@ export default function ActivityPage({
           activity={activity}
         />
       )}
-      <ActivityDetails {...activity} deleteActivity={deleteActivity} />
+      <ActivityDetails {...activity} 
+      deleteActivity={deleteActivity}
+      toggleBookmark={() => toggleBookmark(id)}
+      isBookmarked={isBookmarked}
+      showHeart={showHeart}
+      />
     </>
   );
 }

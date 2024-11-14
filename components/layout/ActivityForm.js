@@ -6,6 +6,8 @@ import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
+import Upload from "../ui/Upload";
+import { showToast } from "../ui/ToastMessage";
 
 export default function ActivityForm({
   handleToggleEdit,
@@ -15,6 +17,7 @@ export default function ActivityForm({
 }) {
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
+  const [url, setUrl] = useState(activity.imageUrl);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -22,6 +25,14 @@ export default function ActivityForm({
     const id = activity.id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
+    const { image, ...activityData } = formData;
+
+    const newActivity = {
+      ...activityData,
+      id: id || uid(),
+      categories: categories,
+      imageUrl: url,
+    };
 
     const coordinatesRessource = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${formData.location}&format=jsonv2&limit=1&accept-language=en-US`
@@ -55,6 +66,32 @@ export default function ActivityForm({
       handleToggleEdit();
     } else {
       setError(true);
+    }
+  }
+
+  async function handleUpload(event) {
+    try {
+      const formData = new FormData();
+      const image = event.target.files[0];
+
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      formData.append("image", image);
+      if (image.size > maxSize) {
+        showToast("File size must be less than 5MB", "error");
+        return;
+      }
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const { url } = await response.json();
+      setUrl(url);
+      showToast("Image uploaded successfully", "success");
+      return;
+    } catch (error) {
+      showToast("Please selevt a file!", "info");
+      return;
     }
   }
 
@@ -135,6 +172,19 @@ export default function ActivityForm({
       <Input name="Country" defaultValue={activity.country}>
         Activity country
       </Input>
+
+      <Upload name="Image" onChange={handleUpload}>
+        Activity Image
+      </Upload>
+      {url && (
+        <Image
+          src={url ? url : "/images/no-image.svg"}
+          alt="Uploaded image"
+          width={150}
+          height={100}
+        />
+      )}
+
       <Textarea name="Description" defaultValue={activity.description}>
         Activity description
       </Textarea>

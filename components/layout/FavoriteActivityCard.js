@@ -23,10 +23,7 @@ export default function FavoriteActivityCard({
         </div>
 
         <HeartContainer onClick={() => toggleBookmark(id)}>
-          <FaHeart
-            fill={isBookmarked ? "#ff4d4d" : "#fff"}
-            textShadow="0px 4px 4px rgba(0, 0, 0, 1.85)"
-          />
+          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
         </HeartContainer>
       </CardHeader>
 
@@ -83,7 +80,7 @@ const CardHeader = styled.div`
 
 const HeartContainer = styled.div`
   cursor: pointer;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.85) !important;
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.85) !important;
 `;
 
 const CardFooter = styled.div`
