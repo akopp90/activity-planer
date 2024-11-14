@@ -3,6 +3,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import Button from "../ui/Button";
 import { useState } from "react";
+import { Unlock } from "next/font/google";
 
 export default function ActivityDetails({
   title,
@@ -33,6 +34,7 @@ export default function ActivityDetails({
     deleteActivity(id);
     setShowConfirm(false);
   }
+  console.log(notSuitableFor);
   return (
     <StyledContainer>
       <StyledDetails>
@@ -69,12 +71,78 @@ export default function ActivityDetails({
           <StyledDescription>{duration}</StyledDescription>
           <StyledDescription>{numberOfPeople}</StyledDescription>
           <StyledSubtitle>About this Experience</StyledSubtitle>
-          <StyledDescription>{fullDescription}</StyledDescription>
-          <StyledDescription>{includes}</StyledDescription>
-          <StyledDescription>{notSuitableFor}</StyledDescription>
-          <StyledDescription>{importantInformation}</StyledDescription>
-          <StyledDescription>{whatToBring}</StyledDescription>
-          <StyledDescription>{notAllowed}</StyledDescription>
+          <StyledExtraTitle>{fullDescription.title}</StyledExtraTitle>
+          <StyledDescription>{fullDescription.text}</StyledDescription>
+          <StyledExtraTitle>{includes.title}</StyledExtraTitle>
+          <StyledExtraDescription>
+            <li>
+              {Array.isArray(includes.text) ? (
+                includes.text.map((item) => <li key={item}>{item}</li>)
+              ) : (
+                <li>{includes.text}</li>
+              )}
+            </li>
+          </StyledExtraDescription>
+          {notSuitableFor && (
+            <>
+              <StyledExtraTitle>{notSuitableFor.title}</StyledExtraTitle>
+              <StyledExtraDescription>
+                <li>
+                  {Array.isArray(notSuitableFor.text) ? (
+                    notSuitableFor.text.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))
+                  ) : (
+                    <li>{notSuitableFor.text}</li>
+                  )}
+                </li>
+              </StyledExtraDescription>
+            </>
+          )}
+          <StyledExtraTitle>{importantInformation.title}</StyledExtraTitle>
+          <StyledExtraDescription>
+            <li>
+              {Array.isArray(importantInformation.text) ? (
+                importantInformation.text.map((item) => (
+                  <li key={item}>{item}</li>
+                ))
+              ) : (
+                <li>{importantInformation.text}</li>
+              )}
+            </li>
+          </StyledExtraDescription>
+          {!whatToBring ? (
+            <></>
+          ) : (
+            <>
+              <StyledExtraTitle>{whatToBring.title}</StyledExtraTitle>
+              <StyledExtraDescription>
+                <li>
+                  {Array.isArray(whatToBring.text) ? (
+                    whatToBring.text.map((item) => <li key={item}>{item}</li>)
+                  ) : (
+                    <li>{whatToBring.text}</li>
+                  )}
+                </li>
+              </StyledExtraDescription>
+            </>
+          )}
+          {!notAllowed ? (
+            <></>
+          ) : (
+            <>
+              <StyledExtraTitle>{notAllowed.title}</StyledExtraTitle>
+              <StyledDescription>
+                <li>
+                  {Array.isArray(notAllowed.text) ? (
+                    notAllowed.text.map((item) => <li key={item}>{item}</li>)
+                  ) : (
+                    <li>{notAllowed.text}</li>
+                  )}
+                </li>
+              </StyledDescription>
+            </>
+          )}
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
@@ -171,4 +239,16 @@ const StyledButtonContainer = styled.div`
   align-items: flex-end;
   align-self: flex-end;
   position: relative;
+`;
+const StyledExtraTitle = styled.h4`
+  font-weight: bold;
+  display: grid;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+`;
+
+const StyledExtraDescription = styled.ul`
+  margin: 16px 0;
+  padding: 8px;
+  list-style: circle;
 `;
