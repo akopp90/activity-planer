@@ -3,6 +3,8 @@ import Image from "next/image";
 import styled from "styled-components";
 import Button from "../ui/Button";
 import { useState } from "react";
+import { FaHeart } from "react-icons/fa";
+
 
 export default function ActivityDetails({
   title,
@@ -13,6 +15,9 @@ export default function ActivityDetails({
   categories,
   id,
   deleteActivity,
+  toggleBookmark,
+  isBookmarked,
+  showHeart = true,
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   function handleDelete() {
@@ -25,6 +30,7 @@ export default function ActivityDetails({
     deleteActivity(id);
     setShowConfirm(false);
   }
+  
   return (
     <StyledContainer>
       <StyledDetails>
@@ -36,7 +42,8 @@ export default function ActivityDetails({
               style={{ objectFit: "cover" }}
               sizes="50vw"
               fill
-            />
+              
+            /> 
           ) : (
             <Image
               src="/images/no-image.svg"
@@ -45,6 +52,13 @@ export default function ActivityDetails({
               alt="Image is missing"
             />
           )}
+
+        {showHeart && (
+          <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+          </StyledHeartIconContainer>
+          
+        )}
         </StyledImageContainer>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
@@ -131,6 +145,20 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+const StyledHeartIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+
+  &:hover {
+    color: #ff4d4d;
+  }
+`;
+
 const StyledDeleteContainer = styled.div`
   display: flex;
   justify-content: flex-end;
