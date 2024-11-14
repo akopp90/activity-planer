@@ -34,7 +34,6 @@ export default function ActivityDetails({
     deleteActivity(id);
     setShowConfirm(false);
   }
-  console.log(notSuitableFor);
   return (
     <StyledContainer>
       <StyledDetails>
@@ -111,9 +110,7 @@ export default function ActivityDetails({
               )}
             </li>
           </StyledExtraDescription>
-          {!whatToBring ? (
-            <></>
-          ) : (
+          {whatToBring && (
             <>
               <StyledExtraTitle>{whatToBring.title}</StyledExtraTitle>
               <StyledExtraDescription>
@@ -127,9 +124,7 @@ export default function ActivityDetails({
               </StyledExtraDescription>
             </>
           )}
-          {!notAllowed ? (
-            <></>
-          ) : (
+          {notAllowed && (
             <>
               <StyledExtraTitle>{notAllowed.title}</StyledExtraTitle>
               <StyledDescription>
