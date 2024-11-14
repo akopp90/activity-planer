@@ -41,6 +41,7 @@ export default function ActivityMap({ address, lat, lon }) {
             <Link
               href={`https://www.google.de/maps/place/${address}`}
               title="Open address in Google Maps"
+              target="_blank"
             >
               Google Maps
             </Link>{" "}
