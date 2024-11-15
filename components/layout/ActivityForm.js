@@ -157,17 +157,20 @@ export default function ActivityForm({
       <Textarea name="FullDescription" defaultValue={activity.fullDescription}>
         Full Description
       </Textarea>
-      <Input name="Includes" defaultValue={activity.includes}>
+      <Input name="Includes" defaultValue={activity.includes.text}>
         Includes
       </Input>
-      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor}>
+      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor.text}>
         Not suitable for
       </Input>
       <Textarea
         name="ImportantInformation"
-        defaultValue={activity.importantInformation}
+        defaultValue={activity.importantInformation.text}
       >
         Important Information
+      </Textarea>
+      <Textarea name="notAllowed" defaultValue={activity.notAllowed.text}>
+        Not allowed
       </Textarea>
 
       <StyledBottomDiv>

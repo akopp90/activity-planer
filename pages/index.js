@@ -26,6 +26,11 @@ export default function HomePage({
     country: "",
     description: "",
     imageUrl: "",
+    includes: { title: "", text: "" },
+    notSuitableFor: { title: "", text: "" },
+    importantInformation: { title: "", text: "" },
+    whatToBring: { title: "", text: "" },
+    notAllowed: { title: "", text: "" },
   };
 
   function handleToggleEdit() {

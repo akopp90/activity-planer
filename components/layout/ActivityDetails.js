@@ -4,6 +4,14 @@ import styled from "styled-components";
 import Button from "../ui/Button";
 import { useState } from "react";
 import { Unlock } from "next/font/google";
+import {
+  FaShoppingBag,
+  FaThumbsDown,
+  FaInfo,
+  FaBook,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 export default function ActivityDetails({
   title,
@@ -70,9 +78,15 @@ export default function ActivityDetails({
           <StyledDescription>{duration}</StyledDescription>
           <StyledDescription>{numberOfPeople}</StyledDescription>
           <StyledSubtitle>About this Experience</StyledSubtitle>
-          <StyledExtraTitle>{fullDescription.title}</StyledExtraTitle>
+          <StyledTitleIcon>
+            <FaBook />
+            <StyledExtraTitle>{fullDescription.title}</StyledExtraTitle>
+          </StyledTitleIcon>
           <StyledDescription>{fullDescription.text}</StyledDescription>
-          <StyledExtraTitle>{includes.title}</StyledExtraTitle>
+          <StyledTitleIcon>
+            <FaCheckCircle />
+            <StyledExtraTitle>{includes.title}</StyledExtraTitle>
+          </StyledTitleIcon>
           <StyledExtraDescription>
             <li>
               {Array.isArray(includes.text) ? (
@@ -84,7 +98,10 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {notSuitableFor && (
             <>
-              <StyledExtraTitle>{notSuitableFor.title}</StyledExtraTitle>
+              <StyledTitleIcon>
+                <FaThumbsDown />
+                <StyledExtraTitle>{notSuitableFor.title}</StyledExtraTitle>
+              </StyledTitleIcon>
               <StyledExtraDescription>
                 <li>
                   {Array.isArray(notSuitableFor.text) ? (
@@ -98,7 +115,10 @@ export default function ActivityDetails({
               </StyledExtraDescription>
             </>
           )}
-          <StyledExtraTitle>{importantInformation.title}</StyledExtraTitle>
+          <StyledTitleIcon>
+            <FaInfo />
+            <StyledExtraTitle>{importantInformation.title}</StyledExtraTitle>
+          </StyledTitleIcon>
           <StyledExtraDescription>
             <li>
               {Array.isArray(importantInformation.text) ? (
@@ -112,7 +132,10 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {whatToBring && (
             <>
-              <StyledExtraTitle>{whatToBring.title}</StyledExtraTitle>
+              <StyledTitleIcon>
+                <FaShoppingBag />
+                <StyledExtraTitle>{whatToBring.title}</StyledExtraTitle>
+              </StyledTitleIcon>
               <StyledExtraDescription>
                 <li>
                   {Array.isArray(whatToBring.text) ? (
@@ -126,8 +149,11 @@ export default function ActivityDetails({
           )}
           {notAllowed && (
             <>
-              <StyledExtraTitle>{notAllowed.title}</StyledExtraTitle>
-              <StyledDescription>
+              <StyledTitleIcon>
+                <FaTimesCircle />
+                <StyledExtraTitle>{notAllowed.title}</StyledExtraTitle>
+              </StyledTitleIcon>
+              <StyledExtraDescription>
                 <li>
                   {Array.isArray(notAllowed.text) ? (
                     notAllowed.text.map((item) => <li key={item}>{item}</li>)
@@ -135,7 +161,7 @@ export default function ActivityDetails({
                     <li>{notAllowed.text}</li>
                   )}
                 </li>
-              </StyledDescription>
+              </StyledExtraDescription>
             </>
           )}
           <StyledLink href="/" title="Back to Activities">
@@ -244,6 +270,13 @@ const StyledExtraTitle = styled.h4`
 
 const StyledExtraDescription = styled.ul`
   margin: 16px 0;
+  margin-left: 10px;
   padding: 8px;
   list-style: circle;
+`;
+
+const StyledTitleIcon = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
 `;
