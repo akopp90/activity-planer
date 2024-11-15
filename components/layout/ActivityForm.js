@@ -194,7 +194,7 @@ export default function ActivityForm({
       <Input name="NumberOfPeople" defaultValue={activity.numberOfPeople}>
         Number of People
       </Input>
-      <Textarea name="FullDescription" defaultValue={activity.fullDescription}>
+      <Textarea name="FullDescription" defaultValue={activity.fullDescription.text}>
         Full Description
       </Textarea>
       <Input name="Includes" defaultValue={activity.includes.text}>
