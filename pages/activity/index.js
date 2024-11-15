@@ -31,6 +31,12 @@ export default function HomePage({
     country: "",
     description: "",
     imageUrl: "",
+    fullDescription: "",
+    includes: "",
+    notSuitableFor: "",
+    importantInformation: "",
+    whatToBring: "",
+    notAllowed: "",
   };
 
   function handleToggleEdit() {

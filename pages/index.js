@@ -12,6 +12,27 @@ export default function ActivityPage({
   deleteActivity,
   showHeart,
 }) {
+  const [showForm, setShowForm] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+
+  const activity = {
+    id: "",
+    title: "",
+    categories: [],
+    area: "",
+    country: "",
+    description: "",
+    imageUrl: "",
+    includes: { title: "", text: "" },
+    notSuitableFor: { title: "", text: "" },
+    importantInformation: { title: "", text: "" },
+    whatToBring: { title: "", text: "" },
+    notAllowed: { title: "", text: "" },
+  };
+
+  function handleToggleEdit() {
+    setShowForm(!showForm);
+  }
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
@@ -39,6 +60,7 @@ export default function ActivityPage({
 
     setRandomActivities(getRandomActivities());
   }, [activities]);
+
 
   return (
     <>

@@ -1,6 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { Unlock } from "next/font/google";
+import {
+  FaShoppingBag,
+  FaThumbsDown,
+  FaInfo,
+  FaBook,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
+
 import Button from "../ui/Button";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
@@ -20,6 +30,14 @@ export default function ActivityDetails({
   categories,
   id,
   deleteActivity,
+  duration,
+  numberOfPeople,
+  fullDescription,
+  includes,
+  notSuitableFor,
+  importantInformation,
+  whatToBring,
+  notAllowed,
   toggleBookmark,
   isBookmarked,
   showHeart = true,
@@ -35,7 +53,7 @@ export default function ActivityDetails({
     deleteActivity(id);
     setShowConfirm(false);
   }
-  
+
   return (
     <StyledContainer>
       <StyledDetails>
@@ -47,8 +65,7 @@ export default function ActivityDetails({
               style={{ objectFit: "cover" }}
               sizes="50vw"
               fill
-              
-            /> 
+            />
           ) : (
             <Image
               src="/images/no-image.svg"
@@ -58,12 +75,11 @@ export default function ActivityDetails({
             />
           )}
 
-        {showHeart && (
-          <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
-            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-          </StyledHeartIconContainer>
-          
-        )}
+          {showHeart && (
+            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+              <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+            </StyledHeartIconContainer>
+          )}
         </StyledImageContainer>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
@@ -76,6 +92,82 @@ export default function ActivityDetails({
             {area}, {country}
           </StyledLocation>
           <StyledDescription>{description}</StyledDescription>
+          <StyledSubtitle>About this Activity</StyledSubtitle>
+          <StyledDescription>{duration}</StyledDescription>
+          <StyledDescription>{numberOfPeople}</StyledDescription>
+          <StyledSubtitle>About this Experience</StyledSubtitle>
+          <StyledTitleIcon>
+            <FaBook />
+            <StyledExtraTitle>Full Description</StyledExtraTitle>
+          </StyledTitleIcon>
+          <StyledDescription>{fullDescription}</StyledDescription>
+          <StyledTitleIcon>
+            <FaCheckCircle />
+            <StyledExtraTitle>Includes</StyledExtraTitle>
+          </StyledTitleIcon>
+          <StyledExtraDescription>
+            {Array.isArray(includes) ? (
+              includes.map((item) => <li key={item}>{item}</li>)
+            ) : (
+              <li>{includes}</li>
+            )}
+          </StyledExtraDescription>
+          {notSuitableFor && (
+            <>
+              <StyledTitleIcon>
+                <FaThumbsDown />
+                <StyledExtraTitle>Not suitable for</StyledExtraTitle>
+              </StyledTitleIcon>
+              <StyledExtraDescription>
+                {Array.isArray(notSuitableFor) ? (
+                  notSuitableFor.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{notSuitableFor}</li>
+                )}
+              </StyledExtraDescription>
+            </>
+          )}
+          <StyledTitleIcon>
+            <FaInfo />
+            <StyledExtraTitle>Important Information</StyledExtraTitle>
+          </StyledTitleIcon>
+          <StyledExtraDescription>
+            {Array.isArray(importantInformation) ? (
+              importantInformation.map((item) => <li key={item}>{item}</li>)
+            ) : (
+              <li>{importantInformation}</li>
+            )}
+          </StyledExtraDescription>
+          {whatToBring && (
+            <>
+              <StyledTitleIcon>
+                <FaShoppingBag />
+                <StyledExtraTitle>What to bring</StyledExtraTitle>
+              </StyledTitleIcon>
+              <StyledExtraDescription>
+                {Array.isArray(whatToBring) ? (
+                  whatToBring.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{whatToBring}</li>
+                )}
+              </StyledExtraDescription>
+            </>
+          )}
+          {notAllowed && (
+            <>
+              <StyledTitleIcon>
+                <FaTimesCircle />
+                <StyledExtraTitle>Not Allowed</StyledExtraTitle>
+              </StyledTitleIcon>
+              <StyledExtraDescription>
+                {Array.isArray(notAllowed) ? (
+                  notAllowed.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{notAllowed}</li>
+                )}
+              </StyledExtraDescription>
+            </>
+          )}
           <ActivityMap {...location} />
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
@@ -122,6 +214,12 @@ const StyledTitle = styled.h2`
   font-size: 1.5rem;
   margin: 16px 0;
 `;
+
+const StyledSubtitle = styled.h3`
+  font-size: 1.2rem;
+  margin: 16px 0;
+`;
+
 const StyledList = styled.ul`
   gap: 8px;
   display: flex;
@@ -181,4 +279,23 @@ const StyledButtonContainer = styled.div`
   align-items: flex-end;
   align-self: flex-end;
   position: relative;
+`;
+const StyledExtraTitle = styled.h4`
+  font-weight: bold;
+  display: grid;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+`;
+
+const StyledExtraDescription = styled.ul`
+  margin: 16px 0;
+  margin-left: 10px;
+  padding: 8px;
+  list-style: circle;
+`;
+
+const StyledTitleIcon = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
 `;
