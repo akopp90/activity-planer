@@ -1,16 +1,20 @@
-import { useRouter } from "next/router";
-import ActivityDetails from "@/components/layout/ActivityDetails";
-import Button from "@/components/ui/Button";
-import { useState } from "react";
-import ActivityForm from "@/components/layout/ActivityForm";
-import styled from "styled-components";
-import Header from "@/components/layout/Header";
 import Head from "next/head";
+import { useState } from "react";
+import styled from "styled-components";
+import { useRouter } from "next/router";
+import Button from "@/components/ui/Button";
+import Header from "@/components/layout/Header";
+import ActivityForm from "@/components/layout/ActivityForm";
+import ActivityDetails from "@/components/layout/ActivityDetails";
 
 export default function ActivityPage({
   activities,
   handleEditActivity,
   handleDeleteActivity,
+  toggleBookmark,
+  bookmarks,
+  showHeart = true,
+
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -26,12 +30,16 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
+  const isBookmarked = bookmarks?.includes(activity.id) || false;
+
+ 
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Details</Header>
+
       {!showForm ? (
         <StyledSection>
           <Button onClick={() => setShowForm(true)} isPrimary>
@@ -45,7 +53,12 @@ export default function ActivityPage({
           activity={activity}
         />
       )}
-      <ActivityDetails {...activity} deleteActivity={deleteActivity} />
+      <ActivityDetails {...activity} 
+      deleteActivity={deleteActivity}
+      toggleBookmark={() => toggleBookmark(id)}
+      isBookmarked={isBookmarked}
+      showHeart={showHeart}
+      />
     </>
   );
 }
