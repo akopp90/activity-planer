@@ -55,7 +55,7 @@ export default function ActivityForm({
         },
         id: id || uid(),
         categories: categories,
-        imageUrl: activity.imageUrl || "",
+        imageUrl: url,
       };
 
       if (activity.id) {

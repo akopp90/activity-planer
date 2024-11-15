@@ -21,6 +21,11 @@ export default function HomePage({
   const activity = {
     id: "",
     title: "",
+    location: {
+      address: "",
+      lat: "0",
+      lon: "0",
+    },
     categories: [],
     area: "",
     country: "",

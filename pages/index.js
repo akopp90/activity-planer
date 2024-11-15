@@ -5,16 +5,20 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 
-export default function ActivityPage({ activities, toggleBookmark,bookmarks,deleteActivity,showHeart }) {
+export default function ActivityPage({
+  activities,
+  toggleBookmark,
+  bookmarks,
+  deleteActivity,
+  showHeart,
+}) {
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
-
-
-   useEffect(() => {
+  useEffect(() => {
     function getRandomActivities() {
       const randomActivitiesList = [];
-      
+
       if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
       while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
@@ -43,9 +47,7 @@ export default function ActivityPage({ activities, toggleBookmark,bookmarks,dele
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-         
-         <SearchBarContainer>
-         
+        <SearchBarContainer>
           <SearchIconContainer>
             <FaSearch size={20} />
           </SearchIconContainer>
@@ -59,19 +61,19 @@ export default function ActivityPage({ activities, toggleBookmark,bookmarks,dele
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => {
-             const isBookmarked = bookmarks?.includes(activity.id) || false;
+            const isBookmarked = bookmarks?.includes(activity.id) || false;
 
-             return (
-            <ActivityCard
-              key={activity.id}
-              {...activity}
-              deleteActivity={deleteActivity}
-              toggleBookmark={() => toggleBookmark(activity.id)}
-              isBookmarked={isBookmarked}
-              showHeart={showHeart}
-            />
-             );
-            })}
+            return (
+              <ActivityCard
+                key={activity.id}
+                {...activity}
+                deleteActivity={deleteActivity}
+                toggleBookmark={() => toggleBookmark(activity.id)}
+                isBookmarked={isBookmarked}
+                showHeart={showHeart}
+              />
+            );
+          })}
         </RandomActivitiesContainer>
       </Container>
     </>
@@ -79,9 +81,9 @@ export default function ActivityPage({ activities, toggleBookmark,bookmarks,dele
 }
 
 const StyledSection = styled.section`
-display: flex;
-padding: 0 24px;
-justify-content:flex-end;
+  display: flex;
+  padding: 0 24px;
+  justify-content: flex-end;
 `;
 
 const Container = styled.div`
@@ -100,17 +102,17 @@ const SloganContainer = styled.section`
 const SearchBarContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   border: solid 1px gray;
   border-radius: 0.5rem;
   padding: 0.5rem;
   background-color: white;
-  width: 90%; 
-  max-width: 600px 
+  width: 90%;
+  max-width: 600px;
 `;
 
 const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;  
+  margin-right: 0.5rem;
 `;
 
 const SearchButtonContainer = styled.div`
@@ -125,7 +127,7 @@ const ActivitiesTitle = styled.h2`
   margin-top: 24px;
   margin-bottom: 16px;
   color: #333;
-  text-align: left; 
+  text-align: left;
   width: 100%;
   padding-left: 16px;
 `;
@@ -135,27 +137,23 @@ const SearchInput = styled.input`
   border-radius: 0.5rem;
   outline: none;
   border: none;
-  flex-grow: 1; 
+  flex-grow: 1;
   padding: 0.5rem;
   width: 100%;
 `;
 
-
-
 const RandomActivitiesContainer = styled.div`
-   display: grid;
+  display: grid;
   gap: 1rem;
   grid-template-columns: 1fr;
   width: 100%;
   margin-bottom: 50px;
 
-
   @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr; 
+    grid-template-columns: 1fr 1fr;
   }
 
   @media (min-width: 1050px) {
-    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `;
-
