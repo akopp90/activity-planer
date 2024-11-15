@@ -169,6 +169,9 @@ export default function ActivityForm({
       >
         Important Information
       </Textarea>
+      <Textarea name="whatToBring" defaultValue={activity.whatToBring.text}>
+        What to bring
+      </Textarea>
       <Textarea name="notAllowed" defaultValue={activity.notAllowed.text}>
         Not allowed
       </Textarea>
