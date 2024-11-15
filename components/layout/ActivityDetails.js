@@ -20,7 +20,6 @@ const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
 });
 
-
 export default function ActivityDetails({
   title,
   imageUrl,
@@ -42,7 +41,6 @@ export default function ActivityDetails({
   toggleBookmark,
   isBookmarked,
   showHeart = true,
-
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   function handleDelete() {
@@ -55,7 +53,7 @@ export default function ActivityDetails({
     deleteActivity(id);
     setShowConfirm(false);
   }
-  
+
   return (
     <StyledContainer>
       <StyledDetails>
@@ -67,8 +65,7 @@ export default function ActivityDetails({
               style={{ objectFit: "cover" }}
               sizes="50vw"
               fill
-              
-            /> 
+            />
           ) : (
             <Image
               src="/images/no-image.svg"
@@ -78,12 +75,11 @@ export default function ActivityDetails({
             />
           )}
 
-        {showHeart && (
-          <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
-            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-          </StyledHeartIconContainer>
-          
-        )}
+          {showHeart && (
+            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+              <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+            </StyledHeartIconContainer>
+          )}
         </StyledImageContainer>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
@@ -102,70 +98,58 @@ export default function ActivityDetails({
           <StyledSubtitle>About this Experience</StyledSubtitle>
           <StyledTitleIcon>
             <FaBook />
-            <StyledExtraTitle>{fullDescription.title}</StyledExtraTitle>
+            <StyledExtraTitle>Full Description</StyledExtraTitle>
           </StyledTitleIcon>
-          <StyledDescription>{fullDescription.text}</StyledDescription>
+          <StyledDescription>{fullDescription}</StyledDescription>
           <StyledTitleIcon>
             <FaCheckCircle />
-            <StyledExtraTitle>{includes.title}</StyledExtraTitle>
+            <StyledExtraTitle>Includes</StyledExtraTitle>
           </StyledTitleIcon>
           <StyledExtraDescription>
-            <li>
-              {Array.isArray(includes.text) ? (
-                includes.text.map((item) => <li key={item}>{item}</li>)
-              ) : (
-                <li>{includes.text}</li>
-              )}
-            </li>
+            {Array.isArray(includes) ? (
+              includes.map((item) => <li key={item}>{item}</li>)
+            ) : (
+              <li>{includes}</li>
+            )}
           </StyledExtraDescription>
           {notSuitableFor && (
             <>
               <StyledTitleIcon>
                 <FaThumbsDown />
-                <StyledExtraTitle>{notSuitableFor.title}</StyledExtraTitle>
+                <StyledExtraTitle>Not suitable for</StyledExtraTitle>
               </StyledTitleIcon>
               <StyledExtraDescription>
-                <li>
-                  {Array.isArray(notSuitableFor.text) ? (
-                    notSuitableFor.text.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))
-                  ) : (
-                    <li>{notSuitableFor.text}</li>
-                  )}
-                </li>
+                {Array.isArray(notSuitableFor) ? (
+                  notSuitableFor.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{notSuitableFor}</li>
+                )}
               </StyledExtraDescription>
             </>
           )}
           <StyledTitleIcon>
             <FaInfo />
-            <StyledExtraTitle>{importantInformation.title}</StyledExtraTitle>
+            <StyledExtraTitle>Important Information</StyledExtraTitle>
           </StyledTitleIcon>
           <StyledExtraDescription>
-            <li>
-              {Array.isArray(importantInformation.text) ? (
-                importantInformation.text.map((item) => (
-                  <li key={item}>{item}</li>
-                ))
-              ) : (
-                <li>{importantInformation.text}</li>
-              )}
-            </li>
+            {Array.isArray(importantInformation) ? (
+              importantInformation.map((item) => <li key={item}>{item}</li>)
+            ) : (
+              <li>{importantInformation}</li>
+            )}
           </StyledExtraDescription>
           {whatToBring && (
             <>
               <StyledTitleIcon>
                 <FaShoppingBag />
-                <StyledExtraTitle>{whatToBring.title}</StyledExtraTitle>
+                <StyledExtraTitle>What to bring</StyledExtraTitle>
               </StyledTitleIcon>
               <StyledExtraDescription>
-                <li>
-                  {Array.isArray(whatToBring.text) ? (
-                    whatToBring.text.map((item) => <li key={item}>{item}</li>)
-                  ) : (
-                    <li>{whatToBring.text}</li>
-                  )}
-                </li>
+                {Array.isArray(whatToBring) ? (
+                  whatToBring.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{whatToBring}</li>
+                )}
               </StyledExtraDescription>
             </>
           )}
@@ -173,16 +157,14 @@ export default function ActivityDetails({
             <>
               <StyledTitleIcon>
                 <FaTimesCircle />
-                <StyledExtraTitle>{notAllowed.title}</StyledExtraTitle>
+                <StyledExtraTitle>Not Allowed</StyledExtraTitle>
               </StyledTitleIcon>
               <StyledExtraDescription>
-                <li>
-                  {Array.isArray(notAllowed.text) ? (
-                    notAllowed.text.map((item) => <li key={item}>{item}</li>)
-                  ) : (
-                    <li>{notAllowed.text}</li>
-                  )}
-                </li>
+                {Array.isArray(notAllowed) ? (
+                  notAllowed.map((item) => <li key={item}>{item}</li>)
+                ) : (
+                  <li>{notAllowed}</li>
+                )}
               </StyledExtraDescription>
             </>
           )}

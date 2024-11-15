@@ -18,7 +18,6 @@ export default function ActivityForm({
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
   const [url, setUrl] = useState(activity.imageUrl);
-
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -194,25 +193,25 @@ export default function ActivityForm({
       <Input name="NumberOfPeople" defaultValue={activity.numberOfPeople}>
         Number of People
       </Input>
-      <Textarea name="FullDescription" defaultValue={activity.fullDescription.text}>
+      <Textarea name="FullDescription" defaultValue={activity.fullDescription}>
         Full Description
       </Textarea>
-      <Input name="Includes" defaultValue={activity.includes.text}>
+      <Input name="Includes" defaultValue={activity.includes}>
         Includes
       </Input>
-      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor.text}>
+      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor}>
         Not suitable for
       </Input>
       <Textarea
         name="ImportantInformation"
-        defaultValue={activity.importantInformation.text}
+        defaultValue={activity.importantInformation}
       >
         Important Information
       </Textarea>
-      <Textarea name="whatToBring" defaultValue={activity.whatToBring.text}>
+      <Textarea name="whatToBring" defaultValue={activity.whatToBring}>
         What to bring
       </Textarea>
-      <Textarea name="notAllowed" defaultValue={activity.notAllowed.text}>
+      <Textarea name="notAllowed" defaultValue={activity.notAllowed}>
         Not allowed
       </Textarea>
 
