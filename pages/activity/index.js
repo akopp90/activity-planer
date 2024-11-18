@@ -8,7 +8,7 @@ import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
-import { FaLock } from "react-icons/fa";
+import { FaKey } from "react-icons/fa";
 import Link from "next/link";
 export default function HomePage({
   handleAddActivity,
@@ -67,7 +67,7 @@ export default function HomePage({
           </>
         ) : (
           <StyledLink href="/auth/signin">
-            <FaLock />
+            <FaKey />
           </StyledLink>
         )}
       </StyledSection>

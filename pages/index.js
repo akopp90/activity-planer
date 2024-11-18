@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaLock, FaSearch } from "react-icons/fa";
+import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
@@ -69,7 +69,7 @@ export default function ActivityPage({
       <Header>Activity Planner</Header>
       {!session ? (
         <StyledLink href="/auth/signin">
-          <FaLock />
+          <FaKey />
         </StyledLink>
       ) : (
         <LogoutContainer>
