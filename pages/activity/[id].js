@@ -6,8 +6,6 @@ import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
-import { FaSearch } from "react-icons/fa";
-import Search from "@/components/layout/Search";
 
 export default function ActivityPage({
   activities,

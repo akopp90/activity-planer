@@ -1,6 +1,6 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
 
