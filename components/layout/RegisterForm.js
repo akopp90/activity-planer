@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { showToast } from "../ui/ToastMessage";
+import Link from "next/link";
+import Header from "./Header";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -71,34 +73,58 @@ function RegisterForm() {
     }
   }
   return (
-    <Container>
-      <FormCard>
-        <Title>Register</Title>
-        <form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Input type="text" name="name" onChange={handleSetUserName}>
-              Name
-            </Input>
-          </FormGroup>
-          <FormGroup>
-            <Input type="email" name="email" onChange={handleSetUserEmail}>
-              Email
-            </Input>
-          </FormGroup>
-          <FormGroup>
-            <Input
-              type="password"
-              name="password"
-              onChange={handleSetUserPassword}
-            >
-              Password
-            </Input>
-          </FormGroup>
-          <Button type="submit">Register</Button>
-        </form>
-      </FormCard>
-    </Container>
+    <>
+      <Header>Register</Header>
+
+      <Container>
+        <FormCard>
+          <NavContainer>
+            <StyledLink href="/auth/signin">Login</StyledLink>
+            <StyledLink href="/auth/register" $bg="#ccc">
+              Register
+            </StyledLink>
+          </NavContainer>
+
+          <form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Input type="text" name="name" onChange={handleSetUserName}>
+                Name
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Input type="email" name="email" onChange={handleSetUserEmail}>
+                Email
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type="password"
+                name="password"
+                onChange={handleSetUserPassword}
+              >
+                Password
+              </Input>
+            </FormGroup>
+            <Button type="submit">Register</Button>
+          </form>
+        </FormCard>
+      </Container>
+    </>
   );
 }
 
 export default RegisterForm;
+const StyledLink = styled(Link)`
+  background-color: ${(props) => props.$bg || "#fff"};
+  cursor: ${(props) => (props.$bg ? "default" : "pointer")};
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+`;
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  justify-content: center;
+`;

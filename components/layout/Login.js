@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import Link from "next/link";
+import Header from "./Header";
 export default function Login() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -41,33 +42,45 @@ export default function Login() {
     );
   }
   return (
-    <Container>
-      <FormCard>
-        <Title>Sign In</Title>
-        <form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Input name={"email"} type="email" onChange={handleSetEmail}>
-              Email
-            </Input>
-          </FormGroup>
-          <FormGroup>
-            <Input type="password" name="password" onChange={handleSetPassword}>
-              Password
-            </Input>
-          </FormGroup>
-          <Button type="submit">Sign In</Button>
-        </form>
-        <Button onClick={() => signIn("github")}>
-          <FaGithub /> Sign in with GitHub
-        </Button>
-        <Button onClick={() => signIn("google")}>
-          <FaGoogle /> Sign in with Google
-        </Button>
-        <br />
-        <p>no account yet?</p>
-        <Link href="/auth/register">Register</Link>
-      </FormCard>
-    </Container>
+    <>
+      <Header>Login</Header>
+      <Container>
+        <FormCard>
+          <NavContainer>
+            <StyledLink href="/auth/signin" $bg="#ccc">
+              Login
+            </StyledLink>
+            <StyledLink href="/auth/register">Register</StyledLink>
+          </NavContainer>
+          <form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Input name={"email"} type="email" onChange={handleSetEmail}>
+                Email
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Input
+                type="password"
+                name="password"
+                onChange={handleSetPassword}
+              >
+                Password
+              </Input>
+            </FormGroup>
+            <Button type="submit">Sign In</Button>
+          </form>
+          <Button onClick={() => signIn("github")}>
+            <FaGithub /> Sign in with GitHub
+          </Button>
+          <Button onClick={() => signIn("google")}>
+            <FaGoogle /> Sign in with Google
+          </Button>
+          <br />
+          <p>no account yet?</p>
+          <Link href="/auth/register">Register</Link>
+        </FormCard>
+      </Container>
+    </>
   );
 }
 const Container = styled.div`
@@ -99,4 +112,18 @@ const Label = styled.label`
   display: block;
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
+`;
+const StyledLink = styled(Link)`
+  background-color: ${(props) => props.$bg || "#fff"};
+  cursor: ${(props) => (props.$bg ? "default" : "pointer")};
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+`;
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  justify-content: center;
 `;
