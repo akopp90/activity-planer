@@ -4,6 +4,8 @@ import Button from "../ui/Button";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { FaGithub, FaGoogle } from "react-icons/fa";
+import Link from "next/link";
 export default function Login() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -61,11 +63,15 @@ export default function Login() {
           </FormGroup>
           <Button type="submit">Sign In</Button>
         </form>
-        <GithubButton onClick={() => signIn("github")}>
-          Sign in with GitHub
-        </GithubButton>
-
-        <Button onClick={() => router.push("/auth/register")}>Register</Button>
+        <Button onClick={() => signIn("github")}>
+          <FaGithub /> Sign in with GitHub
+        </Button>
+        <Button onClick={() => signIn("google")}>
+          <FaGoogle /> Sign in with Google
+        </Button>
+        <br />
+        <p>no account yet?</p>
+        <Link href="/auth/register">Register</Link>
       </FormCard>
     </Container>
   );
@@ -99,13 +105,4 @@ const Label = styled.label`
   display: block;
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
-`;
-
-const GithubButton = styled(Button)`
-  margin-top: 1rem;
-  background: #1f2937;
-
-  &:hover {
-    background: #111827;
-  }
 `;
