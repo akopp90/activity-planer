@@ -132,13 +132,8 @@ export default function App({ Component, pageProps }) {
     
     filteredActivities = activities.filter((ac) => {
       
-      const copiedAc = { ...ac };
-      
-      delete copiedAc.id;
-      delete copiedAc.imageUrl;
-      delete copiedAc.location;
-
-      
+      const {id, imageUrl,location, ...searchableActivityFields} = ac;
+      const activityString = JSON.stringify(searchableActivityFields);
       const activityString = JSON.stringify(copiedAc);
 
       
