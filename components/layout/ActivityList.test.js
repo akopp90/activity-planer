@@ -8,7 +8,7 @@ describe("When the page initially loads, verify that all activities are displaye
   render(<ActivityList activities={activityData} />);
   const renderedActivities = screen.getAllByTestId("activity");
 
-  test("ActivityCard rendering", () => {
+  test("ActivityCard Rendering", () => {
     expect(renderedActivities.length).toEqual(activityData.length);
   });
 });
