@@ -1,9 +1,9 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import Search from "@/components/layout/Search";
 
 export default function ActivityPage({
   activities,
@@ -108,16 +108,8 @@ export default function ActivityPage({
 
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
-
-        <SearchBarContainer>
-          <SearchIconContainer>
-            <FaSearch size={20} />
-          </SearchIconContainer>
-          <SearchInput
-            placeholder="Search activities..."
-            onChange={handleSearchInputChange}
-          />
-        </SearchBarContainer>
+         
+         <Search onChange={handleSearchInputChange}/>
 
         <ActivitiesTitle>{title}</ActivitiesTitle>
 
@@ -163,22 +155,6 @@ const SloganContainer = styled.section`
   text-align: center;
 `;
 
-const SearchBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: solid 1px gray;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: white;
-  width: 90%;
-  max-width: 600px;
-`;
-
-const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;
-`;
-
 const ActivitiesTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -192,15 +168,6 @@ const ActivitiesTitle = styled.h2`
 
 const NoActivitiesFoundContainer = styled.div``;
 
-const SearchInput = styled.input`
-  font-size: 0.9rem;
-  border-radius: 0.5rem;
-  outline: none;
-  border: none;
-  flex-grow: 1;
-  padding: 0.5rem;
-  width: 100%;
-`;
 
 const RandomActivitiesContainer = styled.div`
   display: grid;
