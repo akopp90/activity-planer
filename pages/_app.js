@@ -52,7 +52,6 @@ export default function App({ Component, pageProps }) {
     setListedActivities(getRandomActivities());
   }, [activities]);
 
-
   function handleAddActivity(newActivity) {
     try {
       setActivities([newActivity, ...activities]);
@@ -115,10 +114,7 @@ export default function App({ Component, pageProps }) {
     categories.some((category) => filter.includes(category))
   );
 
-
-
   useEffect(() => {
-  
     if (searchTerm !== "") {
       setTitle(FOUND_ACTIVITIES_TITLE);
     } else {
@@ -126,17 +122,13 @@ export default function App({ Component, pageProps }) {
       setListedActivities(getRandomActivities());
       return;
     }
-    
+
     let filteredActivities = [...activities];
 
-    
     filteredActivities = activities.filter((ac) => {
-      
-      const {id, imageUrl,location, ...searchableActivityFields} = ac;
+      const { id, imageUrl, location, ...searchableActivityFields } = ac;
       const activityString = JSON.stringify(searchableActivityFields);
-      const activityString = JSON.stringify(copiedAc);
 
-      
       return activityString.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
@@ -148,11 +140,10 @@ export default function App({ Component, pageProps }) {
     setSearchTerm(text);
   }
 
-  function handleResetFilter(){
-   setSearchTerm("");
+  function handleResetFilter() {
+    setSearchTerm("");
   }
-  
-  
+
   return (
     <>
       <GlobalStyle />
@@ -175,7 +166,7 @@ export default function App({ Component, pageProps }) {
         {...pageProps}
       />
       <ToastContainer />
-      <Footer/>
-      </>
+      <Footer />
+    </>
   );
 }
