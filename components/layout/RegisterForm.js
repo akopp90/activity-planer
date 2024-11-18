@@ -37,9 +37,18 @@ function RegisterForm() {
     email: "",
     password: "",
   });
+  function handleSetUserName(event) {
+    setUserData({ ...userData, [event.target.name]: event.target.value });
+  }
+  function handleSetUserEmail(event) {
+    setUserData({ ...userData, [event.target.name]: event.target.value });
+  }
+  function handleSetUserPassword(event) {
+    setUserData({ ...userData, [event.target.name]: event.target.value });
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault();
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -60,31 +69,19 @@ function RegisterForm() {
     } catch (error) {
       showToast(error.message, "error");
     }
-  };
+  }
   return (
     <Container>
       <FormCard>
         <Title>Register</Title>
         <form onSubmit={handleSubmit}>
           <FormGroup>
-            <Input
-              type="text"
-              name="name"
-              onChange={(e) =>
-                setUserData({ ...userData, name: e.target.value })
-              }
-            >
+            <Input type="text" name="name" onChange={handleSetUserName}>
               Name
             </Input>
           </FormGroup>
           <FormGroup>
-            <Input
-              type="email"
-              name="email"
-              onChange={(e) =>
-                setUserData({ ...userData, email: e.target.value })
-              }
-            >
+            <Input type="email" name="email" onChange={handleSetUserEmail}>
               Email
             </Input>
           </FormGroup>
@@ -92,9 +89,7 @@ function RegisterForm() {
             <Input
               type="password"
               name="password"
-              onChange={(e) =>
-                setUserData({ ...userData, password: e.target.value })
-              }
+              onChange={handleSetUserPassword}
             >
               Password
             </Input>

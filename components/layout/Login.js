@@ -14,8 +14,14 @@ export default function Login() {
     password: "",
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  function handleSetEmail(event) {
+    setCredentials({ ...credentials, email: event.target.value });
+  }
+  function handleSetPassword(event) {
+    setCredentials({ ...credentials, password: event.target.value });
+  }
+  async function handleSubmit(event) {
+    event.preventDefault();
     const result = await signIn("credentials", {
       email: credentials.email,
       password: credentials.password,
@@ -25,7 +31,7 @@ export default function Login() {
     if (result?.ok) {
       router.push("/");
     }
-  };
+  }
   if (session) {
     return (
       <>
@@ -40,24 +46,12 @@ export default function Login() {
         <Title>Sign In</Title>
         <form onSubmit={handleSubmit}>
           <FormGroup>
-            <Input
-              name={"email"}
-              type="email"
-              onChange={(e) =>
-                setCredentials({ ...credentials, email: e.target.value })
-              }
-            >
+            <Input name={"email"} type="email" onChange={handleSetEmail}>
               Email
             </Input>
           </FormGroup>
           <FormGroup>
-            <Input
-              type="password"
-              name="password"
-              onChange={(e) =>
-                setCredentials({ ...credentials, password: e.target.value })
-              }
-            >
+            <Input type="password" name="password" onChange={handleSetPassword}>
               Password
             </Input>
           </FormGroup>
