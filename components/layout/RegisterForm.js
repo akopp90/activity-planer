@@ -51,7 +51,15 @@ function RegisterForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    if (userData.password.length < 6) {
+      showToast("Password must be at least 6 characters long", "error");
+      return;
+    }
 
+    if (!userData.password) {
+      showToast("Password is required", "error");
+      return;
+    }
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
