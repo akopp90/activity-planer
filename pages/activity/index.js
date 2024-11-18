@@ -6,17 +6,24 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
+import { FaSearch } from "react-icons/fa";
+import Search from "@/components/layout/Search";
 
 export default function HomePage({
   handleAddActivity,
-  activities,
   bookmarks,
   toggleBookmark,
   handleFilter,
   filter,
+  filteredActivities,
+  handleSearchInputChange,
+  listedActivities,
+  handleResetFilter,
 }) {
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const activity = {
     id: "",
@@ -43,6 +50,12 @@ export default function HomePage({
     setShowForm(!showForm);
   }
 
+  
+  
+  function toggleSearchVisibility() {
+    setIsSearchVisible((prevState) => !prevState); 
+  }
+
   return (
     <>
       <Head>
@@ -51,13 +64,19 @@ export default function HomePage({
       <Header>Activity Planner</Header>
 
       <StyledSection>
+      <SearchIconContainer onClick={toggleSearchVisibility}>
+          <FaSearch size={20} />
+        </SearchIconContainer>
+        
         <Button onClick={handleToggleEdit} isPrimary>
           New activity
         </Button>
         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
-      </StyledSection>
+      </StyledSection> 
+
+      {isSearchVisible && <Search filteredActivities={filteredActivities} onChange={handleSearchInputChange} />}
       {showForm && (
         <ActivityForm
           handleAddActivity={handleAddActivity}
@@ -71,10 +90,12 @@ export default function HomePage({
       )}
 
       <ActivityList
-        activities={activities}
+        activities={filteredActivities != "" ? filteredActivities : listedActivities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}
+        handleResetFilter={handleResetFilter}
+      
       />
     </>
   );
@@ -85,4 +106,25 @@ const StyledSection = styled.section`
   display: flex;
   padding: 0 24px;
   justify-content: flex-end;
+`;
+
+
+const SearchIconContainer = styled.div`
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 8px;
+border-radius: 50%;
+background-color: #f1f1f1; 
+top: 100px;           
+left: 16px;         
+width: 40px;         
+height: 40px;        
+z-index: 10;
+transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }  
 `;

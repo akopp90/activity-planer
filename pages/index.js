@@ -2,22 +2,21 @@ import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaSearch } from "react-icons/fa";
 import Search from "@/components/layout/Search";
 
 export default function ActivityPage({
-  activities,
   toggleBookmark,
   bookmarks,
   deleteActivity,
   showHeart,
+  handleSearchInputChange,
+  listedActivities,
+  title,
 }) {
-  const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
-  const FOUND_ACTIVITIES_TITLE = "Found Activities";
+  
 
   const [showForm, setShowForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [title, setTitle] = useState(RANDOM_ACTIVITIES_TITLE);
+
 
   const activity = {
     id: "",
@@ -37,70 +36,6 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
-  const [listedActivities, setListedActivities] = useState([]);
-  const NUM_OF_RANDOM_ACTIVITIES = 6;
-
-  function getRandomActivities() {
-    const randomActivitiesList = [];
-
-    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
-
-    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * activities.length);
-      const randomActivity = activities[randomIndex];
-
-      const isAlreadyIncluded = randomActivitiesList.some(
-        (ac) => randomActivity.id === ac.id
-      );
-
-      if (!isAlreadyIncluded) {
-        randomActivitiesList.push(randomActivity);
-      }
-    }
-
-    return randomActivitiesList;
-  }
-
-  useEffect(() => {
-    setListedActivities(getRandomActivities());
-  }, [activities]);
-
-
-  useEffect(() => {
-  
-    if (searchTerm !== "") {
-      setTitle(FOUND_ACTIVITIES_TITLE);
-    } else {
-      setTitle(RANDOM_ACTIVITIES_TITLE);
-      setListedActivities(getRandomActivities());
-      return;
-    }
-    
-    let filteredActivities = [...activities];
-
-    
-    filteredActivities = activities.filter((ac) => {
-      
-      const copiedAc = { ...ac };
-      
-      delete copiedAc.id;
-      delete copiedAc.imageUrl;
-      delete copiedAc.location;
-
-      
-      const activityString = JSON.stringify(copiedAc);
-
-      
-      return activityString.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-
-    setListedActivities(filteredActivities);
-  }, [searchTerm]);
-
-  function handleSearchInputChange(event) {
-    const text = event.target.value;
-    setSearchTerm(text);
-  }
 
   return (
     <>
@@ -110,8 +45,10 @@ export default function ActivityPage({
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
          
          <Search onChange={handleSearchInputChange}/>
-
-        <ActivitiesTitle>{title}</ActivitiesTitle>
+         <h2>
+          {title}
+        </h2>
+        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
         {listedActivities.length === 0 ? (
           <NoActivitiesFoundContainer>
@@ -120,7 +57,7 @@ export default function ActivityPage({
         ) : (
           <></>
         )}
-
+       
         <RandomActivitiesContainer>
           {listedActivities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity.id) || false;

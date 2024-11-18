@@ -6,6 +6,8 @@ import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
+import { FaSearch } from "react-icons/fa";
+import Search from "@/components/layout/Search";
 
 export default function ActivityPage({
   activities,
@@ -14,12 +16,12 @@ export default function ActivityPage({
   toggleBookmark,
   bookmarks,
   showHeart = true,
-
 }) {
   const router = useRouter();
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
   const [showForm, setShowForm] = useState(false);
+  
 
   function deleteActivity(id) {
     handleDeleteActivity(id);
@@ -32,13 +34,16 @@ export default function ActivityPage({
 
   const isBookmarked = bookmarks?.includes(activity.id) || false;
 
- 
+  
+
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Details</Header>
+      
+    
 
       {!showForm ? (
         <StyledSection>

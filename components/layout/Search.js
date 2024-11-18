@@ -26,6 +26,7 @@ const SearchBarContainer = styled.div`
   justify-content: space-between;
   border: solid 1px gray;
   border-radius: 0.5rem;
+  margin: 24px;
   padding: 0.5rem;
   background-color: white;
   width: 90%;
