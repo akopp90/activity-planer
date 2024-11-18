@@ -3,7 +3,10 @@ import Header from "@/components/layout/Header";
 import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaSearch } from "react-icons/fa";
+import { FaKey, FaSearch } from "react-icons/fa";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
   activities,
@@ -14,7 +17,7 @@ export default function ActivityPage({
 }) {
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-
+  const { data: session } = useSession();
   const activity = {
     id: "",
     title: "",
@@ -61,11 +64,18 @@ export default function ActivityPage({
     setRandomActivities(getRandomActivities());
   }, [activities]);
 
-
   return (
     <>
       <Header>Activity Planner</Header>
-
+      {!session ? (
+        <StyledLink href="/auth/signin">
+          <FaKey />
+        </StyledLink>
+      ) : (
+        <LogoutContainer>
+          <LogoutButton />
+        </LogoutContainer>
+      )}
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
@@ -178,4 +188,18 @@ const RandomActivitiesContainer = styled.div`
   @media (min-width: 1050px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
+`;
+const StyledLink = styled(Link)`
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 16px;
+  position: absolute;
+  top: 80px;
+  right: 24px;
+`;
+const LogoutContainer = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 24px;
 `;
