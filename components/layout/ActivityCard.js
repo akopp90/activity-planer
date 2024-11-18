@@ -13,7 +13,7 @@ export default function ActivityCard({
   showHeart = true,
 }) {
   return (
-    <StyledArticle>
+    <StyledArticle data-testid="activity">
       <StyledImageContainer>
         {imageUrl ? (
           <Image
@@ -75,7 +75,7 @@ const StyledHeartIcon = styled.div`
   text-shadow: 0 2px 2px #000;
 
   &:hover {
-    color: #ff4d4d; 
+    color: #ff4d4d;
   }
 `;
 
