@@ -12,8 +12,12 @@ export default function ActivityPage({
   deleteActivity,
   showHeart,
 }) {
+  const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
+  const FOUND_ACTIVITIES_TITLE = "Found Activities";
+
   const [showForm, setShowForm] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [title, setTitle] = useState(RANDOM_ACTIVITIES_TITLE);
 
   const activity = {
     id: "",
@@ -33,34 +37,70 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
-  const [randomActivities, setRandomActivities] = useState([]);
+  const [listedActivities, setListedActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
-  useEffect(() => {
-    function getRandomActivities() {
-      const randomActivitiesList = [];
+  function getRandomActivities() {
+    const randomActivitiesList = [];
 
-      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
-      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-        const randomIndex = Math.floor(Math.random() * activities.length);
-        const randomActivity = activities[randomIndex];
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * activities.length);
+      const randomActivity = activities[randomIndex];
 
-        const isAlreadyIncluded = randomActivitiesList.some(
-          (ac) => randomActivity.id === ac.id
-        );
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (ac) => randomActivity.id === ac.id
+      );
 
-        if (!isAlreadyIncluded) {
-          randomActivitiesList.push(randomActivity);
-        }
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
       }
-
-      return randomActivitiesList;
     }
 
-    setRandomActivities(getRandomActivities());
+    return randomActivitiesList;
+  }
+
+  useEffect(() => {
+    setListedActivities(getRandomActivities());
   }, [activities]);
 
+
+  useEffect(() => {
+  
+    if (searchTerm !== "") {
+      setTitle(FOUND_ACTIVITIES_TITLE);
+    } else {
+      setTitle(RANDOM_ACTIVITIES_TITLE);
+      setListedActivities(getRandomActivities());
+      return;
+    }
+    
+    let filteredActivities = [...activities];
+
+    
+    filteredActivities = activities.filter((ac) => {
+      
+      const copiedAc = { ...ac };
+      
+      delete copiedAc.id;
+      delete copiedAc.imageUrl;
+      delete copiedAc.location;
+
+      
+      const activityString = JSON.stringify(copiedAc);
+
+      
+      return activityString.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    setListedActivities(filteredActivities);
+  }, [searchTerm]);
+
+  function handleSearchInputChange(event) {
+    const text = event.target.value;
+    setSearchTerm(text);
+  }
 
   return (
     <>
@@ -73,16 +113,24 @@ export default function ActivityPage({
           <SearchIconContainer>
             <FaSearch size={20} />
           </SearchIconContainer>
-          <SearchInput placeholder="Search activities..." />
-          <SearchButtonContainer>
-            <Button isPrimary>Search</Button>
-          </SearchButtonContainer>
+          <SearchInput
+            placeholder="Search activities..."
+            onChange={handleSearchInputChange}
+          />
         </SearchBarContainer>
 
-        <ActivitiesTitle>Random Activities</ActivitiesTitle>
+        <ActivitiesTitle>{title}</ActivitiesTitle>
+
+        {listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer>
+            No Activities Found
+          </NoActivitiesFoundContainer>
+        ) : (
+          <></>
+        )}
 
         <RandomActivitiesContainer>
-          {randomActivities.map((activity) => {
+          {listedActivities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity.id) || false;
 
             return (
@@ -101,12 +149,6 @@ export default function ActivityPage({
     </>
   );
 }
-
-const StyledSection = styled.section`
-  display: flex;
-  padding: 0 24px;
-  justify-content: flex-end;
-`;
 
 const Container = styled.div`
   display: flex;
@@ -137,12 +179,6 @@ const SearchIconContainer = styled.div`
   margin-right: 0.5rem;
 `;
 
-const SearchButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
-`;
 const ActivitiesTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -153,6 +189,8 @@ const ActivitiesTitle = styled.h2`
   width: 100%;
   padding-left: 16px;
 `;
+
+const NoActivitiesFoundContainer = styled.div``;
 
 const SearchInput = styled.input`
   font-size: 0.9rem;
