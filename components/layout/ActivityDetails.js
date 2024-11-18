@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Unlock } from "next/font/google";
+import { useSession } from "next-auth/react";
 import {
   FaShoppingBag,
   FaThumbsDown,
@@ -42,6 +43,7 @@ export default function ActivityDetails({
   isBookmarked,
   showHeart = true,
 }) {
+  const { data: session } = useSession();
   const [showConfirm, setShowConfirm] = useState(false);
   function handleDelete() {
     setShowConfirm(true);
@@ -172,7 +174,7 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-          {!showConfirm ? (
+          {session && !showConfirm ? (
             <StyledDeleteContainer>
               <Button onClick={handleDelete}>Delete</Button>
             </StyledDeleteContainer>
