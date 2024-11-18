@@ -41,7 +41,9 @@ export default function ActivityCard({
 
       <StyledList>
         {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
+          <StyledListItem key={category} data-testid="category">
+            {category}
+          </StyledListItem>
         ))}
       </StyledList>
 
