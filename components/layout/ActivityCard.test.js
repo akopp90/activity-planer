@@ -24,7 +24,7 @@ describe("1.1 Ensure each activity displays the correct title, image, and tags",
 
   test("Empty Image Rendering", () => {
     render(<ActivityCard {...activity} imageUrl="" />);
-    const renderedEmptyImage = screen.getByAltText(/Image is missing/i);
+    const renderedEmptyImage = screen.getByAltText("Image is missing");
     expect(renderedEmptyImage).toBeInTheDocument();
   });
 
