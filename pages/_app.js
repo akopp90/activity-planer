@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../components/ui/ToastMessage";
 import useLocalStorageState from "use-local-storage-state";
+import { filterActivities } from "@/lib/utils";
 
 export default function App({ Component, pageProps }) {
   const [activities, setActivities] = useLocalStorageState("activities", {
@@ -79,9 +80,7 @@ export default function App({ Component, pageProps }) {
     }
   }
 
-  const filteredActivities = activities.filter(({ categories }) =>
-    categories.some((category) => filter.includes(category))
-  );
+  const filteredActivities = filterActivities(activities, filter);
 
   return (
     <>
@@ -92,13 +91,13 @@ export default function App({ Component, pageProps }) {
         handleAddActivity={handleAddActivity}
         handleEditActivity={handleEditActivity}
         handleDeleteActivity={handleDeleteActivity}
-        activities={filter.length === 0 ? activities : filteredActivities}
+        activities={filteredActivities}
         handleFilter={handleFilter}
         filter={filter}
         {...pageProps}
       />
       <ToastContainer />
-      <Footer/>
-      </>
+      <Footer />
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import HomePage from "@/pages/activity/index";
+import { filterActivities } from "@/lib/utils";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
 
@@ -84,11 +85,19 @@ describe("3.1 Selecting a single filter displays only activities with that categ
         title: "Test title",
         categories: ["Winter"],
       },
+      {
+        title: "Test title",
+        categories: ["Outdoor"],
+      },
     ];
+    const result = filterActivities(activities, ["Winter"]);
 
-    render(<HomePage activities={activities} filter={["Winter"]} />);
-
-    expect(screen.getAllByTestId("activity")).toHaveLength(activities.length);
+    expect(result).toStrictEqual([
+      {
+        title: "Test title",
+        categories: ["Winter"],
+      },
+    ]);
   });
 });
 
@@ -103,10 +112,49 @@ describe("3.2 Selecting multiple filters displays activities that match any of t
         title: "Test title",
         categories: ["Outdoor"],
       },
+      {
+        title: "Test title",
+        categories: ["Sport"],
+      },
+    ];
+    const result = filterActivities(activities, ["Winter", "Outdoor"]);
+
+    expect(result).toStrictEqual([
+      {
+        title: "Test title",
+        categories: ["Winter"],
+      },
+      {
+        title: "Test title",
+        categories: ["Outdoor"],
+      },
+    ]);
+  });
+});
+
+describe("3.3 Deselecting all filters displays all activities", () => {
+  test("Display all activities when no filter is set", () => {
+    const activities = [
+      {
+        title: "Test title",
+        categories: ["Winter"],
+      },
+      {
+        title: "Test title",
+        categories: ["Outdoor"],
+      },
     ];
 
-    render(<HomePage activities={activities} filter={["Winter", "Outdoor"]} />);
+    const result = filterActivities(activities, []);
 
-    expect(screen.getAllByTestId("activity")).toHaveLength(activities.length);
+    expect(result).toHaveLength(activities.length);
+  });
+});
+
+describe("3.4 Selecting a filter that does not match any activities displays a message like 'No activities found'", () => {
+  test("Display message when no filter matches", () => {
+    render(<HomePage activities={[]} filter={[]} />);
+
+    expect(screen.getByText("No activities found")).toBeInTheDocument();
   });
 });
