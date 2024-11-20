@@ -16,6 +16,7 @@ export default function ActivityPage({
   handleSearchInputChange,
   listedActivities,
   title,
+  activities,
 }) {
   const [showForm, setShowForm] = useState(false);
 
