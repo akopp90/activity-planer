@@ -14,7 +14,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const { data: initialActivities, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/activities`,
+    `/api/activities`,
     async (url) => {
       const response = await fetch(url);
       if (!response.ok) {
