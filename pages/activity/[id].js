@@ -17,13 +17,12 @@ export default function ActivityPage({
 }) {
   const router = useRouter();
   const { id } = router.query;
+  const [showForm, setShowForm] = useState(false);
+  const { data: session } = useSession();
   if (!activities) return <p>Loading...</p>;
 
   const activity = activities.find((activity) => activity._id === id);
   if (!activity) return <p>Activity not found</p>;
-
-  const [showForm, setShowForm] = useState(false);
-  const { data: session } = useSession();
 
   function deleteActivity(id) {
     handleDeleteActivity(id);
