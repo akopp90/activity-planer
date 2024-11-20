@@ -53,7 +53,7 @@ export default function ActivityDetails({
   description,
   country,
   categories,
-  id,
+  _id,
   deleteActivity,
   duration,
   numberOfPeople,
@@ -87,7 +87,7 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   function confirmDelete() {
-    deleteActivity(id);
+    deleteActivity(_id);
     setShowConfirm(false);
   }
 
@@ -113,7 +113,7 @@ export default function ActivityDetails({
           )}
 
           {showHeart && (
-            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+            <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
               <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
             </StyledHeartIconContainer>
           )}
@@ -131,8 +131,7 @@ export default function ActivityDetails({
               {weather ? (
                 <>
                   <p>
-                    {weather.temperature}{" "}
-                    {getWeatherIcon(weather.condition)}
+                    {weather.temperature} {getWeatherIcon(weather.condition)}
                   </p>
                 </>
               ) : (

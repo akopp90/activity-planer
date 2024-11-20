@@ -28,7 +28,6 @@ export default function ActivityForm({
 
     const newActivity = {
       ...activityData,
-      id: id || uid(),
       categories: categories,
       imageUrl: url,
     };
@@ -52,12 +51,11 @@ export default function ActivityForm({
           lat: coordinatesResponse[0].lat,
           lon: coordinatesResponse[0].lon,
         },
-        id: id || uid(),
         categories: categories,
         imageUrl: url,
       };
 
-      if (activity.id) {
+      if (activity._id) {
         handleEditActivity(newActivity);
       } else {
         handleAddActivity(newActivity);

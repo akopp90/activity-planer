@@ -17,21 +17,23 @@ export default function ActivityPage({
 }) {
   const router = useRouter();
   const { id } = router.query;
-  const activity = activities.find((activity) => activity.id === id);
+  if (!activities) return <p>Loading...</p>;
+
+  const activity = activities.find((activity) => activity._id === id);
+  if (!activity) return <p>Activity not found</p>;
+
   const [showForm, setShowForm] = useState(false);
   const { data: session } = useSession();
-
 
   function deleteActivity(id) {
     handleDeleteActivity(id);
   }
 
-  if (!activity) return <p>Loading...</p>;
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
 
-  const isBookmarked = bookmarks?.includes(activity.id) || false;
+  const isBookmarked = bookmarks?.includes(activity._id) || false;
 
   return (
     <>
@@ -60,7 +62,7 @@ export default function ActivityPage({
       <ActivityDetails
         {...activity}
         deleteActivity={deleteActivity}
-        toggleBookmark={() => toggleBookmark(id)}
+        toggleBookmark={() => toggleBookmark(activity._id)}
         isBookmarked={isBookmarked}
         showHeart={showHeart}
       />

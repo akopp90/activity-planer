@@ -2,17 +2,14 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import ActivityCard from "@/components/layout/ActivityCard";
 
-
 export default function ActivityList({
   activities,
   bookmarks,
   toggleBookmark,
   handleResetFilter,
 }) {
-
-
   return (
-    <main> 
+    <main>
       {activities.length === 0 ? (
         <StyledSection>
           <h2>No activities found</h2>
@@ -24,7 +21,7 @@ export default function ActivityList({
             const isBookmarked = bookmarks?.includes(activity.id) || false;
 
             return (
-              <li key={activity.id}>
+              <li key={activity._id}>
                 <ActivityCard
                   {...activity}
                   isBookmarked={isBookmarked}
@@ -39,30 +36,25 @@ export default function ActivityList({
   );
 }
 
-
-
 const StyledSection = styled.section`
-gap: 16px;
-padding: 24px;
-display: flex;
-margin-top: 24px;
-border-radius: 8px;
-margin-inline: auto;
-flex-direction: column;
-align-items: flex-start;
-background-color: #f1f1f1;
-width: min(640px, 100% - 48px);
+  gap: 16px;
+  padding: 24px;
+  display: flex;
+  margin-top: 24px;
+  border-radius: 8px;
+  margin-inline: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #f1f1f1;
+  width: min(640px, 100% - 48px);
 `;
 
 const StyledList = styled.ul`
-gap: 16px;
-padding: 24px;
-display: grid;
-list-style: none;
-grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
-margin-bottom: 50px;
-position: relative;  
+  gap: 16px;
+  padding: 24px;
+  display: grid;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
+  margin-bottom: 50px;
+  position: relative;
 `;
-
-
-  

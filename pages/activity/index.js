@@ -20,8 +20,8 @@ export default function HomePage({
   filter,
   filteredActivities,
   handleSearchInputChange,
-  listedActivities,
   handleResetFilter,
+  activities,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -49,17 +49,15 @@ export default function HomePage({
     whatToBring: "",
     notAllowed: "",
   };
-
+  console.log(activities);
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
 
-  
-  
   function toggleSearchVisibility() {
-    setIsSearchVisible((prevState) => !prevState); 
+    setIsSearchVisible((prevState) => !prevState);
   }
-
+  if (!activities) return <div>Loading...</div>;
   return (
     <>
       <Head>
@@ -67,12 +65,11 @@ export default function HomePage({
       </Head>
       <Header>Activity Planner</Header>
       <StyledSection>
-
-      <SearchIconContainer onClick={toggleSearchVisibility}>
+        <SearchIconContainer onClick={toggleSearchVisibility}>
           <FaSearch size={20} />
         </SearchIconContainer>
-        
-         <Button onClick={() => setShowFilter(!showFilter)}>
+
+        <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
 
@@ -88,9 +85,14 @@ export default function HomePage({
             <FaKey />
           </StyledLink>
         )}
-      </StyledSection> 
+      </StyledSection>
 
-      {isSearchVisible && <Search filteredActivities={filteredActivities} onChange={handleSearchInputChange} />}
+      {isSearchVisible && (
+        <Search
+          filteredActivities={filteredActivities}
+          onChange={handleSearchInputChange}
+        />
+      )}
 
       {showForm && (
         <ActivityForm
@@ -105,12 +107,11 @@ export default function HomePage({
       )}
 
       <ActivityList
-        activities={filteredActivities != "" ? filteredActivities : listedActivities}
+        activities={filteredActivities != "" ? filteredActivities : activities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}
         handleResetFilter={handleResetFilter}
-      
       />
     </>
   );
@@ -124,23 +125,23 @@ const StyledSection = styled.section`
 `;
 
 const SearchIconContainer = styled.div`
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 8px;
-border-radius: 50%;
-background-color: #f1f1f1; 
-top: 100px;           
-left: 16px;         
-width: 40px;         
-height: 40px;        
-z-index: 10;
-transition: background-color 0.3s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  top: 100px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  transition: background-color 0.3s;
 
   &:hover {
     background-color: #e0e0e0;
-  }  
+  }
 `;
 
 const StyledLink = styled(Link)`
@@ -149,4 +150,3 @@ const StyledLink = styled(Link)`
   padding: 8px;
   font-size: 16px;
 `;
-
