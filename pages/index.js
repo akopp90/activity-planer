@@ -1,13 +1,12 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
-
 
 export default function ActivityPage({
   toggleBookmark,
@@ -18,8 +17,6 @@ export default function ActivityPage({
   listedActivities,
   title,
 }) {
-  
-
   const [showForm, setShowForm] = useState(false);
 
   const [showFilter, setShowFilter] = useState(false);
@@ -72,7 +69,6 @@ export default function ActivityPage({
     setRandomActivities(getRandomActivities());
   }, [activities]);
 
-
   return (
     <>
       <Header>Activity Planner</Header>
@@ -87,11 +83,9 @@ export default function ActivityPage({
       )}
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
-         
-         <Search onChange={handleSearchInputChange}/>
-         <h2>
-          {title}
-        </h2>
+
+        <Search onChange={handleSearchInputChange} />
+        <h2>{title}</h2>
         <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
         {listedActivities.length === 0 ? (
@@ -101,7 +95,7 @@ export default function ActivityPage({
         ) : (
           <></>
         )}
-       
+
         <RandomActivitiesContainer>
           {listedActivities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity.id) || false;
@@ -148,7 +142,6 @@ const ActivitiesTitle = styled.h2`
 `;
 
 const NoActivitiesFoundContainer = styled.div``;
-
 
 const RandomActivitiesContainer = styled.div`
   display: grid;
