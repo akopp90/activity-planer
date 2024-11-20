@@ -1,15 +1,23 @@
 import styled from "styled-components";
 
-export default function Input({ name, isRequired, children, defaultValue }) {
+export default function Input({
+  name,
+  isRequired,
+  children,
+  defaultValue,
+  type,
+  onChange,
+}) {
   return (
     <StyledDiv>
       <StyledLabel htmlFor={name}>{children}</StyledLabel>
       <StyledInput
-        type="text"
+        type={type || "text"}
         name={name.toLowerCase()}
         id={name}
         required={isRequired}
         defaultValue={defaultValue}
+        onChange={onChange || null}
       />
     </StyledDiv>
   );

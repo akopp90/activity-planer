@@ -6,8 +6,11 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
-import { FaSearch } from "react-icons/fa";
 import Search from "@/components/layout/Search";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/layout/LogoutButton";
+import { FaKey, FaSearch } from "react-icons/fa";
+import Link from "next/link";
 
 export default function HomePage({
   handleAddActivity,
@@ -20,6 +23,7 @@ export default function HomePage({
   listedActivities,
   handleResetFilter,
 }) {
+  const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,21 +66,32 @@ export default function HomePage({
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-
       <StyledSection>
+
       <SearchIconContainer onClick={toggleSearchVisibility}>
           <FaSearch size={20} />
         </SearchIconContainer>
         
-        <Button onClick={handleToggleEdit} isPrimary>
-          New activity
-        </Button>
-        <Button onClick={() => setShowFilter(!showFilter)}>
+         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
+
+        {session ? (
+          <>
+            <Button onClick={handleToggleEdit} isPrimary>
+              New activity
+            </Button>
+            <LogoutButton />
+          </>
+        ) : (
+          <StyledLink href="/auth/signin">
+            <FaKey />
+          </StyledLink>
+        )}
       </StyledSection> 
 
       {isSearchVisible && <Search filteredActivities={filteredActivities} onChange={handleSearchInputChange} />}
+
       {showForm && (
         <ActivityForm
           handleAddActivity={handleAddActivity}
@@ -108,7 +123,6 @@ const StyledSection = styled.section`
   justify-content: flex-end;
 `;
 
-
 const SearchIconContainer = styled.div`
 cursor: pointer;
 display: flex;
@@ -128,3 +142,11 @@ transition: background-color 0.3s;
     background-color: #e0e0e0;
   }  
 `;
+
+const StyledLink = styled(Link)`
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 16px;
+`;
+

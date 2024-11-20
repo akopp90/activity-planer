@@ -6,9 +6,13 @@ import Footer from "@/components/layout/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../components/ui/ToastMessage";
+import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const [activities, setActivities] = useLocalStorageState("activities", {
     defaultValue: activityData,
   });
@@ -147,27 +151,30 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
-      <GlobalStyle />
-      <Component
-        bookmarks={bookmarkedActivities}
-        toggleBookmark={toggleBookmark}
-        handleAddActivity={handleAddActivity}
-        handleEditActivity={handleEditActivity}
-        handleDeleteActivity={handleDeleteActivity}
-        activities={filter.length === 0 ? activities : filteredActivities}
-        handleFilter={handleFilter}
-        filter={filter}
-        filteredActivities={filteredActivities}
-        listedActivities={listedActivities}
-        handleSearchInputChange={handleSearchInputChange}
-        searchTerm={searchTerm}
-        title={title}
-        randomActivities={getRandomActivities}
-        handleResetFilter={handleResetFilter}
-        {...pageProps}
-      />
-      <ToastContainer />
-      <Footer />
+
+      <SessionProvider session={session}>
+        <GlobalStyle />
+        <Component
+          bookmarks={bookmarkedActivities}
+          toggleBookmark={toggleBookmark}
+          handleAddActivity={handleAddActivity}
+          handleEditActivity={handleEditActivity}
+          handleDeleteActivity={handleDeleteActivity}
+          activities={filter.length === 0 ? activities : filteredActivities}
+          handleFilter={handleFilter}
+          filter={filter}
+          filteredActivities={filteredActivities}
+          listedActivities={listedActivities}
+          handleSearchInputChange={handleSearchInputChange}
+          searchTerm={searchTerm}
+          title={title}
+          randomActivities={getRandomActivities}
+          handleResetFilter={handleResetFilter}
+            {...pageProps}
+        />
+        <ToastContainer />
+        <Footer />
+      </SessionProvider>
     </>
   );
 }

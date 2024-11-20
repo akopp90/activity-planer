@@ -6,7 +6,7 @@ import Button from "@/components/ui/Button";
 import Header from "@/components/layout/Header";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
-
+import { useSession } from "next-auth/react";
 export default function ActivityPage({
   activities,
   handleEditActivity,
@@ -19,7 +19,8 @@ export default function ActivityPage({
   const { id } = router.query;
   const activity = activities.find((activity) => activity.id === id);
   const [showForm, setShowForm] = useState(false);
-  
+  const { data: session } = useSession();
+
 
   function deleteActivity(id) {
     handleDeleteActivity(id);
@@ -32,35 +33,36 @@ export default function ActivityPage({
 
   const isBookmarked = bookmarks?.includes(activity.id) || false;
 
-  
-
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Details</Header>
-      
-    
 
-      {!showForm ? (
-        <StyledSection>
-          <Button onClick={() => setShowForm(true)} isPrimary>
-            Edit activity
-          </Button>
-        </StyledSection>
-      ) : (
-        <ActivityForm
-          handleToggleEdit={handleToggleEdit}
-          handleEditActivity={handleEditActivity}
-          activity={activity}
-        />
+      {session && (
+        <>
+          {!showForm ? (
+            <StyledSection>
+              <Button onClick={() => setShowForm(true)} isPrimary>
+                Edit activity
+              </Button>
+            </StyledSection>
+          ) : (
+            <ActivityForm
+              handleToggleEdit={handleToggleEdit}
+              handleEditActivity={handleEditActivity}
+              activity={activity}
+            />
+          )}
+        </>
       )}
-      <ActivityDetails {...activity} 
-      deleteActivity={deleteActivity}
-      toggleBookmark={() => toggleBookmark(id)}
-      isBookmarked={isBookmarked}
-      showHeart={showHeart}
+      <ActivityDetails
+        {...activity}
+        deleteActivity={deleteActivity}
+        toggleBookmark={() => toggleBookmark(id)}
+        isBookmarked={isBookmarked}
+        showHeart={showHeart}
       />
     </>
   );
