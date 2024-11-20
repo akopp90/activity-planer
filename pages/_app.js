@@ -126,8 +126,9 @@ export default function App({ Component, pageProps }) {
     let filteredActivities = [...activities];
 
     filteredActivities = activities.filter((ac) => {
-      const { id, imageUrl, location, ...searchableActivityFields } = ac;
-      const activityString = JSON.stringify(searchableActivityFields);
+      const { title } = ac;
+      const activityString = JSON.stringify(title);
+      
 
       return activityString.toLowerCase().includes(searchTerm.toLowerCase());
     });
