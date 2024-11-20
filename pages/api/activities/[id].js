@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
       try {
-        const activity = await Activity.findById(_id);
+        const activity = await Activity.findById(id);
         if (!activity) {
           return res.status(404).json("Activity not found");
         }
@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
     case "PUT":
       try {
-        const activity = await Activity.findByIdAndUpdate(_id, req.body, {
+        const activity = await Activity.findByIdAndUpdate(id, req.body, {
           new: true,
         });
         if (!activity) {
@@ -28,13 +28,16 @@ export default async function handler(req, res) {
         }
         res.status(200).json(activity);
       } catch (error) {
-        res.status(500).json("Failed to update activity");
+        console.error(error); // log the error to the console
+        res
+          .status(500)
+          .json({ error: "Failed to update activity", message: error.message });
       }
       break;
 
     case "DELETE":
       try {
-        const activity = await Activity.findByIdAndDelete(_id);
+        const activity = await Activity.findByIdAndDelete(id);
         if (!activity) {
           return res.status(404).json("Activity not found");
         }

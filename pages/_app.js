@@ -81,21 +81,14 @@ export default function App({
         },
         body: JSON.stringify(newActivity),
       });
+      console.log(response);
 
-      if (response.ok) {
-        const createdActivity = await response.json();
-        mutate(
-          "/api/activities",
-          [...initialActivities, createdActivity],
-          false
-        );
-        showToast("Activity successfully created!", "success");
-        router.push("/");
-      } else {
-        const error = await response.json();
-        showToast("Failed to create activity", "error");
-      }
+      const createdActivity = await response.json();
+      mutate("/api/activities", [...initialActivities, createdActivity], false);
+      showToast("Activity successfully created!", "success");
+      router.push("/");
     } catch (error) {
+      console.log(error);
       showToast("Something went wrong!", "error");
     }
   }
@@ -114,18 +107,15 @@ export default function App({
         method: "DELETE",
       });
 
-      if (response.ok) {
-        mutate("/api/activities");
-        showToast("Activity successfully deleted!", "success");
-        router.push("/");
-      } else {
-        showToast("Failed to delete activity", "error");
-      }
+      mutate("/api/activities");
+      showToast("Activity successfully deleted!", "success");
+      router.push("/");
     } catch (error) {
       showToast("Something went wrong!", "error");
     }
   }
   async function handleEditActivity(newActivity) {
+    console.log(newActivity);
     try {
       const response = await fetch(`/api/activities/${newActivity._id}`, {
         method: "PUT",
@@ -135,18 +125,9 @@ export default function App({
         body: JSON.stringify(newActivity),
       });
 
-      if (response.ok) {
-        const updatedActivity = await response.json();
-        setActivities(
-          activities.map((activity) =>
-            activity._id === updatedActivity._id ? updatedActivity : activity
-          )
-        );
-        showToast("Activity successfully updated!", "success");
-      } else {
-        showToast("Failed to update activity", "error");
-      }
+      showToast("Activity successfully updated!", "success");
     } catch (error) {
+      console.log(error);
       showToast("Something went wrong!", "error");
     }
   }

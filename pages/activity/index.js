@@ -42,6 +42,8 @@ export default function HomePage({
     country: "",
     description: "",
     imageUrl: "",
+    duration: "",
+    numberOfPeople: "",
     fullDescription: "",
     includes: "",
     notSuitableFor: "",

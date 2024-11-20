@@ -46,6 +46,7 @@ function getWeatherIcon(condition) {
 }
 
 export default function ActivityDetails({
+  activity,
   title,
   imageUrl,
   area,

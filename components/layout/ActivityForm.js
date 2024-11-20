@@ -1,4 +1,3 @@
-import { uid } from "uid";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -21,13 +20,14 @@ export default function ActivityForm({
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const id = activity.id;
+    const id = activity._id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
 
     const newActivity = {
       ...activityData,
+      _id: activity._id ? activity._id : null,
       categories: categories,
       imageUrl: url,
     };
@@ -51,6 +51,7 @@ export default function ActivityForm({
           lat: coordinatesResponse[0].lat,
           lon: coordinatesResponse[0].lon,
         },
+        _id: activity._id ? activity._id : null,
         categories: categories,
         imageUrl: url,
       };
@@ -87,7 +88,7 @@ export default function ActivityForm({
       showToast("Image uploaded successfully", "success");
       return;
     } catch (error) {
-      showToast("Please selevt a file!", "info");
+      showToast("Please select a file!", "info");
       return;
     }
   }
