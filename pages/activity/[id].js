@@ -21,6 +21,7 @@ export default function ActivityPage({
   const [showForm, setShowForm] = useState(false);
   const { data: session } = useSession();
 
+
   function deleteActivity(id) {
     handleDeleteActivity(id);
   }
@@ -38,6 +39,7 @@ export default function ActivityPage({
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Details</Header>
+
       {session && (
         <>
           {!showForm ? (

@@ -1,23 +1,28 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
-  activities,
   toggleBookmark,
   bookmarks,
   deleteActivity,
   showHeart,
+  handleSearchInputChange,
+  listedActivities,
+  title,
+  activities,
 }) {
   const [showForm, setShowForm] = useState(false);
+
   const [showFilter, setShowFilter] = useState(false);
   const { data: session } = useSession();
+
   const activity = {
     id: "",
     title: "",
@@ -36,6 +41,7 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
+
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
@@ -79,20 +85,20 @@ export default function ActivityPage({
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <SearchBarContainer>
-          <SearchIconContainer>
-            <FaSearch size={20} />
-          </SearchIconContainer>
-          <SearchInput placeholder="Search activities..." />
-          <SearchButtonContainer>
-            <Button isPrimary>Search</Button>
-          </SearchButtonContainer>
-        </SearchBarContainer>
+        <Search onChange={handleSearchInputChange} />
+        <h2>{title}</h2>
+        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
-        <ActivitiesTitle>Random Activities</ActivitiesTitle>
+        {listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer>
+            No Activities Found
+          </NoActivitiesFoundContainer>
+        ) : (
+          <></>
+        )}
 
         <RandomActivitiesContainer>
-          {randomActivities.map((activity) => {
+          {listedActivities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity.id) || false;
 
             return (
@@ -112,12 +118,6 @@ export default function ActivityPage({
   );
 }
 
-const StyledSection = styled.section`
-  display: flex;
-  padding: 0 24px;
-  justify-content: flex-end;
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -131,28 +131,6 @@ const SloganContainer = styled.section`
   text-align: center;
 `;
 
-const SearchBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: solid 1px gray;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: white;
-  width: 90%;
-  max-width: 600px;
-`;
-
-const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;
-`;
-
-const SearchButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
-`;
 const ActivitiesTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -164,15 +142,7 @@ const ActivitiesTitle = styled.h2`
   padding-left: 16px;
 `;
 
-const SearchInput = styled.input`
-  font-size: 0.9rem;
-  border-radius: 0.5rem;
-  outline: none;
-  border: none;
-  flex-grow: 1;
-  padding: 0.5rem;
-  width: 100%;
-`;
+const NoActivitiesFoundContainer = styled.div``;
 
 const RandomActivitiesContainer = styled.div`
   display: grid;

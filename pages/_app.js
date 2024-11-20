@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import { activities as activityData } from "@/lib/activities";
@@ -24,6 +24,37 @@ export default function App({
   );
   const [filter, setFilter] = useState([]);
   const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [title, setTitle] = useState("");
+  const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
+  const FOUND_ACTIVITIES_TITLE = "Found Activities";
+  const [listedActivities, setListedActivities] = useState([]);
+
+  const NUM_OF_RANDOM_ACTIVITIES = 6;
+
+  function getRandomActivities() {
+    const randomActivitiesList = [];
+
+    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * activities.length);
+      const randomActivity = activities[randomIndex];
+
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (ac) => randomActivity.id === ac.id
+      );
+
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
+      }
+    }
+
+    return randomActivitiesList;
+  }
+  useEffect(() => {
+    setListedActivities(getRandomActivities());
+  }, [activities]);
 
   function handleAddActivity(newActivity) {
     try {
@@ -87,8 +118,40 @@ export default function App({
     categories.some((category) => filter.includes(category))
   );
 
+  useEffect(() => {
+    if (searchTerm !== "") {
+      setTitle(FOUND_ACTIVITIES_TITLE);
+    } else {
+      setTitle(RANDOM_ACTIVITIES_TITLE);
+      setListedActivities(getRandomActivities());
+      return;
+    }
+
+    let filteredActivities = [...activities];
+
+    filteredActivities = activities.filter((ac) => {
+      const { title } = ac;
+      const activityString = JSON.stringify(title);
+      
+
+      return activityString.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    setListedActivities(filteredActivities);
+  }, [searchTerm]);
+
+  function handleSearchInputChange(event) {
+    const text = event.target.value;
+    setSearchTerm(text);
+  }
+
+  function handleResetFilter() {
+    setSearchTerm("");
+  }
+
   return (
     <>
+
       <SessionProvider session={session}>
         <GlobalStyle />
         <Component
@@ -100,7 +163,14 @@ export default function App({
           activities={filter.length === 0 ? activities : filteredActivities}
           handleFilter={handleFilter}
           filter={filter}
-          {...pageProps}
+          filteredActivities={filteredActivities}
+          listedActivities={listedActivities}
+          handleSearchInputChange={handleSearchInputChange}
+          searchTerm={searchTerm}
+          title={title}
+          randomActivities={getRandomActivities}
+          handleResetFilter={handleResetFilter}
+            {...pageProps}
         />
         <ToastContainer />
         <Footer />
