@@ -22,6 +22,7 @@ export default function HomePage({
   handleSearchInputChange,
   handleResetFilter,
   activities,
+  mutate,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -51,7 +52,6 @@ export default function HomePage({
     whatToBring: "",
     notAllowed: "",
   };
-  console.log(activities);
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
@@ -98,7 +98,10 @@ export default function HomePage({
 
       {showForm && (
         <ActivityForm
-          handleAddActivity={handleAddActivity}
+          handleAddActivity={(newActivity) => {
+            handleAddActivity(newActivity);
+            mutate();
+          }}
           handleToggleEdit={handleToggleEdit}
           setShowForm={setShowForm}
           activity={activity}

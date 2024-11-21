@@ -18,6 +18,7 @@ export default function ActivityPage({
   title,
   activities,
   initialActivities,
+  mutate,
 }) {
   const [showForm, setShowForm] = useState(false);
 

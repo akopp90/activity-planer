@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../components/ui/ToastMessage";
 import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
-import useSWR, { SWRConfig } from "swr";
+import useSWR, { mutate, SWRConfig } from "swr";
 
 export default function App({
   Component,
@@ -124,7 +124,15 @@ export default function App({
         },
         body: JSON.stringify(newActivity),
       });
-
+      mutate("/api/activities", (activities) => {
+        if (activities) {
+          const updatedActivities = activities.map((activity) =>
+            activity._id === newActivity._id ? newActivity : activity
+          );
+          return updatedActivities;
+        }
+        return activities;
+      }); 
       showToast("Activity successfully updated!", "success");
     } catch (error) {
       console.log(error);
@@ -182,6 +190,7 @@ export default function App({
           randomActivities={getRandomActivities}
           handleResetFilter={handleResetFilter}
           initialActivities={initialActivities}
+          mutate={mutate}
           {...pageProps}
         />
         <ToastContainer />

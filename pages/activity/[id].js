@@ -14,6 +14,7 @@ export default function ActivityPage({
   toggleBookmark,
   bookmarks,
   showHeart = true,
+  mutate,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -52,7 +53,10 @@ export default function ActivityPage({
           ) : (
             <ActivityForm
               handleToggleEdit={handleToggleEdit}
-              handleEditActivity={handleEditActivity}
+              handleEditActivity={(newActivity) => {
+                handleEditActivity(newActivity);
+                mutate(); // Call the mutate function to update the activities data
+              }}
               activity={activity}
             />
           )}
