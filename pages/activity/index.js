@@ -23,6 +23,7 @@ export default function HomePage({
   handleResetFilter,
   activities,
   mutate,
+  listedActivities,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -92,7 +93,7 @@ export default function HomePage({
       {isSearchVisible && (
         <Search
           filteredActivities={filteredActivities}
-          onChange={handleSearchInputChange}
+          onChange={(event) => handleSearchInputChange(event)}
         />
       )}
 
@@ -112,7 +113,7 @@ export default function HomePage({
       )}
 
       <ActivityList
-        activities={filteredActivities != "" ? filteredActivities : activities}
+        activities={listedActivities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}

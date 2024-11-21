@@ -48,18 +48,24 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-
-  const listedActivities = searchTerm
-    ? initialActivities?.filter((activity) =>
-        activity.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : initialActivities;
-
+  const [listedActivities, setListedActivities] = useState(initialActivities);
   const filteredActivities = Array.isArray(initialActivities)
     ? initialActivities.filter(({ categories }) =>
         categories.some((category) => filter.includes(category))
       )
     : [];
+
+  useEffect(() => {
+    if (searchTerm) {
+      setListedActivities(
+        initialActivities?.filter((activity) =>
+          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    } else {
+      setListedActivities(initialActivities);
+    }
+  }, [searchTerm, initialActivities]);
 
   async function handleAddActivity(newActivity) {
     try {
@@ -70,14 +76,12 @@ export default function App({
         },
         body: JSON.stringify(newActivity),
       });
-      console.log(response);
 
       const createdActivity = await response.json();
       mutate("/api/activities", [...initialActivities, createdActivity], false);
       showToast("Activity successfully created!", "success");
       router.push("/");
     } catch (error) {
-      console.log(error);
       showToast("Something went wrong!", "error");
     }
   }
@@ -104,7 +108,6 @@ export default function App({
     }
   }
   async function handleEditActivity(newActivity) {
-    console.log(newActivity);
     try {
       const response = await fetch(`/api/activities/${newActivity._id}`, {
         method: "PUT",
@@ -124,7 +127,6 @@ export default function App({
       });
       showToast("Activity successfully updated!", "success");
     } catch (error) {
-      console.log(error);
       showToast("Something went wrong!", "error");
     }
   }
@@ -172,9 +174,7 @@ export default function App({
           handleFilter={handleFilter}
           filter={filter}
           filteredActivities={filteredActivities}
-          listedActivities={
-            filter.length === 0 ? initialActivities : listedActivities
-          }
+          listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}
           searchTerm={searchTerm}
           title={title}

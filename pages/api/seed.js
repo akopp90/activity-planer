@@ -2,6 +2,7 @@ import { connectToDatabase } from "@/lib/db";
 import Activity from "@/Models/Activity";
 import { showToast } from "@/components/ui/ToastMessage";
 import { activities } from "@/lib/activities";
+import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -11,8 +12,22 @@ export default async function handler(req, res) {
   try {
     await connectToDatabase();
     console.log("Attempting to insert activities");
+
+    const session = await getSession({ req });
+    if (!session) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const userId = session.user.id;
+
     await Activity.deleteMany({});
-    const result = await Activity.insertMany(activities);
+
+    const activitiesWithCreatedBy = activities.map((activity) => ({
+      ...activity,
+      createdBy: userId,
+    }));
+
+    const result = await Activity.insertMany(activitiesWithCreatedBy);
     console.log(result);
 
     showToast("Activities seeded successfully", "success");

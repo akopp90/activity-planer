@@ -89,11 +89,11 @@ export default function ActivityPage({
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <Search onChange={handleSearchInputChange} />
+        <Search onChange={(event) => handleSearchInputChange(event)} />
         <h2>{title}</h2>
         <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
-        {listedActivities.length === 0 ? (
+        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
           <NoActivitiesFoundContainer>
             No Activities Found
           </NoActivitiesFoundContainer>
@@ -101,27 +101,63 @@ export default function ActivityPage({
           <></>
         )}
 
-        <RandomActivitiesContainer>
-          {randomActivities.map((activity) => {
-            const isBookmarked = bookmarks?.includes(activity._id) || false;
+        {listedActivities && listedActivities.length > 0 && (
+          <ActivitiesContainer>
+            {listedActivities.map((activity) => {
+              const isBookmarked = bookmarks?.includes(activity._id) || false;
 
-            return (
-              <ActivityCard
-                key={activity._id}
-                {...activity}
-                deleteActivity={deleteActivity}
-                toggleBookmark={() => toggleBookmark(activity._id)}
-                isBookmarked={isBookmarked}
-                showHeart={showHeart}
-              />
-            );
-          })}
-        </RandomActivitiesContainer>
+              return (
+                <ActivityCard
+                  key={activity._id}
+                  {...activity}
+                  deleteActivity={deleteActivity}
+                  toggleBookmark={() => toggleBookmark(activity._id)}
+                  isBookmarked={isBookmarked}
+                  showHeart={showHeart}
+                />
+              );
+            })}
+          </ActivitiesContainer>
+        )}
+
+        {!listedActivities ||
+          (listedActivities.length === 0 && (
+            <RandomActivitiesContainer>
+              {randomActivities.map((activity) => {
+                const isBookmarked = bookmarks?.includes(activity._id) || false;
+
+                return (
+                  <ActivityCard
+                    key={activity._id}
+                    {...activity}
+                    deleteActivity={deleteActivity}
+                    toggleBookmark={() => toggleBookmark(activity._id)}
+                    isBookmarked={isBookmarked}
+                    showHeart={showHeart}
+                  />
+                );
+              })}
+            </RandomActivitiesContainer>
+          ))}
       </Container>
     </>
   );
 }
+const ActivitiesContainer = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin-bottom: 50px;
 
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 1050px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;

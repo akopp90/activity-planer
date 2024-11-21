@@ -9,9 +9,10 @@ export default function ActivityList({
   handleResetFilter,
   showHeart = true,
 }) {
+  if (!activities) return <div>Loading...</div>;
   return (
     <main>
-      {activities.length === 0 ? (
+      {activities?.length === 0 ? (
         <StyledSection>
           <h2>No activities found</h2>
           <Button onClick={handleResetFilter}>Reset filter</Button>
