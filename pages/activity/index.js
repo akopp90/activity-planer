@@ -142,9 +142,7 @@ const SearchIconContainer = styled.div`
   left: 16px;
   width: 40px;
   height: 40px;
-  z-index: 10;
   transition: background-color 0.3s;
-
   &:hover {
     background-color: #e0e0e0;
   }
