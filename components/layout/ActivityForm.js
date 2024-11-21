@@ -25,7 +25,6 @@ export default function ActivityForm({
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
     const includes = formData.includes.split(",");
-    console.log("formData", formData);
     const notSuitableFor = formData.notsuitablefor.split(",");
     const importantInformation = formData.importantinformation.split(",");
     const whatToBring = formData.whattobring.split(",");
@@ -34,10 +33,14 @@ export default function ActivityForm({
       _id: activity._id ? activity._id : null,
       categories: categories,
       imageUrl: url,
-      includes: includes,
-      notSuitableFor: notSuitableFor,
-      importantInformation: importantInformation,
-      whatToBring: whatToBring,
+      includes: includes[0] !== "" ? includes : ["no information"],
+      notSuitableFor:
+        notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+      importantInformation:
+        importantInformation[0] !== ""
+          ? importantInformation
+          : ["no information"],
+      whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
     };
 
     const coordinatesRessource = await fetch(
@@ -62,15 +65,21 @@ export default function ActivityForm({
         _id: activity._id ? activity._id : null,
         categories: categories,
         imageUrl: url,
-        includes: includes,
-        notSuitableFor: notSuitableFor,
-        importantInformation: importantInformation,
-        whatToBring: whatToBring,
+        includes: includes[0] !== "" ? includes : ["no information"],
+        notSuitableFor:
+          notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+        importantInformation:
+          importantInformation[0] !== ""
+            ? importantInformation
+            : ["no information"],
+        whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
       };
 
       if (activity._id) {
+        console.log(newActivity);
         handleEditActivity(newActivity);
       } else {
+        console.log(newActivity);
         handleAddActivity(newActivity);
       }
       handleToggleEdit();

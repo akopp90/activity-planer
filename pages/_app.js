@@ -23,7 +23,6 @@ export default function App({
       return response.json();
     }
   );
-  console.log("data ", initialActivities);
 
   const [bookmarkedActivities, setBookmarkedActivities] = useLocalStorageState(
     "bookmarkedActivities",
@@ -132,7 +131,7 @@ export default function App({
           return updatedActivities;
         }
         return activities;
-      }); 
+      });
       showToast("Activity successfully updated!", "success");
     } catch (error) {
       console.log(error);
