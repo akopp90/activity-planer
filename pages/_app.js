@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import Footer from "@/components/layout/Footer";
@@ -13,7 +13,13 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  const { data: initialActivities, error } = useSWR(
+  const NUM_OF_RANDOM_ACTIVITIES = 6;
+  const {
+    data: initialActivities,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(
     `/api/activities`,
     async (url) => {
       const response = await fetch(url);
@@ -21,6 +27,10 @@ export default function App({
         throw new Error("Failed to fetch");
       }
       return response.json();
+    },
+    {
+      revalidateOnFocus: true,
+      revalidateIfStale: true,
     }
   );
 
@@ -36,40 +46,20 @@ export default function App({
   const [title, setTitle] = useState("");
   const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
-  const NUM_OF_RANDOM_ACTIVITIES = 6;
+
+  const [previousActivities, setPreviousActivities] = useState(null);
+
   const listedActivities = searchTerm
     ? initialActivities?.filter((activity) =>
         activity.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
-    : getRandomActivities(initialActivities);
+    : initialActivities;
 
-  const filteredActivities = initialActivities?.filter(({ categories }) =>
-    categories.some((category) => filter.includes(category))
-  );
-
-  function getRandomActivities(initialActivities) {
-    if (!initialActivities) return [];
-    const randomActivitiesList = [];
-
-    if (NUM_OF_RANDOM_ACTIVITIES >= initialActivities.length) {
-      return [...initialActivities];
-    }
-
-    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * initialActivities.length);
-      const randomActivity = initialActivities[randomIndex];
-
-      const isAlreadyIncluded = randomActivitiesList.some(
-        (activity) => randomActivity.id === activity.id
-      );
-
-      if (!isAlreadyIncluded) {
-        randomActivitiesList.push(randomActivity);
-      }
-    }
-
-    return randomActivitiesList;
-  }
+  const filteredActivities = Array.isArray(initialActivities)
+    ? initialActivities.filter(({ categories }) =>
+        categories.some((category) => filter.includes(category))
+      )
+    : [];
 
   async function handleAddActivity(newActivity) {
     try {
@@ -182,11 +172,12 @@ export default function App({
           handleFilter={handleFilter}
           filter={filter}
           filteredActivities={filteredActivities}
-          listedActivities={listedActivities}
+          listedActivities={
+            filter.length === 0 ? initialActivities : listedActivities
+          }
           handleSearchInputChange={handleSearchInputChange}
           searchTerm={searchTerm}
           title={title}
-          randomActivities={getRandomActivities}
           handleResetFilter={handleResetFilter}
           initialActivities={initialActivities}
           mutate={mutate}

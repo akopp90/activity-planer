@@ -48,29 +48,31 @@ export default function ActivityPage({
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
   useEffect(() => {
-    function getRandomActivities() {
-      const randomActivitiesList = [];
+    if (initialActivities) {
+      getRandomActivities();
+    }
+  }, [initialActivities]);
 
-      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+  function getRandomActivities() {
+    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
-      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-        const randomIndex = Math.floor(Math.random() * activities.length);
-        const randomActivity = activities[randomIndex];
+    const randomActivitiesList = [];
 
-        const isAlreadyIncluded = randomActivitiesList.some(
-          (ac) => randomActivity.id === ac.id
-        );
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * activities.length);
+      const randomActivity = activities[randomIndex];
 
-        if (!isAlreadyIncluded) {
-          randomActivitiesList.push(randomActivity);
-        }
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (activity) => randomActivity._id === activity._id
+      );
+
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
       }
-
-      return randomActivitiesList;
     }
 
-    setRandomActivities(getRandomActivities());
-  }, [activities]);
+    setRandomActivities(randomActivitiesList);
+  }
 
   return (
     <>
@@ -100,7 +102,7 @@ export default function ActivityPage({
         )}
 
         <RandomActivitiesContainer>
-          {listedActivities.map((activity) => {
+          {randomActivities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity.id) || false;
 
             return (
