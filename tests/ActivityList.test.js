@@ -9,7 +9,7 @@ describe("1.1 When the page initially loads, verify that all activities are disp
     const activities = [
       {
         title: "Test title",
-        categories: ["Winter"],
+        categories: ["Outdoor", "Sport", "Water"],
       },
     ];
 
@@ -45,5 +45,10 @@ describe("1.2 Ensure each activity displays the correct title, image, and tags",
     expect(screen.getAllByTestId("category")).toHaveLength(
       activity.categories.length
     );
+
+    // Check not only the correct amount but also the correct labels
+    activity.categories.forEach((category) => {
+      expect(screen.getByText(category)).toBeInTheDocument();
+    });
   });
 });
