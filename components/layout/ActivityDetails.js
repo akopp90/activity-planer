@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetchWeatherData } from "@/lib/weather";
 import { Unlock } from "next/font/google";
 import { useSession } from "next-auth/react";
@@ -81,6 +81,7 @@ export default function ActivityDetails({
   );
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [mainImage, setMainImage] = useState(imageUrl[0]);
   function handleDelete() {
     setShowConfirm(true);
   }
@@ -91,6 +92,10 @@ export default function ActivityDetails({
     deleteActivity(_id);
     setShowConfirm(false);
   }
+  function handleSetMainImage(url) {
+    setMainImage(url);
+    mutate();
+  }
 
   return (
     <StyledContainer>
@@ -99,7 +104,7 @@ export default function ActivityDetails({
           {imageUrl ? (
             <>
               <Image
-                src={imageUrl[0]}
+                src={mainImage}
                 alt={title}
                 style={{ objectFit: "cover" }}
                 sizes="50vw"
@@ -124,7 +129,14 @@ export default function ActivityDetails({
         <StyledUl>
           {imageUrl?.map((url, index) => (
             <StyledLi key={index}>
-              <Image key={url} src={url} alt={title} width={150} height={100} />
+              <StyledImage
+                key={url}
+                src={url}
+                alt={title}
+                width={150}
+                height={100}
+                onClick={() => handleSetMainImage(url)}
+              />
             </StyledLi>
           ))}
         </StyledUl>
@@ -392,4 +404,8 @@ const StyledLi = styled.li`
   width: 150px;
   border-radius: 4px;
   background-color: #f1f1f1;
+`;
+const StyledImage = styled(Image)`
+  border-radius: 4px;
+  cursor: pointer;
 `;
