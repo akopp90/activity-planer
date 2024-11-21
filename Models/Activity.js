@@ -12,7 +12,7 @@ const activitySchema = new mongoose.Schema({
   country: { type: String, default: "No information." },
   description: { type: String, default: "No information." },
   categories: { type: [String], default: [] },
-  imageUrl: { type: String, default: "No information." },
+  imageUrl: { type: mongoose.Schema.Types.Mixed },
   duration: { type: String, default: "No information." },
   numberOfPeople: { type: String, default: "No information." },
   fullDescription: { type: String, default: "No information." },

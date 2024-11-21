@@ -25,6 +25,7 @@ export default async function handler(req, res) {
     const activitiesWithCreatedBy = activities.map((activity) => ({
       ...activity,
       createdBy: userId,
+      imageUrl: [activity.imageUrl], // Convert imageUrl to an array
     }));
 
     const result = await Activity.insertMany(activitiesWithCreatedBy);

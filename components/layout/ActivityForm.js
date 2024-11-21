@@ -8,6 +8,7 @@ import { categories as categoryData } from "@/lib/categories";
 import Upload from "../ui/Upload";
 import { showToast } from "../ui/ToastMessage";
 import { useSession } from "next-auth/react";
+import { set } from "mongoose";
 
 export default function ActivityForm({
   handleToggleEdit,
@@ -34,6 +35,7 @@ export default function ActivityForm({
     const importantInformation = formData.importantinformation.split(",");
     const whatToBring = formData.whattobring.split(",");
     const createdBy = session.data.user.id;
+    console.log(url);
     const newActivity = {
       ...activityData,
       _id: activity._id ? activity._id : null,
@@ -95,23 +97,30 @@ export default function ActivityForm({
 
   async function handleUpload(event) {
     try {
-      const formData = new FormData();
-      const image = event.target.files[0];
-
+      const images = event.target.files;
       const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-      formData.append("image", image);
-      if (image.size > maxSize) {
-        showToast("File size must be less than 5MB", "error");
-        return;
-      }
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const uploadedUrls = [];
 
-      const { url } = await response.json();
-      setUrl(url);
-      showToast("Image uploaded successfully", "success");
+      for (const image of images) {
+        if (image.size > maxSize) {
+          showToast("File size must be less than 5MB", "error");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        uploadedUrls.push(result[0].secure_url);
+      }
+
+      setUrl((prev) => [...prev, ...uploadedUrls]);
+      showToast("Images uploaded successfully", "success");
       return;
     } catch (error) {
       showToast("Please select a file!", "info");
@@ -197,17 +206,23 @@ export default function ActivityForm({
         Activity country
       </Input>
 
-      <Upload name="Image" onChange={handleUpload}>
+      <Upload name="Image" multiple onChange={handleUpload}>
         Activity Image
       </Upload>
-      {url && (
-        <Image
-          src={url ? url : "/images/no-image.svg"}
-          alt="Uploaded image"
-          width={150}
-          height={100}
-        />
-      )}
+      <StyledList>
+        {url &&
+          url.map((url) => (
+            <li key={url}>
+              <Image
+                src={url}
+                alt="Uploaded image"
+                width={150}
+                height={100}
+                key={url}
+              />
+            </li>
+          ))}
+      </StyledList>
 
       <Textarea name="Description" defaultValue={activity.description}>
         Activity description

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-function Upload({ name, isRequired, children, onChange }) {
+function Upload({ name, isRequired, children, onChange, multiple }) {
   return (
     <StyledDiv>
       <StyledLabel htmlFor={name}>{children}</StyledLabel>
@@ -10,6 +10,7 @@ function Upload({ name, isRequired, children, onChange }) {
         id={name}
         required={isRequired}
         onChange={onChange}
+        multiple={multiple}
         accept="image/png, image/jpeg, image/jpg"
       />
     </StyledDiv>

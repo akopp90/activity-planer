@@ -97,13 +97,15 @@ export default function ActivityDetails({
       <StyledDetails>
         <StyledImageContainer>
           {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              style={{ objectFit: "cover" }}
-              sizes="50vw"
-              fill
-            />
+            <>
+              <Image
+                src={imageUrl[0]}
+                alt={title}
+                style={{ objectFit: "cover" }}
+                sizes="50vw"
+                fill
+              />
+            </>
           ) : (
             <Image
               src="/images/no-image.svg"
@@ -119,6 +121,13 @@ export default function ActivityDetails({
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
+        <StyledUl>
+          {imageUrl?.map((url, index) => (
+            <StyledLi key={index}>
+              <Image key={url} src={url} alt={title} width={150} height={100} />
+            </StyledLi>
+          ))}
+        </StyledUl>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
           <StyledList>
@@ -370,4 +379,17 @@ const StyledWeather = styled.div`
     border-radius: 4px;
     background-color: #f1f1f1;
   }
+`;
+const StyledUl = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  width: 100%;
+`;
+const StyledLi = styled.li`
+  padding: 4px 8px;
+  width: 150px;
+  border-radius: 4px;
+  background-color: #f1f1f1;
 `;

@@ -17,7 +17,7 @@ export default function ActivityCard({
       <StyledImageContainer>
         {imageUrl ? (
           <Image
-            src={imageUrl}
+            src={imageUrl[0]}
             alt={title}
             style={{ objectFit: "cover" }}
             sizes="33vw"
