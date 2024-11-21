@@ -103,14 +103,14 @@ export default function ActivityPage({
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => {
-            const isBookmarked = bookmarks?.includes(activity.id) || false;
+            const isBookmarked = bookmarks?.includes(activity._id) || false;
 
             return (
               <ActivityCard
-                key={activity.id}
+                key={activity._id}
                 {...activity}
                 deleteActivity={deleteActivity}
-                toggleBookmark={() => toggleBookmark(activity.id)}
+                toggleBookmark={() => toggleBookmark(activity._id)}
                 isBookmarked={isBookmarked}
                 showHeart={showHeart}
               />

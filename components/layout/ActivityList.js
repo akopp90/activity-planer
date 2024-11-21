@@ -7,6 +7,7 @@ export default function ActivityList({
   bookmarks,
   toggleBookmark,
   handleResetFilter,
+  showHeart = true,
 }) {
   return (
     <main>
@@ -18,14 +19,15 @@ export default function ActivityList({
       ) : (
         <StyledList>
           {activities.map((activity) => {
-            const isBookmarked = bookmarks?.includes(activity.id) || false;
+            const isBookmarked = bookmarks?.includes(activity._id) || false;
 
             return (
               <li key={activity._id}>
                 <ActivityCard
                   {...activity}
+                  toggleBookmark={() => toggleBookmark(activity._id)}
                   isBookmarked={isBookmarked}
-                  toggleBookmark={() => toggleBookmark(activity.id)}
+                  showHeart={showHeart}
                 />
               </li>
             );
