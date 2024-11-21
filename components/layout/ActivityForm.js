@@ -25,9 +25,10 @@ export default function ActivityForm({
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
     const includes = formData.includes.split(",");
-    const notSuitableFor = formData.notSuitableFor.split(",");
-    const importantInformation = formData.importantInformation.split(",");
-    const whatToBring = formData.whatToBring.split(",");
+    console.log("formData", formData);
+    const notSuitableFor = formData.notsuitablefor.split(",");
+    const importantInformation = formData.importantinformation.split(",");
+    const whatToBring = formData.whattobring.split(",");
     const newActivity = {
       ...activityData,
       _id: activity._id ? activity._id : null,
@@ -209,7 +210,7 @@ export default function ActivityForm({
       <Input name="Includes" defaultValue={activity.includes}>
         Includes
       </Input>
-      <Input name="notSuitableFor" defaultValue={activity.notSuitableFor}>
+      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor}>
         Not suitable for
       </Input>
       <Textarea
