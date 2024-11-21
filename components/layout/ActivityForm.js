@@ -209,7 +209,7 @@ export default function ActivityForm({
       <Input name="Includes" defaultValue={activity.includes}>
         Includes
       </Input>
-      <Input name="NotSuitableFor" defaultValue={activity.notSuitableFor}>
+      <Input name="notSuitableFor" defaultValue={activity.notSuitableFor}>
         Not suitable for
       </Input>
       <Textarea
