@@ -46,6 +46,7 @@ function getWeatherIcon(condition) {
 }
 
 export default function ActivityDetails({
+  activity,
   title,
   imageUrl,
   area,
@@ -53,7 +54,7 @@ export default function ActivityDetails({
   description,
   country,
   categories,
-  id,
+  _id,
   deleteActivity,
   duration,
   numberOfPeople,
@@ -67,7 +68,7 @@ export default function ActivityDetails({
   isBookmarked,
   showHeart = true,
 }) {
-  const { data: session } = useSession();
+  const session = useSession();
   const {
     data: weather,
     error,
@@ -87,7 +88,7 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   function confirmDelete() {
-    deleteActivity(id);
+    deleteActivity(_id);
     setShowConfirm(false);
   }
 
@@ -113,7 +114,7 @@ export default function ActivityDetails({
           )}
 
           {showHeart && (
-            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+            <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
               <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
             </StyledHeartIconContainer>
           )}
@@ -131,8 +132,7 @@ export default function ActivityDetails({
               {weather ? (
                 <>
                   <p>
-                    {weather.temperature}{" "}
-                    {getWeatherIcon(weather.condition)}
+                    {weather.temperature} {getWeatherIcon(weather.condition)}
                   </p>
                 </>
               ) : (
@@ -225,25 +225,26 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-          {session && (
-            <>
-              {!showConfirm ? (
-                <StyledDeleteContainer>
-                  <Button onClick={handleDelete}>Delete</Button>
-                </StyledDeleteContainer>
-              ) : (
-                <StyledDeleteContainer $isDelete>
-                  <p>Are you sure, that you want to delete?</p>
-                  <StyledButtonContainer>
-                    <Button onClick={cancelDelete}>Cancel</Button>
-                    <Button isDeleting onClick={confirmDelete}>
-                      Confirm
-                    </Button>
-                  </StyledButtonContainer>
-                </StyledDeleteContainer>
-              )}
-            </>
-          )}
+          {status === "authenticated" &&
+            data.user?.id === activity.createdBy && (
+              <>
+                {!showConfirm ? (
+                  <StyledDeleteContainer>
+                    <Button onClick={handleDelete}>Delete</Button>
+                  </StyledDeleteContainer>
+                ) : (
+                  <StyledDeleteContainer $isDelete>
+                    <p>Are you sure, that you want to delete?</p>
+                    <StyledButtonContainer>
+                      <Button onClick={cancelDelete}>Cancel</Button>
+                      <Button isDeleting onClick={confirmDelete}>
+                        Confirm
+                      </Button>
+                    </StyledButtonContainer>
+                  </StyledDeleteContainer>
+                )}
+              </>
+            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -251,6 +252,9 @@ export default function ActivityDetails({
 }
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px;
 `;
 const StyledDetails = styled.article`

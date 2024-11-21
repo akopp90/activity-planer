@@ -1,4 +1,3 @@
-import { uid } from "uid";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -8,6 +7,7 @@ import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
 import Upload from "../ui/Upload";
 import { showToast } from "../ui/ToastMessage";
+import { useSession } from "next-auth/react";
 
 export default function ActivityForm({
   handleToggleEdit,
@@ -18,21 +18,37 @@ export default function ActivityForm({
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
   const [url, setUrl] = useState(activity.imageUrl);
+  const session = useSession();
+  const { status, data } = useSession({
+    required: true,
+  });
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const id = activity.id;
+    const id = activity._id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
-
+    const includes = formData.includes.split(",");
+    const notSuitableFor = formData.notsuitablefor.split(",");
+    const importantInformation = formData.importantinformation.split(",");
+    const whatToBring = formData.whattobring.split(",");
+    const createdBy = session.data.user.id;
     const newActivity = {
       ...activityData,
-      id: id || uid(),
+      _id: activity._id ? activity._id : null,
       categories: categories,
       imageUrl: url,
+      includes: includes[0] !== "" ? includes : ["no information"],
+      notSuitableFor:
+        notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+      importantInformation:
+        importantInformation[0] !== ""
+          ? importantInformation
+          : ["no information"],
+      whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
+      createdBy: createdBy,
     };
-
     const coordinatesRessource = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${formData.location}&format=jsonv2&limit=1&accept-language=en-US`
     );
@@ -52,12 +68,21 @@ export default function ActivityForm({
           lat: coordinatesResponse[0].lat,
           lon: coordinatesResponse[0].lon,
         },
-        id: id || uid(),
+        _id: activity._id ? activity._id : null,
         categories: categories,
         imageUrl: url,
+        includes: includes[0] !== "" ? includes : ["no information"],
+        notSuitableFor:
+          notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+        importantInformation:
+          importantInformation[0] !== ""
+            ? importantInformation
+            : ["no information"],
+        whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
+        createdBy: createdBy,
       };
 
-      if (activity.id) {
+      if (activity._id) {
         handleEditActivity(newActivity);
       } else {
         handleAddActivity(newActivity);
@@ -89,7 +114,7 @@ export default function ActivityForm({
       showToast("Image uploaded successfully", "success");
       return;
     } catch (error) {
-      showToast("Please selevt a file!", "info");
+      showToast("Please select a file!", "info");
       return;
     }
   }

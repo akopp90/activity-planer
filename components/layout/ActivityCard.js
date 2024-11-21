@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 
 export default function ActivityCard({
-  id,
+  _id,
   title,
   categories,
   imageUrl,
@@ -33,7 +33,7 @@ export default function ActivityCard({
         )}
 
         {showHeart && (
-          <StyledHeartIcon onClick={() => toggleBookmark(id)}>
+          <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
             <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
           </StyledHeartIcon>
         )}
@@ -45,7 +45,7 @@ export default function ActivityCard({
         ))}
       </StyledList>
 
-      <StyledLink href={`/activity/${id}`}>{title}</StyledLink>
+      <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>
     </StyledArticle>
   );
 }
@@ -75,7 +75,7 @@ const StyledHeartIcon = styled.div`
   text-shadow: 0 2px 2px #000;
 
   &:hover {
-    color: #ff4d4d; 
+    color: #ff4d4d;
   }
 `;
 

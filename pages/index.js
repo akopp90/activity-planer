@@ -17,6 +17,8 @@ export default function ActivityPage({
   listedActivities,
   title,
   activities,
+  initialActivities,
+  mutate,
 }) {
   const [showForm, setShowForm] = useState(false);
 
@@ -46,29 +48,31 @@ export default function ActivityPage({
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
   useEffect(() => {
-    function getRandomActivities() {
-      const randomActivitiesList = [];
+    if (initialActivities) {
+      getRandomActivities();
+    }
+  }, [initialActivities]);
 
-      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+  function getRandomActivities() {
+    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
-      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-        const randomIndex = Math.floor(Math.random() * activities.length);
-        const randomActivity = activities[randomIndex];
+    const randomActivitiesList = [];
 
-        const isAlreadyIncluded = randomActivitiesList.some(
-          (ac) => randomActivity.id === ac.id
-        );
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * activities.length);
+      const randomActivity = activities[randomIndex];
 
-        if (!isAlreadyIncluded) {
-          randomActivitiesList.push(randomActivity);
-        }
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (activity) => randomActivity._id === activity._id
+      );
+
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
       }
-
-      return randomActivitiesList;
     }
 
-    setRandomActivities(getRandomActivities());
-  }, [activities]);
+    setRandomActivities(randomActivitiesList);
+  }
 
   return (
     <>
@@ -85,11 +89,11 @@ export default function ActivityPage({
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <Search onChange={handleSearchInputChange} />
+        <Search onChange={(event) => handleSearchInputChange(event)} />
         <h2>{title}</h2>
         <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
-        {listedActivities.length === 0 ? (
+        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
           <NoActivitiesFoundContainer>
             No Activities Found
           </NoActivitiesFoundContainer>
@@ -97,27 +101,63 @@ export default function ActivityPage({
           <></>
         )}
 
-        <RandomActivitiesContainer>
-          {listedActivities.map((activity) => {
-            const isBookmarked = bookmarks?.includes(activity.id) || false;
+        {listedActivities && listedActivities.length > 0 && (
+          <ActivitiesContainer>
+            {listedActivities.map((activity) => {
+              const isBookmarked = bookmarks?.includes(activity._id) || false;
 
-            return (
-              <ActivityCard
-                key={activity.id}
-                {...activity}
-                deleteActivity={deleteActivity}
-                toggleBookmark={() => toggleBookmark(activity.id)}
-                isBookmarked={isBookmarked}
-                showHeart={showHeart}
-              />
-            );
-          })}
-        </RandomActivitiesContainer>
+              return (
+                <ActivityCard
+                  key={activity._id}
+                  {...activity}
+                  deleteActivity={deleteActivity}
+                  toggleBookmark={() => toggleBookmark(activity._id)}
+                  isBookmarked={isBookmarked}
+                  showHeart={showHeart}
+                />
+              );
+            })}
+          </ActivitiesContainer>
+        )}
+
+        {!listedActivities ||
+          (listedActivities.length === 0 && (
+            <RandomActivitiesContainer>
+              {randomActivities.map((activity) => {
+                const isBookmarked = bookmarks?.includes(activity._id) || false;
+
+                return (
+                  <ActivityCard
+                    key={activity._id}
+                    {...activity}
+                    deleteActivity={deleteActivity}
+                    toggleBookmark={() => toggleBookmark(activity._id)}
+                    isBookmarked={isBookmarked}
+                    showHeart={showHeart}
+                  />
+                );
+              })}
+            </RandomActivitiesContainer>
+          ))}
       </Container>
     </>
   );
 }
+const ActivitiesContainer = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin-bottom: 50px;
 
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 1050px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
