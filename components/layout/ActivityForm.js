@@ -24,12 +24,19 @@ export default function ActivityForm({
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
-
+    const includes = formData.includes.split(",");
+    const notSuitableFor = formData.notSuitableFor.split(",");
+    const importantInformation = formData.importantInformation.split(",");
+    const whatToBring = formData.whatToBring.split(",");
     const newActivity = {
       ...activityData,
       _id: activity._id ? activity._id : null,
       categories: categories,
       imageUrl: url,
+      includes: includes,
+      notSuitableFor: notSuitableFor,
+      importantInformation: importantInformation,
+      whatToBring: whatToBring,
     };
 
     const coordinatesRessource = await fetch(
@@ -54,6 +61,10 @@ export default function ActivityForm({
         _id: activity._id ? activity._id : null,
         categories: categories,
         imageUrl: url,
+        includes: includes,
+        notSuitableFor: notSuitableFor,
+        importantInformation: importantInformation,
+        whatToBring: whatToBring,
       };
 
       if (activity._id) {
