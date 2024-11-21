@@ -19,9 +19,7 @@ export default function ActivityPage({
   const router = useRouter();
   const { id } = router.query;
   const [showForm, setShowForm] = useState(false);
-  const { status, data } = useSession({
-    required: true,
-  });
+  const { status, data } = useSession();
 
   if (!activities) return <p>Loading...</p>;
 
