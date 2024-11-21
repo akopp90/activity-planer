@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import Footer from "@/components/layout/Footer";

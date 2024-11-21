@@ -49,7 +49,6 @@ export default function ActivityForm({
       whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
       createdBy: createdBy,
     };
-    console.log(createdBy);
     const coordinatesRessource = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${formData.location}&format=jsonv2&limit=1&accept-language=en-US`
     );
