@@ -19,7 +19,10 @@ export default function ActivityPage({
   const router = useRouter();
   const { id } = router.query;
   const [showForm, setShowForm] = useState(false);
-  const { data: session } = useSession();
+  const { status, data } = useSession({
+    required: true,
+  });
+
   if (!activities) return <p>Loading...</p>;
 
   const activity = activities.find((activity) => activity._id === id);
@@ -42,7 +45,7 @@ export default function ActivityPage({
       </Head>
       <Header>Activity Details</Header>
 
-      {session && (
+      {status === "authenticated" && data.user?.id === activity.createdBy && (
         <>
           {!showForm ? (
             <StyledSection>
@@ -51,14 +54,21 @@ export default function ActivityPage({
               </Button>
             </StyledSection>
           ) : (
-            <ActivityForm
-              handleToggleEdit={handleToggleEdit}
-              handleEditActivity={(newActivity) => {
-                handleEditActivity(newActivity);
-                mutate(); // Call the mutate function to update the activities data
-              }}
-              activity={activity}
-            />
+            <>
+              <StyledSection>
+                <Button onClick={() => setShowForm(!showForm)} isPrimary>
+                  Edit activity
+                </Button>
+              </StyledSection>
+              <ActivityForm
+                handleToggleEdit={handleToggleEdit}
+                handleEditActivity={(newActivity) => {
+                  handleEditActivity(newActivity);
+                  mutate();
+                }}
+                activity={activity}
+              />
+            </>
           )}
         </>
       )}

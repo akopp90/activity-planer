@@ -68,7 +68,7 @@ export default function ActivityDetails({
   isBookmarked,
   showHeart = true,
 }) {
-  const { data: session } = useSession();
+  const session = useSession();
   const {
     data: weather,
     error,
@@ -225,25 +225,26 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-          {session && (
-            <>
-              {!showConfirm ? (
-                <StyledDeleteContainer>
-                  <Button onClick={handleDelete}>Delete</Button>
-                </StyledDeleteContainer>
-              ) : (
-                <StyledDeleteContainer $isDelete>
-                  <p>Are you sure, that you want to delete?</p>
-                  <StyledButtonContainer>
-                    <Button onClick={cancelDelete}>Cancel</Button>
-                    <Button isDeleting onClick={confirmDelete}>
-                      Confirm
-                    </Button>
-                  </StyledButtonContainer>
-                </StyledDeleteContainer>
-              )}
-            </>
-          )}
+          {status === "authenticated" &&
+            data.user?.id === activity.createdBy && (
+              <>
+                {!showConfirm ? (
+                  <StyledDeleteContainer>
+                    <Button onClick={handleDelete}>Delete</Button>
+                  </StyledDeleteContainer>
+                ) : (
+                  <StyledDeleteContainer $isDelete>
+                    <p>Are you sure, that you want to delete?</p>
+                    <StyledButtonContainer>
+                      <Button onClick={cancelDelete}>Cancel</Button>
+                      <Button isDeleting onClick={confirmDelete}>
+                        Confirm
+                      </Button>
+                    </StyledButtonContainer>
+                  </StyledDeleteContainer>
+                )}
+              </>
+            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -251,6 +252,9 @@ export default function ActivityDetails({
 }
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px;
 `;
 const StyledDetails = styled.article`
