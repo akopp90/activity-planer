@@ -1,6 +1,6 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
@@ -43,6 +43,34 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
+
+  const [randomActivities, setRandomActivities] = useState([]);
+  const NUM_OF_RANDOM_ACTIVITIES = 6;
+
+  useEffect(() => {
+    function getRandomActivities() {
+      const randomActivitiesList = [];
+
+      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+
+      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        const randomActivity = activities[randomIndex];
+
+        const isAlreadyIncluded = randomActivitiesList.some(
+          (ac) => randomActivity.id === ac.id
+        );
+
+        if (!isAlreadyIncluded) {
+          randomActivitiesList.push(randomActivity);
+        }
+      }
+
+      return randomActivitiesList;
+    }
+
+    setRandomActivities(getRandomActivities());
+  }, [activities]);
 
   return (
     <>
