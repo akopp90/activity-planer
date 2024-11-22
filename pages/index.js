@@ -56,7 +56,12 @@ export default function ActivityPage({
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <Search onChange={(event) => handleSearchInputChange(event)} />
+        <Search
+          onChange={(event) => {
+            handleSearchInputChange(event),
+              console.log(listedActivities.length);
+          }}
+        />
         <h2>{title}</h2>
         <h3>
           you have to be registered to add activities and only can delete and
@@ -65,8 +70,8 @@ export default function ActivityPage({
         <p>User: test@test123.com Password: test12345</p>
         <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
-        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
-          <NoActivitiesFoundContainer>
+        {listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer key="no-activities-found">
             No Activities Found
           </NoActivitiesFoundContainer>
         ) : (
@@ -132,7 +137,12 @@ const ActivitiesTitle = styled.h2`
   padding-left: 16px;
 `;
 
-const NoActivitiesFoundContainer = styled.div``;
+const NoActivitiesFoundContainer = styled.div`
+  text-align: center;
+  margin-top: 24px;
+  margin-bottom: 50px;
+  color: #333;
+`;
 
 const RandomActivitiesContainer = styled.div`
   display: grid;

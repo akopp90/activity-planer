@@ -60,9 +60,7 @@ export default function HomePage({
     setIsSearchVisible((prevState) => !prevState);
   }
   if (!listedActivities) return <div>Loading...</div>;
-  if (filteredActivities.length === 0) {
-    return <p>No activities found</p>;
-  }
+
   return (
     <>
       <Head>
@@ -77,7 +75,7 @@ export default function HomePage({
         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
-        {filteredActivities.length === 0 && <p>No activities found</p>}
+
         {session ? (
           <>
             <Button onClick={handleToggleEdit} isPrimary>
