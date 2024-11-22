@@ -19,11 +19,10 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
-import Button from "../ui/Button";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import { FaHeart } from "react-icons/fa";
 
 const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
@@ -161,21 +160,6 @@ export default function ActivityDetails({
               <StyledListItem key={category}>{category}</StyledListItem>
             ))}
           </StyledList>
-
-          <StyledWeather>
-            <div>
-              {weather ? (
-                <>
-                  <p>
-                    {weather.temperature} {getWeatherIcon(weather.condition)}
-                  </p>
-                </>
-              ) : (
-                <p>Loading weather data...</p>
-              )}
-            </div>
-          </StyledWeather>
-
           <StyledLocation>
             {area}, {country}
           </StyledLocation>
@@ -184,15 +168,15 @@ export default function ActivityDetails({
           <StyledDescription>{duration}</StyledDescription>
           <StyledDescription>{numberOfPeople}</StyledDescription>
           <StyledSubtitle>About this Experience</StyledSubtitle>
-          <StyledTitleIcon>
-            <FaBook />
-            <StyledExtraTitle>Full Description</StyledExtraTitle>
-          </StyledTitleIcon>
+
+          <StyledExtraTitle>
+            <FaBook /> Full Description
+          </StyledExtraTitle>
           <StyledDescription>{fullDescription}</StyledDescription>
-          <StyledTitleIcon>
-            <FaCheckCircle />
-            <StyledExtraTitle>Includes</StyledExtraTitle>
-          </StyledTitleIcon>
+
+          <StyledExtraTitle>
+            <FaCheckCircle /> Includes
+          </StyledExtraTitle>
           <StyledExtraDescription>
             {Array.isArray(includes) ? (
               includes.map((item) => <li key={item}>{item}</li>)
@@ -202,10 +186,9 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {notSuitableFor && (
             <>
-              <StyledTitleIcon>
-                <FaThumbsDown />
-                <StyledExtraTitle>Not suitable for</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaThumbsDown /> Not suitable for
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(notSuitableFor) ? (
                   notSuitableFor.map((item) => <li key={item}>{item}</li>)
@@ -215,10 +198,10 @@ export default function ActivityDetails({
               </StyledExtraDescription>
             </>
           )}
-          <StyledTitleIcon>
-            <FaInfo />
-            <StyledExtraTitle>Important Information</StyledExtraTitle>
-          </StyledTitleIcon>
+
+          <StyledExtraTitle>
+            <FaInfo /> Important Information
+          </StyledExtraTitle>
           <StyledExtraDescription>
             {Array.isArray(importantInformation) ? (
               importantInformation.map((item) => <li key={item}>{item}</li>)
@@ -228,10 +211,9 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {whatToBring && (
             <>
-              <StyledTitleIcon>
-                <FaShoppingBag />
-                <StyledExtraTitle>What to bring</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaShoppingBag /> What to bring
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(whatToBring) ? (
                   whatToBring.map((item) => <li key={item}>{item}</li>)
@@ -243,10 +225,9 @@ export default function ActivityDetails({
           )}
           {notAllowed && (
             <>
-              <StyledTitleIcon>
-                <FaTimesCircle />
-                <StyledExtraTitle>Not Allowed</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaTimesCircle /> Not Allowed
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(notAllowed) ? (
                   notAllowed.map((item) => <li key={item}>{item}</li>)
@@ -254,12 +235,24 @@ export default function ActivityDetails({
                   <li>{notAllowed}</li>
                 )}
               </StyledExtraDescription>
+
+              {weather ? (
+                <>
+                  <StyledDescription>
+                    <strong>Weather: </strong>
+                    {weather.temperature} {getWeatherIcon(weather.condition)}
+                  </StyledDescription>
+                </>
+              ) : (
+                <StyledDescription>Loading weather data...</StyledDescription>
+              )}
             </>
           )}
           <ActivityMap {...location} />
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
+
           {session.status === "authenticated" &&
             session.data.user.id === createdBy && (
               <StyledDeleteContainer>
@@ -297,6 +290,7 @@ const StyledDetails = styled.article`
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
   margin-bottom: 50px;
+  background-color: white;
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -330,6 +324,7 @@ const StyledLocation = styled.p`
   display: flex;
   margin: 8px 0 16px;
   justify-content: flex-end;
+  gap: 10px;
 `;
 const StyledDescription = styled.p`
   margin: 16px 0;
@@ -346,11 +341,19 @@ const StyledLink = styled(Link)`
 const StyledHeartIconContainer = styled.div`
   position: absolute;
   top: 16px;
-  right: 16px;
-  font-size: 1.5rem;
+  right: 10px;
+  font-size: 1rem;
   cursor: pointer;
   transition: color 0.3s ease;
   text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%; /* Runde Form */
+  width: 30px; /* Größe des Containers */
+  height: 30px; /* Größe des Containers */
+  display: flex; /* Flexbox zur Zentrierung */
+  align-items: center; /* Vertikale Zentrierung */
+  justify-content: center; /* Horizontale Zentrierung */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   &:hover {
     color: #ff4d4d;
@@ -376,9 +379,6 @@ const StyledButtonContainer = styled.div`
 `;
 const StyledExtraTitle = styled.h4`
   font-weight: bold;
-  display: grid;
-  list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
 `;
 
 const StyledExtraDescription = styled.ul`
@@ -451,3 +451,4 @@ const StyledImageSlider = styled.div`
   position: relative;
   background-color: #f1f1f1;
 `;
+

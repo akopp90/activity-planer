@@ -16,8 +16,7 @@ export default function MyFavoriteActivitiesPage({
 
   return (
     <>
-      <Header>My Favorites</Header>
-
+      <Header />
       <Container>
         <Button onClick={() => window.history.back()}>
           <FaArrowLeft />

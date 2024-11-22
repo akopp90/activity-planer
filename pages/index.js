@@ -6,7 +6,6 @@ import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -43,25 +42,21 @@ export default function ActivityPage({
 
   return (
     <>
-      <Header>Activity Planner</Header>
-      {!session ? (
-        <StyledLink href="/auth/signin">
-          <FaKey />
-        </StyledLink>
-      ) : (
-        <LogoutContainer>
-          <LogoutButton />
-        </LogoutContainer>
-      )}
+      <Header />
       <Container>
-        <SloganContainer>Your new adventure starts here ...</SloganContainer>
+        <SloganContainer>Your new adventure starts here.</SloganContainer>
+        <SearchBarContainer>
+          <SearchIconContainer>
+            <FaSearch size={20} />
+          </SearchIconContainer>
+          <SearchInput placeholder="Search activities..." />
+          <SearchButtonContainer>
+            <Button isPrimary>Search</Button>
+          </SearchButtonContainer>
+        </SearchBarContainer>
 
-        <Search
-          onChange={(event) => {
-            handleSearchInputChange(event),
-              console.log(listedActivities.length);
-          }}
-        />
+        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
+
         <h2>{title}</h2>
         <h3>
           you have to be registered to add activities and only can delete and
@@ -94,6 +89,7 @@ export default function ActivityPage({
             </ActivitiesContainer>
           )
         )}
+
       </Container>
     </>
   );
@@ -122,15 +118,17 @@ const Container = styled.div`
 `;
 
 const SloganContainer = styled.section`
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: center;
+  font-weight: 700;
+  color: #333;
+  width: 100%;
 `;
 
 const ActivitiesTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   margin-top: 24px;
-  margin-bottom: 16px;
   color: #333;
   text-align: left;
   width: 100%;

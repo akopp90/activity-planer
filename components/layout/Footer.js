@@ -7,7 +7,9 @@ export default function Footer() {
     <MenuFooterContainer>
       <StyledUl>
         <StyledLi>
-          <StyledLink href={"/"}>
+
+        <StyledLink href={"/"}>
+
             <StyledIcon>
               <FaHome />
               <span>Home</span>
@@ -15,9 +17,11 @@ export default function Footer() {
           </StyledLink>
         </StyledLi>
         <StyledLi>
-          <StyledLink href="/activity">
+
+        <StyledLink href="/activity">
             <StyledIcon>
-              <FaWalking />
+            <FaWalking />
+
               <span>Activities</span>
             </StyledIcon>
           </StyledLink>
@@ -47,13 +51,12 @@ const MenuFooterContainer = styled.div`
   display: flex;
   background: white;
   box-shadow: inset 0px 0 17px -8px gray;
-  width: 100%;
+  width: 100%; 
   position: fixed;
   bottom: 0;
   justify-content: center;
-  gap: 0;
-  overflow-x: hidden;
-
+  gap: 0; 
+  overflow-x: hidden; 
   a {
     text-decoration: none;
     color: #000000;
@@ -62,17 +65,18 @@ const MenuFooterContainer = styled.div`
 
 const StyledUl = styled.ul`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-evenly; 
   align-items: center;
   list-style: none;
   height: 65px;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+
+  width: 100%; 
+  margin: 0; 
+  padding: 0; 
 `;
 
 const StyledLi = styled.li`
-  flex: 1;
+  flex: 1; 
   text-align: center;
 `;
 
@@ -80,10 +84,10 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  height: 100%;
+  flex-direction: column; 
+  gap: 4px; 
+  width: 100%; 
+  height: 100%; 
 `;
 
 const StyledIcon = styled.div`
@@ -91,9 +95,9 @@ const StyledIcon = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.5rem; 
   span {
-    font-size: 0.8rem;
-    margin-top: 4px;
+    font-size: 0.8rem; 
+    margin-top: 4px; 
   }
 `;
