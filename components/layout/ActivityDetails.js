@@ -1,9 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { fetchWeatherData } from "@/lib/weather";
-import { Unlock } from "next/font/google";
 import { useSession } from "next-auth/react";
 import {
   FaShoppingBag,
@@ -48,7 +47,6 @@ function getWeatherIcon(condition) {
 }
 
 export default function ActivityDetails({
-  activity,
   title,
   imageUrl,
   area,
