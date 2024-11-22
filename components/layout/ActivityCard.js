@@ -11,6 +11,7 @@ export default function ActivityCard({
   isBookmarked,
   toggleBookmark,
   showHeart = true,
+  activity,
 }) {
   return (
     <StyledArticle data-testid="activity">
@@ -40,12 +41,12 @@ export default function ActivityCard({
       </StyledImageContainer>
 
       <StyledList>
-
         {Array.isArray(categories) &&
           categories.map((category) => (
-            <StyledListItem key={category}>{category}</StyledListItem>
+            <StyledListItem key={category} data-testid="category">
+              {category}
+            </StyledListItem>
           ))}
-
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>

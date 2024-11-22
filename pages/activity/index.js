@@ -111,14 +111,17 @@ export default function HomePage({
       {showFilter && (
         <ActivityFilter filter={filter} handleFilter={handleFilter} />
       )}
-
-      <ActivityList
-        activities={listedActivities}
-        handleFilter={handleFilter}
-        bookmarks={bookmarks}
-        toggleBookmark={toggleBookmark}
-        handleResetFilter={handleResetFilter}
-      />
+      {listedActivities.length === 0 ? (
+        <p>No activities found</p>
+      ) : (
+        <ActivityList
+          activities={listedActivities}
+          handleFilter={handleFilter}
+          bookmarks={bookmarks}
+          toggleBookmark={toggleBookmark}
+          handleResetFilter={handleResetFilter}
+        />
+      )}
     </>
   );
 }

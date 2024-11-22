@@ -23,7 +23,7 @@ export default function ActivityList({
             const isBookmarked = bookmarks?.includes(activity._id) || false;
 
             return (
-              <li key={activity._id}>
+              <li key={activity}>
                 <ActivityCard
                   {...activity}
                   toggleBookmark={() => toggleBookmark(activity._id)}
