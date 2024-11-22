@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { fetchWeatherData } from "@/lib/weather";
 import { Unlock } from "next/font/google";
@@ -17,6 +17,8 @@ import {
   FaSun,
   FaSnowflake,
   FaCloud,
+  FaArrowLeft,
+  FaArrowRight,
 } from "react-icons/fa";
 
 import Button from "../ui/Button";
@@ -96,7 +98,13 @@ export default function ActivityDetails({
     setMainImage(url);
     mutate();
   }
+  const imageListRef = useRef(null);
 
+  function handleScroll(offset) {
+    if (imageListRef.current) {
+      imageListRef.current.scrollBy(offset, 0);
+    }
+  }
   return (
     <StyledContainer>
       <StyledDetails>
@@ -126,20 +134,28 @@ export default function ActivityDetails({
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
-        <StyledUl>
-          {imageUrl?.map((url, index) => (
-            <StyledLi key={index}>
-              <StyledImage
-                key={url}
-                src={url}
-                alt={title}
-                width={150}
-                height={100}
-                onClick={() => handleSetMainImage(url)}
-              />
-            </StyledLi>
-          ))}
-        </StyledUl>
+        <StyledImageSlider>
+          <StyledPrevButton onClick={() => handleScroll(-150)}>
+            <FaArrowLeft />
+          </StyledPrevButton>
+          <StyledUl ref={imageListRef}>
+            {imageUrl?.map((url, index) => (
+              <StyledLi key={index}>
+                <StyledImage
+                  key={url}
+                  src={url}
+                  alt={title}
+                  width={150}
+                  height={100}
+                  onClick={() => handleSetMainImage(url)}
+                />
+              </StyledLi>
+            ))}
+          </StyledUl>
+          <StyledNextButton onClick={() => handleScroll(150)}>
+            <FaArrowRight />
+          </StyledNextButton>
+        </StyledImageSlider>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
           <StyledList>
@@ -392,13 +408,7 @@ const StyledWeather = styled.div`
     background-color: #f1f1f1;
   }
 `;
-const StyledUl = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  list-style: none;
-  width: 100%;
-`;
+
 const StyledLi = styled.li`
   padding: 4px 8px;
   width: 150px;
@@ -408,4 +418,38 @@ const StyledLi = styled.li`
 const StyledImage = styled(Image)`
   border-radius: 4px;
   cursor: pointer;
+`;
+const StyledUl = styled.ul`
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: 8px;
+  gap: 8px;
+`;
+
+const StyledArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+const StyledPrevButton = styled(StyledArrowButton)`
+  left: 0;
+`;
+
+const StyledNextButton = styled(StyledArrowButton)`
+  right: 0;
+`;
+const StyledImageSlider = styled.div`
+  position: relative;
+  background-color: #f1f1f1;
 `;
