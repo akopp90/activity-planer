@@ -14,6 +14,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const NUM_OF_RANDOM_ACTIVITIES = 6;
+
   const {
     data: initialActivities,
     error,
@@ -33,6 +34,46 @@ export default function App({
       revalidateIfStale: true,
     }
   );
+  const [randomActivities, setRandomActivities] = useState([]);
+
+  function getRandomActivities(randomActivities) {
+    if (!randomActivities || randomActivities.length === 0) {
+      return [];
+    }
+
+    if (NUM_OF_RANDOM_ACTIVITIES >= randomActivities.length) {
+      return [...randomActivities];
+    }
+
+    const randomActivitiesList = [];
+
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * randomActivities.length);
+      const randomActivity = randomActivities[randomIndex];
+
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (activity) => randomActivity._id === activity._id
+      );
+
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
+      }
+    }
+
+    setRandomActivities(randomActivitiesList);
+  }
+
+  useEffect(() => {
+    if (initialActivities) {
+      getRandomActivities(initialActivities);
+    }
+  }, [initialActivities]);
+
+  useEffect(() => {
+    if (randomActivities.length === 0) {
+      getRandomActivities(initialActivities);
+    }
+  }, [randomActivities]);
 
   const [bookmarkedActivities, setBookmarkedActivities] = useLocalStorageState(
     "bookmarkedActivities",
@@ -159,6 +200,7 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
+
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
   return (
@@ -176,9 +218,12 @@ export default function App({
           handleAddActivity={handleAddActivity}
           handleEditActivity={handleEditActivity}
           handleDeleteActivity={handleDeleteActivity}
-          activities={
-            filter.length === 0 ? initialActivities : listedActivities
+          randomActivities={
+            (filter.length === 0) & (searchTerm === "")
+              ? randomActivities
+              : listedActivities
           }
+          activities={listedActivities}
           handleFilter={handleFilter}
           filter={filter}
           filteredActivities={listedActivities}
@@ -189,6 +234,7 @@ export default function App({
           handleResetFilter={handleResetFilter}
           initialActivities={initialActivities}
           mutate={mutate}
+          getRandomActivities={getRandomActivities}
           {...pageProps}
         />
         <ToastContainer />

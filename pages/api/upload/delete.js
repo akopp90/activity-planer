@@ -7,7 +7,7 @@ cloudinary.config({
 });
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "DELETE") {
     const { imageToDelete } = req.body;
     const publicId = imageToDelete
       .replace("https://res.cloudinary.com/", "")

@@ -27,10 +27,6 @@ const StyledButton = styled.button`
   display: flex;
   font: inherit;
   cursor: pointer;
-  position: ${(props) => (props.$deleteImage ? "relative" : "unset")};
-  z-index: ${(props) => (props.$deleteImage ? 1 : "unset")};
-  top: ${(props) => (props.$deleteImage ? 0 : "unset")};
-  right: ${(props) => (props.$deleteImage ? 0 : "unset")};
   padding: 0 16px;
   font-weight: bold;
   border-radius: 4px;
@@ -46,4 +42,12 @@ const StyledButton = styled.button`
       : props.$delete
       ? "#ff0000"
       : "#fff"};
+  ${(props) =>
+    props.$deleteImage &&
+    css`
+      position: relative;
+      z-index: 1;
+      top: 0;
+      right: 0;
+    `}
 `;

@@ -72,7 +72,7 @@ export default function ActivityDetails({
   createdBy,
 }) {
   const session = useSession();
-
+  const imageUrls = imageUrl ? imageUrl : [];
   const {
     data: weather,
     error,
@@ -85,7 +85,7 @@ export default function ActivityDetails({
   );
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [mainImage, setMainImage] = useState(imageUrl[0]);
+  const [mainImage, setMainImage] = useState(imageUrls[0]);
   function handleDelete() {
     setShowConfirm(true);
   }
@@ -111,16 +111,14 @@ export default function ActivityDetails({
     <StyledContainer>
       <StyledDetails>
         <StyledImageContainer>
-          {imageUrl ? (
-            <>
-              <Image
-                src={mainImage}
-                alt={title}
-                style={{ objectFit: "cover" }}
-                sizes="50vw"
-                fill
-              />
-            </>
+          {imageUrls ? (
+            <Image
+              src={mainImage}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="50vw"
+              fill
+            />
           ) : (
             <Image
               src="/images/no-image.svg"
@@ -141,8 +139,8 @@ export default function ActivityDetails({
             <FaArrowLeft />
           </StyledPrevButton>
           <StyledUl ref={imageListRef}>
-            {imageUrl?.map((url, index) => (
-              <StyledLi key={index}>
+            {imageUrls?.map((url) => (
+              <StyledLi key={url}>
                 <StyledImage
                   key={url}
                   src={url}

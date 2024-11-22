@@ -14,17 +14,14 @@ export default function ActivityPage({
   deleteActivity,
   showHeart,
   handleSearchInputChange,
-  listedActivities,
+  randomActivities,
   title,
-  activities,
-  initialActivities,
-  mutate,
 }) {
   const [showForm, setShowForm] = useState(false);
 
   const [showFilter, setShowFilter] = useState(false);
   const { data: session } = useSession();
-
+  const listedActivities = randomActivities;
   const activity = {
     id: "",
     title: "",
@@ -42,36 +39,6 @@ export default function ActivityPage({
 
   function handleToggleEdit() {
     setShowForm(!showForm);
-  }
-
-  const [randomActivities, setRandomActivities] = useState([]);
-  const NUM_OF_RANDOM_ACTIVITIES = 6;
-
-  useEffect(() => {
-    if (initialActivities) {
-      getRandomActivities();
-    }
-  }, [initialActivities]);
-
-  function getRandomActivities() {
-    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
-
-    const randomActivitiesList = [];
-
-    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * activities.length);
-      const randomActivity = activities[randomIndex];
-
-      const isAlreadyIncluded = randomActivitiesList.some(
-        (activity) => randomActivity._id === activity._id
-      );
-
-      if (!isAlreadyIncluded) {
-        randomActivitiesList.push(randomActivity);
-      }
-    }
-
-    setRandomActivities(randomActivitiesList);
   }
 
   return (
@@ -103,32 +70,9 @@ export default function ActivityPage({
             No Activities Found
           </NoActivitiesFoundContainer>
         ) : (
-          <></>
-        )}
-
-        {listedActivities && listedActivities.length > 0 && (
-          <ActivitiesContainer>
-            {listedActivities.map((activity) => {
-              const isBookmarked = bookmarks?.includes(activity._id) || false;
-
-              return (
-                <ActivityCard
-                  key={activity._id}
-                  {...activity}
-                  deleteActivity={deleteActivity}
-                  toggleBookmark={() => toggleBookmark(activity._id)}
-                  isBookmarked={isBookmarked}
-                  showHeart={showHeart}
-                />
-              );
-            })}
-          </ActivitiesContainer>
-        )}
-
-        {!listedActivities ||
-          (listedActivities.length === 0 && (
-            <RandomActivitiesContainer>
-              {randomActivities.map((activity) => {
+          listedActivities?.length > 0 && (
+            <ActivitiesContainer>
+              {listedActivities.map((activity) => {
                 const isBookmarked = bookmarks?.includes(activity._id) || false;
 
                 return (
@@ -142,8 +86,9 @@ export default function ActivityPage({
                   />
                 );
               })}
-            </RandomActivitiesContainer>
-          ))}
+            </ActivitiesContainer>
+          )
+        )}
       </Container>
     </>
   );

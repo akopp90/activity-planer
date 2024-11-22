@@ -18,7 +18,7 @@ export default function ActivityForm({
 }) {
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
-  const [url, setUrl] = useState(activity.imageUrl);
+  const [urls, setsUrl] = useState(activity.imageUrl);
   const session = useSession();
   const { status, data } = useSession({
     required: true,
@@ -35,12 +35,11 @@ export default function ActivityForm({
     const importantInformation = formData.importantinformation.split(",");
     const whatToBring = formData.whattobring.split(",");
     const createdBy = session.data.user.id;
-    console.log(url);
     const newActivity = {
       ...activityData,
       _id: activity._id ? activity._id : null,
       categories: categories,
-      imageUrl: url,
+      imageUrl: urls,
       includes: includes[0] !== "" ? includes : ["no information"],
       notSuitableFor:
         notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
@@ -72,7 +71,7 @@ export default function ActivityForm({
         },
         _id: activity._id ? activity._id : null,
         categories: categories,
-        imageUrl: url,
+        imageUrl: urls,
         includes: includes[0] !== "" ? includes : ["no information"],
         notSuitableFor:
           notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
@@ -97,7 +96,7 @@ export default function ActivityForm({
 
   async function handleUpload(event) {
     try {
-      if (url.length >= 5) {
+      if (urls.length >= 5) {
         showToast("You can only upload up to 5 images", "error");
         return;
       }
@@ -112,7 +111,7 @@ export default function ActivityForm({
           return;
         }
 
-        if (url.length + images.length > 5) {
+        if (urls.length + images.length > 5) {
           showToast("You can only upload up to 5 images", "error");
           return;
         }
@@ -129,13 +128,30 @@ export default function ActivityForm({
         uploadedUrls.push(result[0].secure_url);
       }
 
-      setUrl((prev) => [...prev, ...uploadedUrls]);
+      setUrls((prev) => [...prev, ...uploadedUrls]);
       showToast("Images uploaded successfully", "success");
       return;
     } catch (error) {
       showToast("Please select a file!", "info");
       return;
     }
+  }
+
+  async function handleDeleteImage(imageUrl) {
+    await fetch("/api/upload/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageUrl }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUrls(urls.filter((image) => image !== imageUrl));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function handleSelectCategory(event) {
@@ -153,24 +169,6 @@ export default function ActivityForm({
   function handleCancel() {
     handleToggleEdit();
     setCategories([]);
-  }
-
-  function handleDeleteImage(imageToDelete) {
-    fetch("/api/upload/delete", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ imageToDelete }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setUrl(url.filter((image) => image !== imageToDelete));
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }
 
   return (
@@ -233,7 +231,7 @@ export default function ActivityForm({
       <Input name="Country" defaultValue={activity.country}>
         Activity country
       </Input>
-      {url.length < 5 ? (
+      {urls.length < 5 ? (
         <Upload name="Image" multiple onChange={handleUpload}>
           Activity Image
         </Upload>
@@ -242,8 +240,8 @@ export default function ActivityForm({
       )}
 
       <StyledList>
-        {url &&
-          url.map((url) => (
+        {urls &&
+          urls.map((url) => (
             <StyledImageList key={url}>
               <StyledDeleteImage>
                 <StyledImage

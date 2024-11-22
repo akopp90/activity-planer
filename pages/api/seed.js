@@ -11,7 +11,6 @@ export default async function handler(req, res) {
 
   try {
     await connectToDatabase();
-    console.log("Attempting to insert activities");
 
     const session = await getSession({ req });
     if (!session) {
@@ -29,7 +28,6 @@ export default async function handler(req, res) {
     }));
 
     const result = await Activity.insertMany(activitiesWithCreatedBy);
-    console.log(result);
 
     showToast("Activities seeded successfully", "success");
     return res.status(200).json({

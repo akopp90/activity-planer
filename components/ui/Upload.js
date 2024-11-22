@@ -9,8 +9,8 @@ function Upload({ name, isRequired, children, onChange, multiple }) {
   };
 
   const handleDrop = (event) => {
-    e.preventDefault();
-    const files = evenzt.dataTransfer.files;
+    event.preventDefault();
+    const files = event.dataTransfer.files;
     inputRef.current.files = files;
     onChange(event);
   };
