@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { fetchWeatherData } from "@/lib/weather";
 import { Unlock } from "next/font/google";
+import { useSession } from "next-auth/react";
 import {
   FaShoppingBag,
   FaThumbsDown,
@@ -9,6 +12,11 @@ import {
   FaBook,
   FaCheckCircle,
   FaTimesCircle,
+  FaCloudRain,
+  FaMoon,
+  FaSun,
+  FaSnowflake,
+  FaCloud,
 } from "react-icons/fa";
 
 import Button from "../ui/Button";
@@ -20,7 +28,25 @@ const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
 });
 
+function getWeatherIcon(condition) {
+  switch (condition) {
+    case "Sunny":
+      return <FaSun color="gold" />;
+    case "Cloudy":
+      return <FaCloud color="gray" />;
+    case "Rainy":
+      return <FaCloudRain color="blue" />;
+    case "Snowy":
+      return <FaSnowflake color="lightblue" />;
+    case "Clear Night":
+      return <FaMoon color="navy" />;
+    default:
+      return <FaCloud color="gray" />;
+  }
+}
+
 export default function ActivityDetails({
+  activity,
   title,
   imageUrl,
   area,
@@ -28,7 +54,7 @@ export default function ActivityDetails({
   description,
   country,
   categories,
-  id,
+  _id,
   deleteActivity,
   duration,
   numberOfPeople,
@@ -42,6 +68,18 @@ export default function ActivityDetails({
   isBookmarked,
   showHeart = true,
 }) {
+  const session = useSession();
+  const {
+    data: weather,
+    error,
+    isLoading,
+  } = useSWR(
+    location?.lat && location?.lon
+      ? ["weather", location.lat, location.lon]
+      : null,
+    ([, lat, lon]) => fetchWeatherData(lat, lon)
+  );
+
   const [showConfirm, setShowConfirm] = useState(false);
   function handleDelete() {
     setShowConfirm(true);
@@ -50,7 +88,7 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   function confirmDelete() {
-    deleteActivity(id);
+    deleteActivity(_id);
     setShowConfirm(false);
   }
 
@@ -76,7 +114,7 @@ export default function ActivityDetails({
           )}
 
           {showHeart && (
-            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
+            <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
               <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
             </StyledHeartIconContainer>
           )}
@@ -88,6 +126,21 @@ export default function ActivityDetails({
               <StyledListItem key={category}>{category}</StyledListItem>
             ))}
           </StyledList>
+
+          <StyledWeather>
+            <div>
+              {weather ? (
+                <>
+                  <p>
+                    {weather.temperature} {getWeatherIcon(weather.condition)}
+                  </p>
+                </>
+              ) : (
+                <p>Loading weather data...</p>
+              )}
+            </div>
+          </StyledWeather>
+
           <StyledLocation>
             {area}, {country}
           </StyledLocation>
@@ -172,21 +225,26 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-          {!showConfirm ? (
-            <StyledDeleteContainer>
-              <Button onClick={handleDelete}>Delete</Button>
-            </StyledDeleteContainer>
-          ) : (
-            <StyledDeleteContainer $isDelete>
-              <p>Are you sure, that you want to delete?</p>
-              <StyledButtonContainer>
-                <Button onClick={cancelDelete}>Cancel</Button>
-                <Button isDeleting onClick={confirmDelete}>
-                  Confirm
-                </Button>
-              </StyledButtonContainer>
-            </StyledDeleteContainer>
-          )}
+          {status === "authenticated" &&
+            data.user?.id === activity.createdBy && (
+              <>
+                {!showConfirm ? (
+                  <StyledDeleteContainer>
+                    <Button onClick={handleDelete}>Delete</Button>
+                  </StyledDeleteContainer>
+                ) : (
+                  <StyledDeleteContainer $isDelete>
+                    <p>Are you sure, that you want to delete?</p>
+                    <StyledButtonContainer>
+                      <Button onClick={cancelDelete}>Cancel</Button>
+                      <Button isDeleting onClick={confirmDelete}>
+                        Confirm
+                      </Button>
+                    </StyledButtonContainer>
+                  </StyledDeleteContainer>
+                )}
+              </>
+            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -194,6 +252,9 @@ export default function ActivityDetails({
 }
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px;
 `;
 const StyledDetails = styled.article`
@@ -214,12 +275,10 @@ const StyledTitle = styled.h2`
   font-size: 1.5rem;
   margin: 16px 0;
 `;
-
 const StyledSubtitle = styled.h3`
   font-size: 1.2rem;
   margin: 16px 0;
 `;
-
 const StyledList = styled.ul`
   gap: 8px;
   display: flex;
@@ -298,4 +357,17 @@ const StyledTitleIcon = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 7px;
+`;
+
+const StyledWeather = styled.div`
+  display: flex;
+  margin: 16px 0;
+  list-style: none;
+  border-radius: 8px;
+
+  p {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+  }
 `;

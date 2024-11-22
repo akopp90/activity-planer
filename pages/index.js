@@ -1,19 +1,29 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import Button from "@/components/ui/Button";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { FaSearch } from "react-icons/fa";
+import Search from "@/components/layout/Search";
+import { FaKey, FaSearch } from "react-icons/fa";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
-  activities,
   toggleBookmark,
   bookmarks,
   deleteActivity,
   showHeart,
+  handleSearchInputChange,
+  listedActivities,
+  title,
+  activities,
+  initialActivities,
+  mutate,
 }) {
   const [showForm, setShowForm] = useState(false);
+
   const [showFilter, setShowFilter] = useState(false);
+  const { data: session } = useSession();
 
   const activity = {
     id: "",
@@ -33,81 +43,121 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
+
   const [randomActivities, setRandomActivities] = useState([]);
   const NUM_OF_RANDOM_ACTIVITIES = 6;
 
   useEffect(() => {
-    function getRandomActivities() {
-      const randomActivitiesList = [];
+    if (initialActivities) {
+      getRandomActivities();
+    }
+  }, [initialActivities]);
 
-      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
+  function getRandomActivities() {
+    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
 
-      while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-        const randomIndex = Math.floor(Math.random() * activities.length);
-        const randomActivity = activities[randomIndex];
+    const randomActivitiesList = [];
 
-        const isAlreadyIncluded = randomActivitiesList.some(
-          (ac) => randomActivity.id === ac.id
-        );
+    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
+      const randomIndex = Math.floor(Math.random() * activities.length);
+      const randomActivity = activities[randomIndex];
 
-        if (!isAlreadyIncluded) {
-          randomActivitiesList.push(randomActivity);
-        }
+      const isAlreadyIncluded = randomActivitiesList.some(
+        (activity) => randomActivity._id === activity._id
+      );
+
+      if (!isAlreadyIncluded) {
+        randomActivitiesList.push(randomActivity);
       }
-
-      return randomActivitiesList;
     }
 
-    setRandomActivities(getRandomActivities());
-  }, [activities]);
-
+    setRandomActivities(randomActivitiesList);
+  }
 
   return (
     <>
       <Header>Activity Planner</Header>
-
+      {!session ? (
+        <StyledLink href="/auth/signin">
+          <FaKey />
+        </StyledLink>
+      ) : (
+        <LogoutContainer>
+          <LogoutButton />
+        </LogoutContainer>
+      )}
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <SearchBarContainer>
-          <SearchIconContainer>
-            <FaSearch size={20} />
-          </SearchIconContainer>
-          <SearchInput placeholder="Search activities..." />
-          <SearchButtonContainer>
-            <Button isPrimary>Search</Button>
-          </SearchButtonContainer>
-        </SearchBarContainer>
+        <Search onChange={(event) => handleSearchInputChange(event)} />
+        <h2>{title}</h2>
+        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
-        <ActivitiesTitle>Random Activities</ActivitiesTitle>
+        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer>
+            No Activities Found
+          </NoActivitiesFoundContainer>
+        ) : (
+          <></>
+        )}
 
-        <RandomActivitiesContainer>
-          {randomActivities.map((activity) => {
-            const isBookmarked = bookmarks?.includes(activity.id) || false;
+        {listedActivities && listedActivities.length > 0 && (
+          <ActivitiesContainer>
+            {listedActivities.map((activity) => {
+              const isBookmarked = bookmarks?.includes(activity._id) || false;
 
-            return (
-              <ActivityCard
-                key={activity.id}
-                {...activity}
-                deleteActivity={deleteActivity}
-                toggleBookmark={() => toggleBookmark(activity.id)}
-                isBookmarked={isBookmarked}
-                showHeart={showHeart}
-              />
-            );
-          })}
-        </RandomActivitiesContainer>
+              return (
+                <ActivityCard
+                  key={activity._id}
+                  {...activity}
+                  deleteActivity={deleteActivity}
+                  toggleBookmark={() => toggleBookmark(activity._id)}
+                  isBookmarked={isBookmarked}
+                  showHeart={showHeart}
+                />
+              );
+            })}
+          </ActivitiesContainer>
+        )}
+
+        {!listedActivities ||
+          (listedActivities.length === 0 && (
+            <RandomActivitiesContainer>
+              {randomActivities.map((activity) => {
+                const isBookmarked = bookmarks?.includes(activity._id) || false;
+
+                return (
+                  <ActivityCard
+                    key={activity._id}
+                    {...activity}
+                    deleteActivity={deleteActivity}
+                    toggleBookmark={() => toggleBookmark(activity._id)}
+                    isBookmarked={isBookmarked}
+                    showHeart={showHeart}
+                  />
+                );
+              })}
+            </RandomActivitiesContainer>
+          ))}
       </Container>
     </>
   );
 }
+const ActivitiesContainer = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin-bottom: 50px;
 
-const StyledSection = styled.section`
-  display: flex;
-  padding: 0 24px;
-  justify-content: flex-end;
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: 1050px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 `;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -121,28 +171,6 @@ const SloganContainer = styled.section`
   text-align: center;
 `;
 
-const SearchBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: solid 1px gray;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: white;
-  width: 90%;
-  max-width: 600px;
-`;
-
-const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;
-`;
-
-const SearchButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
-`;
 const ActivitiesTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 700;
@@ -154,15 +182,7 @@ const ActivitiesTitle = styled.h2`
   padding-left: 16px;
 `;
 
-const SearchInput = styled.input`
-  font-size: 0.9rem;
-  border-radius: 0.5rem;
-  outline: none;
-  border: none;
-  flex-grow: 1;
-  padding: 0.5rem;
-  width: 100%;
-`;
+const NoActivitiesFoundContainer = styled.div``;
 
 const RandomActivitiesContainer = styled.div`
   display: grid;
@@ -178,4 +198,18 @@ const RandomActivitiesContainer = styled.div`
   @media (min-width: 1050px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
+`;
+const StyledLink = styled(Link)`
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 16px;
+  position: absolute;
+  top: 80px;
+  right: 24px;
+`;
+const LogoutContainer = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 24px;
 `;

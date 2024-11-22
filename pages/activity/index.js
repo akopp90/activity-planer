@@ -6,17 +6,30 @@ import Header from "@/components/layout/Header";
 import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
+import Search from "@/components/layout/Search";
+import { useSession } from "next-auth/react";
+import LogoutButton from "@/components/layout/LogoutButton";
+import { FaKey, FaSearch } from "react-icons/fa";
+import Link from "next/link";
 
 export default function HomePage({
   handleAddActivity,
-  activities,
   bookmarks,
   toggleBookmark,
   handleFilter,
   filter,
+  filteredActivities,
+  handleSearchInputChange,
+  handleResetFilter,
+  activities,
+  mutate,
+  listedActivities,
 }) {
+  const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const activity = {
     id: "",
@@ -31,6 +44,8 @@ export default function HomePage({
     country: "",
     description: "",
     imageUrl: "",
+    duration: "",
+    numberOfPeople: "",
     fullDescription: "",
     includes: "",
     notSuitableFor: "",
@@ -38,29 +53,56 @@ export default function HomePage({
     whatToBring: "",
     notAllowed: "",
   };
-
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
 
+  function toggleSearchVisibility() {
+    setIsSearchVisible((prevState) => !prevState);
+  }
+  if (!activities) return <div>Loading...</div>;
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
       <Header>Activity Planner</Header>
-
       <StyledSection>
-        <Button onClick={handleToggleEdit} isPrimary>
-          New activity
-        </Button>
+        <SearchIconContainer onClick={toggleSearchVisibility}>
+          <FaSearch size={20} />
+        </SearchIconContainer>
+
         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
+
+        {session ? (
+          <>
+            <Button onClick={handleToggleEdit} isPrimary>
+              New activity
+            </Button>
+            <LogoutButton />
+          </>
+        ) : (
+          <StyledLink href="/auth/signin">
+            <FaKey />
+          </StyledLink>
+        )}
       </StyledSection>
+
+      {isSearchVisible && (
+        <Search
+          filteredActivities={filteredActivities}
+          onChange={(event) => handleSearchInputChange(event)}
+        />
+      )}
+
       {showForm && (
         <ActivityForm
-          handleAddActivity={handleAddActivity}
+          handleAddActivity={(newActivity) => {
+            handleAddActivity(newActivity);
+            mutate();
+          }}
           handleToggleEdit={handleToggleEdit}
           setShowForm={setShowForm}
           activity={activity}
@@ -71,10 +113,11 @@ export default function HomePage({
       )}
 
       <ActivityList
-        activities={activities}
+        activities={listedActivities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         toggleBookmark={toggleBookmark}
+        handleResetFilter={handleResetFilter}
       />
     </>
   );
@@ -85,4 +128,29 @@ const StyledSection = styled.section`
   display: flex;
   padding: 0 24px;
   justify-content: flex-end;
+`;
+
+const SearchIconContainer = styled.div`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  top: 100px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 16px;
 `;
