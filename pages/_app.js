@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import Footer from "@/components/layout/Footer";
@@ -36,44 +36,32 @@ export default function App({
   );
   const [randomActivities, setRandomActivities] = useState([]);
 
-  function getRandomActivities(randomActivities) {
-    if (!randomActivities || randomActivities.length === 0) {
-      return [];
-    }
-
-    if (NUM_OF_RANDOM_ACTIVITIES >= randomActivities.length) {
-      return [...randomActivities];
-    }
-
-    const randomActivitiesList = [];
-
-    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * randomActivities.length);
-      const randomActivity = randomActivities[randomIndex];
-
-      const isAlreadyIncluded = randomActivitiesList.some(
-        (activity) => randomActivity._id === activity._id
-      );
-
-      if (!isAlreadyIncluded) {
-        randomActivitiesList.push(randomActivity);
+  const getRandomActivities = useCallback(
+    (activities) => {
+      if (!activities || activities.length === 0) {
+        return [];
       }
-    }
 
-    setRandomActivities(randomActivitiesList);
-  }
+      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) {
+        return [...activities];
+      }
+
+      const randomActivitiesSet = new Set();
+      while (randomActivitiesSet.size < NUM_OF_RANDOM_ACTIVITIES) {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        randomActivitiesSet.add(activities[randomIndex]);
+      }
+
+      return Array.from(randomActivitiesSet);
+    },
+    [NUM_OF_RANDOM_ACTIVITIES]
+  );
 
   useEffect(() => {
     if (initialActivities) {
-      getRandomActivities(initialActivities);
+      setRandomActivities(getRandomActivities(initialActivities));
     }
-  }, [initialActivities]);
-
-  useEffect(() => {
-    if (randomActivities.length === 0) {
-      getRandomActivities(initialActivities);
-    }
-  }, [randomActivities]);
+  }, [initialActivities, getRandomActivities]);
 
   const [bookmarkedActivities, setBookmarkedActivities] = useLocalStorageState(
     "bookmarkedActivities",
@@ -114,7 +102,7 @@ export default function App({
     } else {
       console.error("initialActivities is not an array");
     }
-  }, [searchTerm, initialActivities, filter]);
+  }, [initialActivities, filter, searchTerm]);
 
   async function handleAddActivity(newActivity) {
     try {
