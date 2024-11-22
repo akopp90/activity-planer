@@ -7,7 +7,7 @@ import { render, screen } from "@testing-library/react";
 
 describe("2.1 The widget should be hidden by default on page load", () => {
   test("Filter hidden", () => {
-    render(<HomePage activities={[]} filter={[]} />);
+    render(<HomePage listedActivities={[]} filter={[]} />);
     // expect(screen.queryByText("Filter activities")).not.toBeInTheDocument();
 
     // More reliable solution
@@ -25,7 +25,7 @@ describe("2.2 Clicking the toggle button opens/hides the filter widget", () => {
     ];
     const user = userEvent.setup();
 
-    render(<HomePage activities={activities} filter={[]} />);
+    render(<HomePage listedActivities={activities} filter={[]} />);
 
     const button = screen.getByRole("button", { name: /Filter/i });
     expect(button).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe("2.3 The widget remains open if filters are applied", () => {
 
     render(
       <HomePage
-        activities={activities}
+        listedActivities={activities}
         filter={[]}
         handleFilter={handleFilter}
       />
@@ -161,7 +161,7 @@ describe("3.4 Selecting a filter that does not match any activities displays a m
         categories: ["Winter"],
       },
     ];
-    render(<HomePage activities={activities} filter={["Outdoor"]} />);
+    render(<HomePage listedActivities={activities} filter={["Outdoor"]} />);
     expect(screen.getByText("No activities found")).toBeInTheDocument();
   });
 });
