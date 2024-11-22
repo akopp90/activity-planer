@@ -21,7 +21,6 @@ export default function HomePage({
   filteredActivities,
   handleSearchInputChange,
   handleResetFilter,
-  activities,
   mutate,
   listedActivities,
 }) {
@@ -60,7 +59,10 @@ export default function HomePage({
   function toggleSearchVisibility() {
     setIsSearchVisible((prevState) => !prevState);
   }
-  if (!activities) return <div>Loading...</div>;
+  if (!listedActivities) return <div>Loading...</div>;
+  if (filteredActivities.length === 0) {
+    return <p>No activities found</p>;
+  }
   return (
     <>
       <Head>
@@ -75,7 +77,7 @@ export default function HomePage({
         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
-
+        {filteredActivities.length === 0 && <p>No activities found</p>}
         {session ? (
           <>
             <Button onClick={handleToggleEdit} isPrimary>
