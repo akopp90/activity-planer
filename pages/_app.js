@@ -55,19 +55,23 @@ export default function App({
       )
     : [];
   useEffect(() => {
-    if (searchTerm) {
-      setListedActivities(
-        initialActivities?.filter((activity) =>
-          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
+    if (Array.isArray(initialActivities)) {
+      if (searchTerm) {
+        setListedActivities(
+          initialActivities.filter((activity) =>
+            activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+      } else {
+        const filteredActivities = initialActivities.filter(
+          ({ categories }) =>
+            filter.length === 0 ||
+            categories.some((category) => filter.includes(category))
+        );
+        setListedActivities(filteredActivities);
+      }
     } else {
-      const filteredActivities = initialActivities?.filter(
-        ({ categories }) =>
-          filter.length === 0 ||
-          categories.some((category) => filter.includes(category))
-      );
-      setListedActivities(filteredActivities);
+      console.error("initialActivities is not an array");
     }
   }, [searchTerm, initialActivities, filter]);
 
