@@ -4,15 +4,15 @@ import { useRef } from "react";
 function Upload({ name, isRequired, children, onChange, multiple }) {
   const inputRef = useRef(null);
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
+  const handleDragOver = (event) => {
+    event.preventDefault();
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (event) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
+    const files = evenzt.dataTransfer.files;
     inputRef.current.files = files;
-    onChange(e);
+    onChange(event);
   };
 
   return (
