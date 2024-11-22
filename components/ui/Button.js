@@ -6,6 +6,7 @@ export default function Button({
   isPrimary,
   isDeleting,
   children,
+  deleteImage,
 }) {
   return (
     <StyledButton
@@ -13,6 +14,7 @@ export default function Button({
       onClick={onClick}
       $primary={isPrimary}
       $delete={isDeleting}
+      $deleteImage={deleteImage}
     >
       {children}
     </StyledButton>
@@ -25,6 +27,10 @@ const StyledButton = styled.button`
   display: flex;
   font: inherit;
   cursor: pointer;
+  position: ${(props) => (props.$deleteImage ? "relative" : "unset")};
+  z-index: ${(props) => (props.$deleteImage ? 1 : "unset")};
+  top: ${(props) => (props.$deleteImage ? 0 : "unset")};
+  right: ${(props) => (props.$deleteImage ? 0 : "unset")};
   padding: 0 16px;
   font-weight: bold;
   border-radius: 4px;

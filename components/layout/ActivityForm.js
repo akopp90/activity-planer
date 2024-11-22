@@ -97,6 +97,11 @@ export default function ActivityForm({
 
   async function handleUpload(event) {
     try {
+      if (url.length >= 5) {
+        showToast("You can only upload up to 5 images", "error");
+        return;
+      }
+
       const images = event.target.files;
       const maxSize = 5 * 1024 * 1024; // 5MB in bytes
       const uploadedUrls = [];
@@ -104,6 +109,11 @@ export default function ActivityForm({
       for (const image of images) {
         if (image.size > maxSize) {
           showToast("File size must be less than 5MB", "error");
+          return;
+        }
+
+        if (url.length + images.length > 5) {
+          showToast("You can only upload up to 5 images", "error");
           return;
         }
 
@@ -143,6 +153,24 @@ export default function ActivityForm({
   function handleCancel() {
     handleToggleEdit();
     setCategories([]);
+  }
+
+  function handleDeleteImage(imageToDelete) {
+    fetch("/api/upload/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageToDelete }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setUrl(url.filter((image) => image !== imageToDelete));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -205,22 +233,29 @@ export default function ActivityForm({
       <Input name="Country" defaultValue={activity.country}>
         Activity country
       </Input>
+      {url.length < 5 ? (
+        <Upload name="Image" multiple onChange={handleUpload}>
+          Activity Image
+        </Upload>
+      ) : (
+        <StyledParagraph>Only 5 images can be uploaded</StyledParagraph>
+      )}
 
-      <Upload name="Image" multiple onChange={handleUpload}>
-        Activity Image
-      </Upload>
       <StyledList>
         {url &&
           url.map((url) => (
-            <li key={url}>
-              <Image
-                src={url}
-                alt="Uploaded image"
-                width={150}
-                height={100}
-                key={url}
-              />
-            </li>
+            <StyledImageList key={url}>
+              <StyledDeleteImage>
+                <StyledImage
+                  src="/images/delete.svg"
+                  width={16}
+                  height={16}
+                  alt="Delete image"
+                  onClick={() => handleDeleteImage(url)}
+                />
+              </StyledDeleteImage>
+              <Image src={url} alt="Uploaded image" width={150} height={100} />
+            </StyledImageList>
           ))}
       </StyledList>
 
@@ -307,4 +342,22 @@ const StyledBottomDiv = styled.div`
   gap: 8px;
   display: flex;
   flex-wrap: wrap;
+`;
+const StyledImageList = styled.li`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+const StyledDeleteImage = styled.div`
+  width: 150px;
+`;
+const StyledImage = styled(Image)`
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  top: 30px;
+  right: -130px;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
 `;

@@ -54,7 +54,6 @@ export default function App({
         categories.some((category) => filter.includes(category))
       )
     : [];
-
   useEffect(() => {
     if (searchTerm) {
       setListedActivities(
@@ -63,9 +62,14 @@ export default function App({
         )
       );
     } else {
-      setListedActivities(initialActivities);
+      const filteredActivities = initialActivities?.filter(
+        ({ categories }) =>
+          filter.length === 0 ||
+          categories.some((category) => filter.includes(category))
+      );
+      setListedActivities(filteredActivities);
     }
-  }, [searchTerm, initialActivities]);
+  }, [searchTerm, initialActivities, filter]);
 
   async function handleAddActivity(newActivity) {
     try {
@@ -169,11 +173,11 @@ export default function App({
           handleEditActivity={handleEditActivity}
           handleDeleteActivity={handleDeleteActivity}
           activities={
-            filter.length === 0 ? initialActivities : filteredActivities
+            filter.length === 0 ? initialActivities : listedActivities
           }
           handleFilter={handleFilter}
           filter={filter}
-          filteredActivities={filteredActivities}
+          filteredActivities={listedActivities}
           listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}
           searchTerm={searchTerm}
