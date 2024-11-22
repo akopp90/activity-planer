@@ -4,20 +4,21 @@ import styled from "styled-components";
 import { FaHeart } from "react-icons/fa";
 
 export default function ActivityCard({
-  id,
+  _id,
   title,
   categories,
   imageUrl,
   isBookmarked,
   toggleBookmark,
   showHeart = true,
+  activity,
 }) {
   return (
-    <StyledArticle>
+    <StyledArticle data-testid="activity">
       <StyledImageContainer>
         {imageUrl ? (
           <Image
-            src={imageUrl}
+            src={imageUrl[0]}
             alt={title}
             style={{ objectFit: "cover" }}
             sizes="33vw"
@@ -33,19 +34,22 @@ export default function ActivityCard({
         )}
 
         {showHeart && (
-          <StyledHeartIcon onClick={() => toggleBookmark(id)}>
+          <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
             <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
           </StyledHeartIcon>
         )}
       </StyledImageContainer>
 
       <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category}>{category}</StyledListItem>
-        ))}
+        {Array.isArray(categories) &&
+          categories.map((category) => (
+            <StyledListItem key={category} data-testid="category">
+              {category}
+            </StyledListItem>
+          ))}
       </StyledList>
 
-      <StyledLink href={`/activity/${id}`}>{title}</StyledLink>
+      <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>
     </StyledArticle>
   );
 }
@@ -76,7 +80,7 @@ const StyledHeartIcon = styled.div`
   text-shadow: 0 2px 2px #000;
 
   &:hover {
-    color: #ff4d4d; 
+    color: #ff4d4d;
   }
 `;
 

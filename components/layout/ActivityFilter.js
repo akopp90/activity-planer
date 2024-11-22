@@ -12,7 +12,7 @@ export default function ActivityFilter({ filter, handleFilter }) {
   }
 
   return (
-    <StyledSection>
+    <StyledSection data-testid="filter">
       <h2>Filter activities</h2>
       <StyledList>
         {categoryData.map((category) => (

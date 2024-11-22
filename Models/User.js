@@ -25,8 +25,9 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin", "moderator"],
       default: "user",
     },
-    image: String,
-    emailVerified: Date,
+
+    image: { type: String, default: "No information." },
+    emailVerified: { type: Date },
   },
   {
     timestamps: true,

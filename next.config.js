@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compiler: {
-    styledComponents: true,
+    styledComponents: false,
   },
+  transpilePackages: ["next-auth"],
   reactStrictMode: true,
   webpack(config) {
     config.module.rules.push({
@@ -13,6 +14,7 @@ const nextConfig = {
 
     return config;
   },
+
   images: {
     remotePatterns: [
       {

@@ -9,6 +9,7 @@ import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 
+
 export default function ActivityPage({
   activities,
   handleEditActivity,
@@ -16,19 +17,33 @@ export default function ActivityPage({
   toggleBookmark,
   bookmarks,
   showHeart = true,
+  mutate,
 }) {
   const router = useRouter();
   const { id } = router.query;
-  const activity = activities.find((activity) => activity.id === id);
   const [showForm, setShowForm] = useState(false);
-  const { data: session } = useSession();
   const [showConfirm, setShowConfirm] = useState(false);
+  const { status, data } = useSession();
+  if (status === "loading") {
+    return <p>Loading session...</p>;
+  }
+  if (!activities) return <p>Loading...</p>;
+  if (!Array.isArray(activities)) {
+    console.error("Activities is not an array");
+    return <p>Error: Activities is not an array</p>;
+  }
 
-  if (!activity) return <p>Loading...</p>;
+  const activity = activities.find((activity) => activity._id === id);
+  if (!activity) return <p>Activity not found</p>;
+
+  function deleteActivity(id) {
+    handleDeleteActivity(id);
+  }
 
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
+
 
   function handleDeleteClick() {
     setShowConfirm(true);
@@ -43,15 +58,20 @@ export default function ActivityPage({
     setShowConfirm(false);
   }
 
-  const isBookmarked = bookmarks?.includes(activity.id) || false;
+  const isBookmarked = bookmarks?.includes(activity._id) || false;
+
 
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
-      <Header />
+
       {session && (
+
+      <Header>Activity Details</Header>
+
+      {status === "authenticated" && data.user?.id === activity.createdBy && (
         <>
           {!showForm ? (
             <StyledSection>
@@ -68,11 +88,21 @@ export default function ActivityPage({
               </Button>
             </StyledSection>
           ) : (
-            <ActivityForm
-              handleToggleEdit={handleToggleEdit}
-              handleEditActivity={handleEditActivity}
-              activity={activity}
-            />
+            <>
+              <StyledSection>
+                <Button onClick={() => setShowForm(!showForm)} isPrimary>
+                  Edit activity
+                </Button>
+              </StyledSection>
+              <ActivityForm
+                handleToggleEdit={handleToggleEdit}
+                handleEditActivity={(newActivity) => {
+                  handleEditActivity(newActivity);
+                  mutate(`/api/activities`);
+                }}
+                activity={activity}
+              />
+            </>
           )}
         </>
       )}
@@ -94,7 +124,7 @@ export default function ActivityPage({
       <ActivityDetails
         {...activity}
         deleteActivity={handleDeleteActivity}
-        toggleBookmark={() => toggleBookmark(id)}
+        toggleBookmark={() => toggleBookmark(activity._id)}
         isBookmarked={isBookmarked}
         showHeart={showHeart}
       />

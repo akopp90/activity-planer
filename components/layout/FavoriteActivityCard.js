@@ -14,7 +14,10 @@ export default function FavoriteActivityCard({
 }) {
   return (
     <StyledFavoriteCard>
-      <StyledImage src={imageUrl} alt={title} sizes="50vw" fill />
+      {imageUrl.map((image, index) => (
+        <StyledImage key={image} src={image} sizes="50vw" fill />
+      ))}
+
       <CardHeader>
         <div>
           {categories.map((category) => (

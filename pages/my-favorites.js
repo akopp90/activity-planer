@@ -11,7 +11,7 @@ export default function MyFavoriteActivitiesPage({
 }) {
   const hasBookmarks = bookmarks.length > 0;
   const bookmarkedActivities = activities.filter((activity) =>
-    bookmarks?.includes(activity.id)
+    bookmarks?.includes(activity._id)
   );
 
   return (
@@ -25,7 +25,7 @@ export default function MyFavoriteActivitiesPage({
           {hasBookmarks ? (
             bookmarkedActivities.map((activity) => (
               <FavoriteActivityCard
-                key={activity.id}
+                key={activity._id}
                 {...activity}
                 isBookmarked={true}
                 toggleBookmark={toggleBookmark}

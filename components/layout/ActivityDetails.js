@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import useSWR from "swr";
+import { useRef, useState } from "react";
+import useSWR, { mutate } from "swr";
 import { fetchWeatherData } from "@/lib/weather";
 import { useSession } from "next-auth/react";
 import {
@@ -16,6 +16,8 @@ import {
   FaSun,
   FaSnowflake,
   FaCloud,
+  FaArrowLeft,
+  FaArrowRight,
 } from "react-icons/fa";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
@@ -51,7 +53,7 @@ export default function ActivityDetails({
   description,
   country,
   categories,
-  id,
+  _id,
   deleteActivity,
   duration,
   numberOfPeople,
@@ -64,8 +66,10 @@ export default function ActivityDetails({
   toggleBookmark,
   isBookmarked,
   showHeart = true,
+  createdBy,
 }) {
-  const { data: session } = useSession();
+  const session = useSession();
+  const imageUrls = imageUrl ? imageUrl : [];
   const {
     data: weather,
     error,
@@ -78,6 +82,7 @@ export default function ActivityDetails({
   );
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [mainImage, setMainImage] = useState(imageUrls[0]);
   function handleDelete() {
     setShowConfirm(true);
   }
@@ -85,17 +90,27 @@ export default function ActivityDetails({
     setShowConfirm(false);
   }
   function confirmDelete() {
-    deleteActivity(id);
+    deleteActivity(_id);
     setShowConfirm(false);
   }
+  function handleSetMainImage(url) {
+    setMainImage(url);
+    mutate();
+  }
+  const imageListRef = useRef(null);
 
+  function handleScroll(offset) {
+    if (imageListRef.current) {
+      imageListRef.current.scrollBy(offset, 0);
+    }
+  }
   return (
     <StyledContainer>
       <StyledDetails>
         <StyledImageContainer>
-          {imageUrl ? (
+          {imageUrls ? (
             <Image
-              src={imageUrl}
+              src={mainImage}
               alt={title}
               style={{ objectFit: "cover" }}
               sizes="50vw"
@@ -111,11 +126,33 @@ export default function ActivityDetails({
           )}
 
           {showHeart && (
-            <StyledHeartIconContainer onClick={() => toggleBookmark(id)}>
-              {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
+            <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
+              <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
+        <StyledImageSlider>
+          <StyledPrevButton onClick={() => handleScroll(-150)}>
+            <FaArrowLeft />
+          </StyledPrevButton>
+          <StyledUl ref={imageListRef}>
+            {imageUrls?.map((url) => (
+              <StyledLi key={url}>
+                <StyledImage
+                  key={url}
+                  src={url}
+                  alt={title}
+                  width={150}
+                  height={100}
+                  onClick={() => handleSetMainImage(url)}
+                />
+              </StyledLi>
+            ))}
+          </StyledUl>
+          <StyledNextButton onClick={() => handleScroll(150)}>
+            <FaArrowRight />
+          </StyledNextButton>
+        </StyledImageSlider>
         <StyledContainer>
           <StyledTitle>{title}</StyledTitle>
           <StyledList>
@@ -215,6 +252,27 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
+
+          {session.status === "authenticated" &&
+            session.data.user.id === createdBy && (
+              <StyledDeleteContainer>
+                {!showConfirm ? (
+                  <Button onClick={() => setShowConfirm(true)}>Delete</Button>
+                ) : (
+                  <>
+                    <p>Are you sure, that you want to delete?</p>
+                    <StyledButtonContainer>
+                      <Button onClick={() => setShowConfirm(false)}>
+                        Cancel
+                      </Button>
+                      <Button isDeleting onClick={confirmDelete}>
+                        Confirm
+                      </Button>
+                    </StyledButtonContainer>
+                  </>
+                )}
+              </StyledDeleteContainer>
+            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -222,6 +280,9 @@ export default function ActivityDetails({
 }
 
 const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   padding: 24px;
 `;
 const StyledDetails = styled.article`
@@ -326,3 +387,68 @@ const StyledExtraDescription = styled.ul`
   padding: 8px;
   list-style: circle;
 `;
+
+const StyledTitleIcon = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+`;
+
+const StyledWeather = styled.div`
+  display: flex;
+  margin: 16px 0;
+  list-style: none;
+  border-radius: 8px;
+
+  p {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+  }
+`;
+
+const StyledLi = styled.li`
+  padding: 4px 8px;
+  width: 150px;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+`;
+const StyledImage = styled(Image)`
+  border-radius: 4px;
+  cursor: pointer;
+`;
+const StyledUl = styled.ul`
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: 8px;
+  gap: 8px;
+`;
+
+const StyledArrowButton = styled.button`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+const StyledPrevButton = styled(StyledArrowButton)`
+  left: 0;
+`;
+
+const StyledNextButton = styled(StyledArrowButton)`
+  right: 0;
+`;
+const StyledImageSlider = styled.div`
+  position: relative;
+  background-color: #f1f1f1;
+`;
+

@@ -1,4 +1,3 @@
-import { uid } from "uid";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -8,6 +7,7 @@ import Textarea from "@/components/ui/Textarea";
 import { categories as categoryData } from "@/lib/categories";
 import Upload from "../ui/Upload";
 import { showToast } from "../ui/ToastMessage";
+import { useSession } from "next-auth/react";
 
 export default function ActivityForm({
   handleToggleEdit,
@@ -17,22 +17,38 @@ export default function ActivityForm({
 }) {
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
-  const [url, setUrl] = useState(activity.imageUrl);
+  const [urls, setUrls] = useState(activity.imageUrl);
+  const session = useSession();
+  const { status, data } = useSession({
+    required: true,
+  });
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const id = activity.id;
+    const id = activity._id;
     const formResponse = new FormData(event.target);
     const formData = Object.fromEntries(formResponse);
     const { image, ...activityData } = formData;
-
+    const includes = formData.includes.split(",");
+    const notSuitableFor = formData.notsuitablefor.split(",");
+    const importantInformation = formData.importantinformation.split(",");
+    const whatToBring = formData.whattobring.split(",");
+    const createdBy = session.data.user.id;
     const newActivity = {
       ...activityData,
-      id: id || uid(),
+      _id: activity._id ? activity._id : null,
       categories: categories,
-      imageUrl: url,
+      imageUrl: urls,
+      includes: includes[0] !== "" ? includes : ["no information"],
+      notSuitableFor:
+        notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+      importantInformation:
+        importantInformation[0] !== ""
+          ? importantInformation
+          : ["no information"],
+      whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
+      createdBy: createdBy,
     };
-
     const coordinatesRessource = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${formData.location}&format=jsonv2&limit=1&accept-language=en-US`
     );
@@ -52,12 +68,21 @@ export default function ActivityForm({
           lat: coordinatesResponse[0].lat,
           lon: coordinatesResponse[0].lon,
         },
-        id: id || uid(),
+        _id: activity._id ? activity._id : null,
         categories: categories,
-        imageUrl: url,
+        imageUrl: urls,
+        includes: includes[0] !== "" ? includes : ["no information"],
+        notSuitableFor:
+          notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+        importantInformation:
+          importantInformation[0] !== ""
+            ? importantInformation
+            : ["no information"],
+        whatToBring: whatToBring[0] !== "" ? whatToBring : ["no information"],
+        createdBy: createdBy,
       };
 
-      if (activity.id) {
+      if (activity._id) {
         handleEditActivity(newActivity);
       } else {
         handleAddActivity(newActivity);
@@ -70,28 +95,63 @@ export default function ActivityForm({
 
   async function handleUpload(event) {
     try {
-      const formData = new FormData();
-      const image = event.target.files[0];
-
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-      formData.append("image", image);
-      if (image.size > maxSize) {
-        showToast("File size must be less than 5MB", "error");
+      if (urls.length >= 5) {
+        showToast("You can only upload up to 5 images", "error");
         return;
       }
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
 
-      const { url } = await response.json();
-      setUrl(url);
-      showToast("Image uploaded successfully", "success");
+      const images = event.target.files;
+      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+      const uploadedUrls = [];
+
+      for (const image of images) {
+        if (image.size > maxSize) {
+          showToast("File size must be less than 5MB", "error");
+          return;
+        }
+
+        if (urls.length + images.length > 5) {
+          showToast("You can only upload up to 5 images", "error");
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        uploadedUrls.push(result[0].secure_url);
+      }
+
+      setUrls((prev) => [...prev, ...uploadedUrls]);
+      showToast("Images uploaded successfully", "success");
       return;
     } catch (error) {
-      showToast("Please selevt a file!", "info");
+      console.error(error);
+      showToast("Please select a file!", "info");
       return;
     }
+  }
+
+  async function handleDeleteImage(imageUrl) {
+    await fetch("/api/upload/delete", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageUrl }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUrls(urls.filter((image) => image !== imageUrl));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   function handleSelectCategory(event) {
@@ -172,17 +232,31 @@ export default function ActivityForm({
         Country
       </Input>
 
-      <Upload name="Image" onChange={handleUpload}>
-        Image
-      </Upload>
-      {url && (
-        <Image
-          src={url ? url : "/images/no-image.svg"}
-          alt="Uploaded image"
-          width={150}
-          height={100}
-        />
+      {urls.length < 5 ? (
+        <Upload name="Image" multiple onChange={handleUpload}>
+          Activity Image
+        </Upload>
+      ) : (
+        <StyledParagraph>Only 5 images can be uploaded</StyledParagraph>
       )}
+
+      <StyledList>
+        {urls &&
+          urls.map((url) => (
+            <StyledImageList key={url}>
+              <StyledDeleteImage>
+                <StyledImage
+                  src="/images/delete.svg"
+                  width={16}
+                  height={16}
+                  alt="Delete image"
+                  onClick={() => handleDeleteImage(url)}
+                />
+              </StyledDeleteImage>
+              <Image src={url} alt="Uploaded image" width={150} height={100} />
+            </StyledImageList>
+          ))}
+      </StyledList>
 
       <Textarea name="Description" defaultValue={activity.description}>
         Description
@@ -268,4 +342,22 @@ const StyledBottomDiv = styled.div`
   gap: 8px;
   display: flex;
   flex-wrap: wrap;
+`;
+const StyledImageList = styled.li`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+const StyledDeleteImage = styled.div`
+  width: 150px;
+`;
+const StyledImage = styled(Image)`
+  border-radius: 4px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  top: 30px;
+  right: -130px;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
 `;

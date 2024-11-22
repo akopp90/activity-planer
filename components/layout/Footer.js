@@ -7,7 +7,9 @@ export default function Footer() {
     <MenuFooterContainer>
       <StyledUl>
         <StyledLi>
+
         <StyledLink href={"/"}>
+
             <StyledIcon>
               <FaHome />
               <span>Home</span>
@@ -15,9 +17,11 @@ export default function Footer() {
           </StyledLink>
         </StyledLi>
         <StyledLi>
+
         <StyledLink href="/activity">
             <StyledIcon>
             <FaWalking />
+
               <span>Activities</span>
             </StyledIcon>
           </StyledLink>
@@ -53,7 +57,6 @@ const MenuFooterContainer = styled.div`
   justify-content: center;
   gap: 0; 
   overflow-x: hidden; 
-
   a {
     text-decoration: none;
     color: #000000;
@@ -66,6 +69,7 @@ const StyledUl = styled.ul`
   align-items: center;
   list-style: none;
   height: 65px;
+
   width: 100%; 
   margin: 0; 
   padding: 0; 

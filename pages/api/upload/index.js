@@ -23,13 +23,31 @@ export default async function handler(request, response) {
 
   const [fields, files] = await form.parse(request);
 
-  const file = files.image[0];
-  const { newFilename, filepath } = file;
+  const results = [];
 
-  const result = await cloudinary.v2.uploader.upload(filepath, {
-    public_id: newFilename,
-    folder: "nf",
-  });
+  if (files.image) {
+    if (Array.isArray(files.image)) {
+      for (const file of files.image) {
+        const { newFilename, filepath } = file;
 
-  response.status(200).json(result);
+        const result = await cloudinary.v2.uploader.upload(filepath, {
+          public_id: newFilename,
+          folder: "nf",
+        });
+
+        results.push(result);
+      }
+    } else {
+      const { newFilename, filepath } = files.image;
+
+      const result = await cloudinary.v2.uploader.upload(filepath, {
+        public_id: newFilename,
+        folder: "nf",
+      });
+
+      results.push(result);
+    }
+  }
+
+  response.status(200).json(results);
 }

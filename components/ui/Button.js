@@ -6,6 +6,7 @@ export default function Button({
   isPrimary,
   isDeleting,
   children,
+  deleteImage,
 }) {
   return (
     <StyledButton
@@ -13,6 +14,7 @@ export default function Button({
       onClick={onClick}
       $primary={isPrimary}
       $delete={isDeleting}
+      $deleteImage={deleteImage}
     >
       {children}
     </StyledButton>
@@ -40,4 +42,12 @@ const StyledButton = styled.button`
       : props.$delete
       ? "#ff0000"
       : "#fff"};
+  ${(props) =>
+    props.$deleteImage &&
+    css`
+      position: relative;
+      z-index: 1;
+      top: 0;
+      right: 0;
+    `}
 `;
