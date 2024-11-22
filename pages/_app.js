@@ -78,12 +78,11 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const [listedActivities, setListedActivities] = useState(initialActivities);
-  const filteredActivities = Array.isArray(initialActivities)
-    ? initialActivities.filter(({ categories }) =>
-        categories.some((category) => filter.includes(category))
-      )
-    : [];
+  const filteredActivities = filterActivities(initialActivities, filter);
+  const [listedActivities, setListedActivities] = useState(filteredActivities);
+  useEffect(() => {
+    setListedActivities(filteredActivities);
+  }, [filteredActivities]);
   useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
@@ -181,9 +180,6 @@ export default function App({
     }
   }
 
-
-  const filteredActivities = filterActivities(activities, filter);
-
   function handleSearchInputChange(event) {
     const text = event.target.value;
     setSearchTerm(text);
@@ -215,7 +211,7 @@ export default function App({
               ? randomActivities
               : listedActivities
           }
-          activities={listedActivities}
+          activities={filteredActivities}
           handleFilter={handleFilter}
           filter={filter}
           filteredActivities={listedActivities}
