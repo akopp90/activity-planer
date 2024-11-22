@@ -8,7 +8,7 @@ import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
 import Search from "@/components/layout/Search";
 import { useSession } from "next-auth/react";
-import { FaFilter, FaPlus, } from "react-icons/fa";
+import { FaFilter, FaPlus } from "react-icons/fa";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 
@@ -72,7 +72,11 @@ export default function HomePage({
           <FaSearch size={20} />
         </SearchIconContainer>
 
-        <Button onClick={() => setShowFilter(!showFilter)}>
+        <Button
+          onClick={() => setShowFilter(!showFilter)}
+          name="filter"
+          id="filter"
+        >
           <StyledIcon>
             <FaFilter />
           </StyledIcon>
@@ -111,17 +115,14 @@ export default function HomePage({
       {showFilter && (
         <ActivityFilter filter={filter} handleFilter={handleFilter} />
       )}
-      {listedActivities.length === 0 ? (
-        <p>No activities found</p>
-      ) : (
-        <ActivityList
-          activities={listedActivities}
-          handleFilter={handleFilter}
-          bookmarks={bookmarks}
-          toggleBookmark={toggleBookmark}
-          handleResetFilter={handleResetFilter}
-        />
-      )}
+
+      <ActivityList
+        activities={listedActivities}
+        handleFilter={handleFilter}
+        bookmarks={bookmarks}
+        toggleBookmark={toggleBookmark}
+        handleResetFilter={handleResetFilter}
+      />
     </>
   );
 }
@@ -166,5 +167,3 @@ const StyledIcon = styled.div`
   font-size: 1rem;
   align-items: center;
 `;
-
-

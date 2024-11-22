@@ -9,7 +9,6 @@ import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 
-
 export default function ActivityPage({
   activities,
   handleEditActivity,
@@ -44,7 +43,6 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
-
   function handleDeleteClick() {
     setShowConfirm(true);
   }
@@ -60,14 +58,11 @@ export default function ActivityPage({
 
   const isBookmarked = bookmarks?.includes(activity._id) || false;
 
-
   return (
     <>
       <Head>
         <title>Activity Planner</title>
       </Head>
-
-      {session && (
 
       <Header>Activity Details</Header>
 

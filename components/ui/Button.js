@@ -7,6 +7,8 @@ export default function Button({
   isDeleting,
   children,
   deleteImage,
+  id,
+  name,
 }) {
   return (
     <StyledButton
@@ -15,6 +17,8 @@ export default function Button({
       $primary={isPrimary}
       $delete={isDeleting}
       $deleteImage={deleteImage}
+      id={id}
+      name={name}
     >
       {children}
     </StyledButton>

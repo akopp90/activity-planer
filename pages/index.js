@@ -6,6 +6,7 @@ import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Button from "@/components/ui/Button";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -54,16 +55,12 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
-
-        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
-
-        <h2>{title}</h2>
         <h3>
           you have to be registered to add activities and only can delete and
           edit your own activities.
         </h3>
         <p>User: test@test123.com Password: test12345</p>
-        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
+        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
 
         {listedActivities.length === 0 ? (
           <NoActivitiesFoundContainer key="no-activities-found">
@@ -89,7 +86,6 @@ export default function ActivityPage({
             </ActivitiesContainer>
           )
         )}
-
       </Container>
     </>
   );
@@ -141,33 +137,32 @@ const NoActivitiesFoundContainer = styled.div`
   margin-bottom: 50px;
   color: #333;
 `;
-
-const RandomActivitiesContainer = styled.div`
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
+const SearchBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: solid 1px gray;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+`;
+const SearchIconContainer = styled.div`
+  margin-right: 0.5rem;
+`;
+const SearchButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+`;
+const SearchInput = styled.input`
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+  flex-grow: 1;
+  padding: 0.5rem;
   width: 100%;
-  margin-bottom: 50px;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (min-width: 1050px) {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-`;
-const StyledLink = styled(Link)`
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  padding: 8px;
-  font-size: 16px;
-  position: absolute;
-  top: 80px;
-  right: 24px;
-`;
-const LogoutContainer = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 24px;
 `;
