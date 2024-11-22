@@ -8,7 +8,6 @@ import { categories as categoryData } from "@/lib/categories";
 import Upload from "../ui/Upload";
 import { showToast } from "../ui/ToastMessage";
 import { useSession } from "next-auth/react";
-import { set } from "mongoose";
 
 export default function ActivityForm({
   handleToggleEdit,
@@ -18,7 +17,7 @@ export default function ActivityForm({
 }) {
   const [categories, setCategories] = useState(activity.categories);
   const [error, setError] = useState(false);
-  const [urls, setsUrl] = useState(activity.imageUrl);
+  const [urls, setUrls] = useState(activity.imageUrl);
   const session = useSession();
   const { status, data } = useSession({
     required: true,
@@ -132,6 +131,7 @@ export default function ActivityForm({
       showToast("Images uploaded successfully", "success");
       return;
     } catch (error) {
+      console.error(error);
       showToast("Please select a file!", "info");
       return;
     }
