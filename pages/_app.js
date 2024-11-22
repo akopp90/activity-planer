@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import GlobalStyle from "@/lib/styles";
 import { useRouter } from "next/router";
 import Footer from "@/components/layout/Footer";
@@ -15,6 +15,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   const NUM_OF_RANDOM_ACTIVITIES = 6;
+
   const {
     data: initialActivities,
     error,
@@ -34,6 +35,34 @@ export default function App({
       revalidateIfStale: true,
     }
   );
+  const [randomActivities, setRandomActivities] = useState([]);
+
+  const getRandomActivities = useCallback(
+    (activities) => {
+      if (!activities || activities.length === 0) {
+        return [];
+      }
+
+      if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) {
+        return [...activities];
+      }
+
+      const randomActivitiesSet = new Set();
+      while (randomActivitiesSet.size < NUM_OF_RANDOM_ACTIVITIES) {
+        const randomIndex = Math.floor(Math.random() * activities.length);
+        randomActivitiesSet.add(activities[randomIndex]);
+      }
+
+      return Array.from(randomActivitiesSet);
+    },
+    [NUM_OF_RANDOM_ACTIVITIES]
+  );
+
+  useEffect(() => {
+    if (initialActivities) {
+      setRandomActivities(getRandomActivities(initialActivities));
+    }
+  }, [initialActivities, getRandomActivities]);
 
   const [bookmarkedActivities, setBookmarkedActivities] = useLocalStorageState(
     "bookmarkedActivities",
@@ -49,24 +78,32 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const [listedActivities, setListedActivities] = useState(initialActivities);
-  const filteredActivities = Array.isArray(initialActivities)
-    ? initialActivities.filter(({ categories }) =>
-        categories.some((category) => filter.includes(category))
-      )
-    : [];
-
+  const filteredActivities = filterActivities(initialActivities, filter);
+  const [listedActivities, setListedActivities] = useState(filteredActivities);
   useEffect(() => {
-    if (searchTerm) {
-      setListedActivities(
-        initialActivities?.filter((activity) =>
-          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
+    setListedActivities(filteredActivities);
+  }, [filteredActivities]);
+  useEffect(() => {
+    if (Array.isArray(initialActivities)) {
+      if (searchTerm) {
+        setListedActivities(
+          initialActivities.filter((activity) =>
+            activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        );
+      } else {
+        const filteredActivities = initialActivities.filter(
+          ({ categories }) =>
+            filter.length === 0 ||
+            categories.some((category) => filter.includes(category))
+        );
+
+        setListedActivities(filteredActivities);
+      }
     } else {
-      setListedActivities(initialActivities);
+      console.error("initialActivities is not an array");
     }
-  }, [searchTerm, initialActivities]);
+  }, [initialActivities, filter, searchTerm]);
 
   async function handleAddActivity(newActivity) {
     try {
@@ -144,9 +181,6 @@ export default function App({
     }
   }
 
-
-  const filteredActivities = filterActivities(activities, filter);
-
   function handleSearchInputChange(event) {
     const text = event.target.value;
     setSearchTerm(text);
@@ -155,6 +189,7 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
+
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
   return (
@@ -172,10 +207,15 @@ export default function App({
           handleAddActivity={handleAddActivity}
           handleEditActivity={handleEditActivity}
           handleDeleteActivity={handleDeleteActivity}
+          randomActivities={
+            (filter.length === 0) & (searchTerm === "")
+              ? randomActivities
+              : listedActivities
+          }
           activities={filteredActivities}
           handleFilter={handleFilter}
           filter={filter}
-          filteredActivities={filteredActivities}
+          filteredActivities={listedActivities}
           listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}
           searchTerm={searchTerm}
@@ -183,6 +223,7 @@ export default function App({
           handleResetFilter={handleResetFilter}
           initialActivities={initialActivities}
           mutate={mutate}
+          getRandomActivities={getRandomActivities}
           {...pageProps}
         />
         <ToastContainer />

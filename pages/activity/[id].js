@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
+
 export default function ActivityPage({
   activities,
   handleEditActivity,
@@ -20,8 +21,14 @@ export default function ActivityPage({
   const { id } = router.query;
   const [showForm, setShowForm] = useState(false);
   const { status, data } = useSession();
-
+  if (status === "loading") {
+    return <p>Loading session...</p>;
+  }
   if (!activities) return <p>Loading...</p>;
+  if (!Array.isArray(activities)) {
+    console.error("Activities is not an array");
+    return <p>Error: Activities is not an array</p>;
+  }
 
   const activity = activities.find((activity) => activity._id === id);
   if (!activity) return <p>Activity not found</p>;
@@ -62,7 +69,7 @@ export default function ActivityPage({
                 handleToggleEdit={handleToggleEdit}
                 handleEditActivity={(newActivity) => {
                   handleEditActivity(newActivity);
-                  mutate();
+                  mutate(`/api/activities`);
                 }}
                 activity={activity}
               />
@@ -80,6 +87,7 @@ export default function ActivityPage({
     </>
   );
 }
+
 const StyledSection = styled.section`
   display: flex;
   padding: 0 24px;

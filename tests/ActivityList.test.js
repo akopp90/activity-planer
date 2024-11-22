@@ -21,7 +21,7 @@ describe("1.1 When the page initially loads, verify that all activities are disp
 describe("1.2 Ensure each activity displays the correct title, image, and tags", () => {
   const activity = {
     title: "Test title",
-    imageUrl: "https://images.unsplash.com/photo-1486890598084-3673ba1808c1",
+    imageUrl: ["https://images.unsplash.com/photo-1486890598084-3673ba1808c1"],
     categories: ["Outdoor", "Sport", "Water"],
   };
 

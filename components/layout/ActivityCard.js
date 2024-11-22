@@ -17,7 +17,7 @@ export default function ActivityCard({
       <StyledImageContainer>
         {imageUrl ? (
           <Image
-            src={imageUrl}
+            src={imageUrl[0]}
             alt={title}
             style={{ objectFit: "cover" }}
             sizes="33vw"
@@ -40,11 +40,12 @@ export default function ActivityCard({
       </StyledImageContainer>
 
       <StyledList>
-        {categories.map((category) => (
-          <StyledListItem key={category} data-testid="category">
-            {category}
-          </StyledListItem>
-        ))}
+
+        {Array.isArray(categories) &&
+          categories.map((category) => (
+            <StyledListItem key={category}>{category}</StyledListItem>
+          ))}
+
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>

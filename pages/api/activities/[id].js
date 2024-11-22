@@ -20,12 +20,12 @@ export default async function handler(req, res) {
 
     case "PUT":
       try {
-        const activity = await Activity.findByIdAndUpdate(id, req.body, {
-          new: true,
-        });
+        const activity = await Activity.findById(id);
         if (!activity) {
           return res.status(404).json("Activity not found");
         }
+        activity.set(req.body);
+        await activity.save();
         res.status(200).json(activity);
       } catch (error) {
         console.error(error); // log the error to the console

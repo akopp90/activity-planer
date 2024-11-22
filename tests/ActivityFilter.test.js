@@ -155,8 +155,13 @@ describe("3.3 Deselecting all filters displays all activities", () => {
 
 describe("3.4 Selecting a filter that does not match any activities displays a message like 'No activities found'", () => {
   test("Display message when no filter matches", () => {
-    render(<HomePage activities={[]} filter={[]} />);
-
+    const activities = [
+      {
+        title: "Test title",
+        categories: ["Winter"],
+      },
+    ];
+    render(<HomePage activities={activities} filter={["Outdoor"]} />);
     expect(screen.getByText("No activities found")).toBeInTheDocument();
   });
 });
