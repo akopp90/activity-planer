@@ -17,8 +17,13 @@ export default function ActivityFilter({ filter, handleFilter }) {
       <StyledList>
         {categoryData.map((category) => (
           <StyledListItem key={category}>
-
-            <input type="checkbox" id={category} name={category} checked={filter.includes(category)} onChange={handleCheckbox} />
+            <input
+              type="checkbox"
+              id={category}
+              name={category}
+              checked={filter.includes(category)}
+              onChange={handleCheckbox}
+            />
 
             <label htmlFor={category}>{category}</label>
           </StyledListItem>
@@ -38,7 +43,7 @@ const StyledSection = styled.section`
   margin-inline: auto;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #f1f1f1;
+  background-color: #fff;
   width: min(640px, 100% - 48px);
 `;
 const StyledList = styled.ul`

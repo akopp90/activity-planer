@@ -115,14 +115,14 @@ export default function ActivityForm({
     <StyledForm onSubmit={handleSubmit}>
       <h2>Add new activity</h2>
       <Input name="Title" defaultValue={activity.title} isRequired>
-        Activity title *
+        Title *
       </Input>
       <Input
         name="Location"
         defaultValue={activity.location.address}
         isRequired
       >
-        Activity location *
+        Location *
       </Input>
       {error && (
         <StyledParagraph>
@@ -130,7 +130,7 @@ export default function ActivityForm({
         </StyledParagraph>
       )}
       <StyledSelectDiv>
-        <StyledLabel htmlFor="Categories">Activity category *</StyledLabel>
+        <StyledLabel htmlFor="Categories">Category *</StyledLabel>
         <StyledSelect
           id="Categories"
           onChange={handleSelectCategory}
@@ -166,14 +166,14 @@ export default function ActivityForm({
         </StyledList>
       )}
       <Input name="Area" defaultValue={activity.area}>
-        Activity area
+        Area
       </Input>
       <Input name="Country" defaultValue={activity.country}>
-        Activity country
+        Country
       </Input>
 
       <Upload name="Image" onChange={handleUpload}>
-        Activity Image
+        Image
       </Upload>
       {url && (
         <Image
@@ -185,7 +185,7 @@ export default function ActivityForm({
       )}
 
       <Textarea name="Description" defaultValue={activity.description}>
-        Activity description
+        Description
       </Textarea>
       <Input name="Duration" defaultValue={activity.duration}>
         Duration
@@ -233,9 +233,10 @@ const StyledForm = styled.form`
   padding: 24px;
   display: flex;
   border-radius: 8px;
+  margin-top: 24px;
   margin-inline: auto;
   flex-direction: column;
-  background-color: #f1f1f1;
+  background-color: #fff;
   width: min(640px, 100% - 48px);
 `;
 const StyledList = styled.ul`

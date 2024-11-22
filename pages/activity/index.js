@@ -7,8 +7,7 @@ import ActivityList from "@/components/layout/ActivityList";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
 import { useSession } from "next-auth/react";
-import LogoutButton from "@/components/layout/LogoutButton";
-import { FaKey } from "react-icons/fa";
+import { FaFilter, FaPlus, } from "react-icons/fa";
 import Link from "next/link";
 export default function HomePage({
   handleAddActivity,
@@ -50,25 +49,25 @@ export default function HomePage({
   return (
     <>
       <Head>
-        <title>Activity Planner</title>
+        <title>DailyAdventures</title>
       </Head>
-      <Header>Activity Planner</Header>
+      <Header />
       <StyledSection>
         <Button onClick={() => setShowFilter(!showFilter)}>
-          Filter ({filter.length})
+          <StyledIcon>
+            <FaFilter />
+          </StyledIcon>
+          ({filter.length})
         </Button>
 
-        {session ? (
+        {session && (
           <>
-            <Button onClick={handleToggleEdit} isPrimary>
-              New activity
+            <Button onClick={handleToggleEdit}>
+              <StyledIcon>
+                <FaPlus />
+              </StyledIcon>
             </Button>
-            <LogoutButton />
           </>
-        ) : (
-          <StyledLink href="/auth/signin">
-            <FaKey />
-          </StyledLink>
         )}
       </StyledSection>
 
@@ -95,14 +94,25 @@ export default function HomePage({
 }
 
 const StyledSection = styled.section`
-  gap: 16px;
+  gap: 10px;
   display: flex;
-  padding: 0 24px;
+  padding: 0 20px;
   justify-content: flex-end;
 `;
 const StyledLink = styled(Link)`
   border-radius: 4px;
   border: 1px solid #ccc;
   padding: 8px;
-  font-size: 16px;
+  font-size: 14px;
+  background-color: #fff;
 `;
+
+const StyledIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  align-items: center;
+`;
+
+

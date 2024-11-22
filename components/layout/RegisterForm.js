@@ -82,7 +82,7 @@ function RegisterForm() {
   }
   return (
     <>
-      <Header>Register</Header>
+      <Header />
 
       <Container>
         <FormCard>

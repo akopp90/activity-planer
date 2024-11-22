@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
   activities,
@@ -66,18 +65,9 @@ export default function ActivityPage({
 
   return (
     <>
-      <Header>Activity Planner</Header>
-      {!session ? (
-        <StyledLink href="/auth/signin">
-          <FaKey />
-        </StyledLink>
-      ) : (
-        <LogoutContainer>
-          <LogoutButton />
-        </LogoutContainer>
-      )}
+      <Header />
       <Container>
-        <SloganContainer>Your new adventure starts here ...</SloganContainer>
+        <SloganContainer>Your new adventure starts here.</SloganContainer>
 
         <SearchBarContainer>
           <SearchIconContainer>
@@ -89,7 +79,7 @@ export default function ActivityPage({
           </SearchButtonContainer>
         </SearchBarContainer>
 
-        <ActivitiesTitle>Random Activities</ActivitiesTitle>
+        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
 
         <RandomActivitiesContainer>
           {randomActivities.map((activity) => {
@@ -127,8 +117,11 @@ const Container = styled.div`
 `;
 
 const SloganContainer = styled.section`
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: center;
+  font-weight: 700;
+  color: #333;
+  width: 100%;
 `;
 
 const SearchBarContainer = styled.div`
@@ -154,10 +147,9 @@ const SearchButtonContainer = styled.div`
   padding: 0.5rem;
 `;
 const ActivitiesTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   margin-top: 24px;
-  margin-bottom: 16px;
   color: #333;
   text-align: left;
   width: 100%;
