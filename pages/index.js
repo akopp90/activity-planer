@@ -50,7 +50,10 @@ export default function ActivityPage({
           <SearchIconContainer>
             <FaSearch size={20} />
           </SearchIconContainer>
-          <SearchInput placeholder="Search activities..." />
+          <SearchInput
+            placeholder="Search activities..."
+            onChange={handleSearchInputChange}
+          />
           <SearchButtonContainer>
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
