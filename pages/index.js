@@ -92,7 +92,7 @@ export default function ActivityPage({
         <Search onChange={(event) => handleSearchInputChange(event)} />
         <h2>{title}</h2>
         <h3>
-          you habe to be registered to add activities and only can delete and
+          you have to be registered to add activities and only can delete and
           edit your own activities.
         </h3>
         <p>User: test@test123.com Password: test12345</p>
