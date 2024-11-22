@@ -72,7 +72,11 @@ export default function HomePage({
           <FaSearch size={20} />
         </SearchIconContainer>
 
-        <Button onClick={() => setShowFilter(!showFilter)}>
+        <Button
+          onClick={() => setShowFilter(!showFilter)}
+          name="filter"
+          id="filter"
+        >
           <StyledIcon>
             <FaFilter />
           </StyledIcon>

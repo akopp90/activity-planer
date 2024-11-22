@@ -5,6 +5,7 @@ import { render, screen } from "@testing-library/react";
 import { useSession } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 import { waitFor } from "@testing-library/react";
+import { FaFilter } from "react-icons/fa";
 
 jest.mock("next-auth/react", () => ({
   useSession: jest.fn(),
@@ -57,13 +58,14 @@ describe("2.2 Clicking the toggle button opens/hides the filter widget", () => {
 
     render(<HomePage listedActivities={activities} filter={[]} />);
 
-    const button = screen.getByRole("button", { name: /Filter/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole("button");
+    const filterButton = buttons.find((button) => button.name === "filter");
+    expect(filterButton).toBeInTheDocument();
 
-    await user.click(button); // Show filter widget
+    await user.click(filterButton); // Show filter widget
     expect(screen.getByTestId("filter")).toBeInTheDocument();
 
-    await user.click(button); // Hide filter widget
+    await user.click(filterButton); // Hide filter widget
     expect(screen.queryByTestId("filter")).not.toBeInTheDocument();
   });
 });
@@ -87,10 +89,11 @@ describe("2.3 The widget remains open if filters are applied", () => {
       />
     );
 
-    const button = screen.getByRole("button", { name: /Filter/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole("button");
+    const filterButton = buttons.find((button) => button.name === "filter");
+    expect(filterButton).toBeInTheDocument();
 
-    await user.click(button); // Show filter widget
+    await user.click(filterButton); // Show filter widget
 
     const checkbox = screen.getByLabelText("Outdoor");
     expect(checkbox).toBeInTheDocument();

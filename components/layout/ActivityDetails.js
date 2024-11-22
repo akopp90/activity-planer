@@ -23,6 +23,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
 import dynamic from "next/dynamic";
 import styled from "styled-components";
+import Button from "../ui/Button";
 
 const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
@@ -252,27 +253,6 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-
-          {session.status === "authenticated" &&
-            session.data.user.id === createdBy && (
-              <StyledDeleteContainer>
-                {!showConfirm ? (
-                  <Button onClick={() => setShowConfirm(true)}>Delete</Button>
-                ) : (
-                  <>
-                    <p>Are you sure, that you want to delete?</p>
-                    <StyledButtonContainer>
-                      <Button onClick={() => setShowConfirm(false)}>
-                        Cancel
-                      </Button>
-                      <Button isDeleting onClick={confirmDelete}>
-                        Confirm
-                      </Button>
-                    </StyledButtonContainer>
-                  </>
-                )}
-              </StyledDeleteContainer>
-            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -451,4 +431,3 @@ const StyledImageSlider = styled.div`
   position: relative;
   background-color: #f1f1f1;
 `;
-
