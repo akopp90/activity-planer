@@ -26,7 +26,7 @@ export default function MyFavoriteActivitiesPage({
           {hasBookmarks ? (
             bookmarkedActivities.map((activity) => (
               <FavoriteActivityCard
-                key={activity.id}
+                key={activity._id}
                 {...activity}
                 isBookmarked={true}
                 toggleBookmark={toggleBookmark}
