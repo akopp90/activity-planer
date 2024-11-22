@@ -13,7 +13,7 @@ export default function ActivityCard({
   showHeart = true,
 }) {
   return (
-    <StyledArticle>
+    <StyledArticle data-testid="activity">
       <StyledImageContainer>
         {imageUrl ? (
           <Image
@@ -40,10 +40,12 @@ export default function ActivityCard({
       </StyledImageContainer>
 
       <StyledList>
+
         {Array.isArray(categories) &&
           categories.map((category) => (
             <StyledListItem key={category}>{category}</StyledListItem>
           ))}
+
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>

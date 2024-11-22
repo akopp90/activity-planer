@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { showToast } from "../components/ui/ToastMessage";
 import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
+import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
 
 export default function App({
@@ -179,6 +180,9 @@ export default function App({
       setFilter([]);
     }
   }
+
+
+  const filteredActivities = filterActivities(activities, filter);
 
   function handleSearchInputChange(event) {
     const text = event.target.value;

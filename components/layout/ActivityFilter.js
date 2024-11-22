@@ -12,13 +12,18 @@ export default function ActivityFilter({ filter, handleFilter }) {
   }
 
   return (
-    <StyledSection>
+    <StyledSection data-testid="filter">
       <h2>Filter activities</h2>
       <StyledList>
         {categoryData.map((category) => (
           <StyledListItem key={category}>
-
-            <input type="checkbox" id={category} name={category} checked={filter.includes(category)} onChange={handleCheckbox} />
+            <input
+              type="checkbox"
+              id={category}
+              name={category}
+              checked={filter.includes(category)}
+              onChange={handleCheckbox}
+            />
 
             <label htmlFor={category}>{category}</label>
           </StyledListItem>
