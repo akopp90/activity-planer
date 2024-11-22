@@ -69,8 +69,10 @@ export default function ActivityDetails({
   toggleBookmark,
   isBookmarked,
   showHeart = true,
+  createdBy,
 }) {
   const session = useSession();
+
   const {
     data: weather,
     error,
@@ -262,25 +264,25 @@ export default function ActivityDetails({
           <StyledLink href="/" title="Back to Activities">
             Back to Activities
           </StyledLink>
-          {status === "authenticated" &&
-            data.user?.id === activity.createdBy && (
-              <>
+          {session.status === "authenticated" &&
+            session.data.user.id === createdBy && (
+              <StyledDeleteContainer>
                 {!showConfirm ? (
-                  <StyledDeleteContainer>
-                    <Button onClick={handleDelete}>Delete</Button>
-                  </StyledDeleteContainer>
+                  <Button onClick={() => setShowConfirm(true)}>Delete</Button>
                 ) : (
-                  <StyledDeleteContainer $isDelete>
+                  <>
                     <p>Are you sure, that you want to delete?</p>
                     <StyledButtonContainer>
-                      <Button onClick={cancelDelete}>Cancel</Button>
+                      <Button onClick={() => setShowConfirm(false)}>
+                        Cancel
+                      </Button>
                       <Button isDeleting onClick={confirmDelete}>
                         Confirm
                       </Button>
                     </StyledButtonContainer>
-                  </StyledDeleteContainer>
+                  </>
                 )}
-              </>
+              </StyledDeleteContainer>
             )}
         </StyledContainer>
       </StyledDetails>
