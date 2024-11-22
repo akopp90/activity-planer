@@ -97,6 +97,7 @@ export default function App({
             filter.length === 0 ||
             categories.some((category) => filter.includes(category))
         );
+
         setListedActivities(filteredActivities);
       }
     } else {
