@@ -26,7 +26,7 @@ export default function FavoriteActivityCard({
         </div>
 
         <HeartContainer onClick={() => toggleBookmark(id)}>
-          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+          <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
         </HeartContainer>
       </CardHeader>
 
@@ -97,4 +97,8 @@ const StyledImage = styled(Image)`
   z-index: -1;
   object-fit: cover;
   object-position: 50% 30%;
+`;
+const StyledFaHeart = styled(FaHeart)`
+  filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+  overflow: visible;
 `;
