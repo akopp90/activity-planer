@@ -8,6 +8,7 @@ import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa6";
 
 export default function ActivityPage({
   activities,
@@ -65,11 +66,15 @@ export default function ActivityPage({
       </Head>
 
       <Header>Activity Details</Header>
-
-      {status === "authenticated" && data.user?.id === activity.createdBy && (
+      {status === "authenticated" && data.user?.id === activity.createdBy ? (
         <>
           {!showForm ? (
             <StyledSection>
+              <Button onClick={() => router.back()}>
+                <StyledIcon>
+                  <FaArrowLeft />
+                </StyledIcon>
+              </Button>
               <Button onClick={handleToggleEdit}>
                 <StyledIcon>
                   <FaEdit />
@@ -100,6 +105,14 @@ export default function ActivityPage({
             </>
           )}
         </>
+      ) : (
+        <StyledSection>
+          <Button onClick={() => router.back()}>
+            <StyledIcon>
+              <FaArrowLeft />
+            </StyledIcon>
+          </Button>
+        </StyledSection>
       )}
 
       {showConfirm && (

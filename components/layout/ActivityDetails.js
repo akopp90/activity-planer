@@ -164,16 +164,16 @@ export default function ActivityDetails({
           <StyledLocation>
             {area}, {country}
           </StyledLocation>
-          <StyledDescription>{description}</StyledDescription>
+          <p>{description}</p>
           <StyledSubtitle>About this Activity</StyledSubtitle>
-          <StyledDescription>{duration}</StyledDescription>
-          <StyledDescription>{numberOfPeople}</StyledDescription>
+          <p>{duration}</p>
+          <p>{numberOfPeople}</p>
           <StyledSubtitle>About this Experience</StyledSubtitle>
 
           <StyledExtraTitle>
             <FaBook /> Full Description
           </StyledExtraTitle>
-          <StyledDescription>{fullDescription}</StyledDescription>
+          <p>{fullDescription}</p>
 
           <StyledExtraTitle>
             <FaCheckCircle /> Includes
@@ -239,20 +239,17 @@ export default function ActivityDetails({
 
               {weather ? (
                 <>
-                  <StyledDescription>
+                  <p>
                     <strong>Weather: </strong>
                     {weather.temperature} {getWeatherIcon(weather.condition)}
-                  </StyledDescription>
+                  </p>
                 </>
               ) : (
-                <StyledDescription>Loading weather data...</StyledDescription>
+                <p>Loading weather data...</p>
               )}
             </>
           )}
           <ActivityMap {...location} />
-          <StyledLink href="/" title="Back to Activities">
-            Back to Activities
-          </StyledLink>
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -306,9 +303,7 @@ const StyledLocation = styled.p`
   justify-content: flex-end;
   gap: 10px;
 `;
-const StyledDescription = styled.p`
-  margin: 16px 0;
-`;
+
 const StyledLink = styled(Link)`
   color: inherit;
   font-weight: bold;
@@ -318,6 +313,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+
 const StyledHeartIconContainer = styled.div`
   position: absolute;
   top: 16px;
@@ -327,12 +323,12 @@ const StyledHeartIconContainer = styled.div`
   transition: color 0.3s ease;
   text-shadow: 0 2px 2px #000;
   background-color: white;
-  border-radius: 50%; /* Runde Form */
-  width: 35px; /* Größe des Containers */
-  height: 35px; /* Größe des Containers */
-  display: flex; /* Flexbox zur Zentrierung */
-  align-items: center; /* Vertikale Zentrierung */
-  justify-content: center; /* Horizontale Zentrierung */
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
     color: #ff4d4d;
@@ -344,7 +340,6 @@ const StyledExtraTitle = styled.h4`
 `;
 
 const StyledExtraDescription = styled.ul`
-  margin: 16px 0;
   margin-left: 10px;
   padding: 8px;
   list-style: circle;
@@ -390,10 +385,12 @@ const StyledPrevButton = styled(StyledArrowButton)`
 const StyledNextButton = styled(StyledArrowButton)`
   right: 0;
 `;
+
 const StyledImageSlider = styled.div`
   position: relative;
   background-color: #f1f1f1;
 `;
+
 const StyledFaHeart = styled(FaHeart)`
   filter: drop-shadow(3px 1px 2px rgb(0 0 0 / 0.4));
   path {

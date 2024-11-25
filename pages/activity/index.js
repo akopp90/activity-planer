@@ -140,24 +140,15 @@ const SearchIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 50%;
-  background-color: #f1f1f1;
-  top: 100px;
-  left: 16px;
-  width: 40px;
-  height: 40px;
-  transition: background-color 0.3s;
+  border-radius: 4px; 
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  font-size: 1rem;
+  transition: background-color 0.3s, border-color 0.3s;
+  
   &:hover {
     background-color: #e0e0e0;
   }
-`;
-
-const StyledLink = styled(Link)`
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  padding: 8px;
-  font-size: 14px;
-  background-color: #fff;
 `;
 
 const StyledIcon = styled.div`
