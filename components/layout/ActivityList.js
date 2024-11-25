@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import ActivityCard from "@/components/layout/ActivityCard";
@@ -9,6 +10,7 @@ export default function ActivityList({
   handleResetFilter,
   showHeart = true,
 }) {
+  const [viewMode, setViewMode] = useState("List");
   if (!activities) return <div>Loading...</div>;
   return (
     <main>
@@ -18,7 +20,7 @@ export default function ActivityList({
           <Button onClick={handleResetFilter}>Reset filter</Button>
         </StyledSection>
       ) : (
-        <StyledList>
+        <StyledList $viewMode={viewMode}>
           {activities.map((activity) => {
             const isBookmarked = bookmarks?.includes(activity._id) || false;
 
@@ -26,6 +28,7 @@ export default function ActivityList({
               <li key={activity._id}>
                 <ActivityCard
                   {...activity}
+                  viewMode={viewMode}
                   toggleBookmark={() => toggleBookmark(activity._id)}
                   isBookmarked={isBookmarked}
                   showHeart={showHeart}
@@ -57,7 +60,10 @@ const StyledList = styled.ul`
   padding: 24px;
   display: grid;
   list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
-  margin-bottom: 50px;
   position: relative;
+  margin-bottom: 50px;
+  grid-template-columns: ${(props) =>
+    props.$viewMode === "Grid"
+      ? "repeat(auto-fill, minmax(327px, 1fr))"
+      : "none"};
 `;

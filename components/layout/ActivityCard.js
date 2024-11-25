@@ -8,44 +8,49 @@ export default function ActivityCard({
   title,
   categories,
   imageUrl,
+  viewMode,
   isBookmarked,
   toggleBookmark,
   showHeart = true,
 }) {
   return (
     <StyledArticle data-testid="activity">
-      <StyledImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl[0]}
-            alt={title}
-            style={{ objectFit: "cover" }}
-            sizes="33vw"
-            fill
-          />
-        ) : (
-          <Image
-            src="/images/no-image.svg"
-            width={40}
-            height={40}
-            alt="Image is missing"
-          />
-        )}
+      {viewMode === "Grid" && (
+        <StyledImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl[0]}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="33vw"
+              fill
+            />
+          ) : (
+            <Image
+              src="/images/no-image.svg"
+              width={40}
+              height={40}
+              alt="Image is missing"
+            />
+          )}
+        </StyledImageContainer>
+      )}
 
-        {showHeart && (
-          <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
-            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-          </StyledHeartIcon>
-        )}
-      </StyledImageContainer>
+      {showHeart && (
+        <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
+          <FaHeart
+            fill={
+              isBookmarked ? "#ff4d4d" : viewMode === "Grid" ? "#fff" : "#ccc"
+            }
+          />
+        </StyledHeartIcon>
+      )}
 
       <StyledList>
-
         {Array.isArray(categories) &&
           categories.map((category) => (
             <StyledListItem key={category}>{category}</StyledListItem>
           ))}
-
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>
@@ -56,6 +61,7 @@ export default function ActivityCard({
 const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
+  position: relative;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
 `;
 
