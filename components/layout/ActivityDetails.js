@@ -128,7 +128,7 @@ export default function ActivityDetails({
 
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-              <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+              <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
@@ -328,35 +328,17 @@ const StyledHeartIconContainer = styled.div`
   text-shadow: 0 2px 2px #000;
   background-color: white;
   border-radius: 50%; /* Runde Form */
-  width: 30px; /* Größe des Containers */
-  height: 30px; /* Größe des Containers */
+  width: 35px; /* Größe des Containers */
+  height: 35px; /* Größe des Containers */
   display: flex; /* Flexbox zur Zentrierung */
   align-items: center; /* Vertikale Zentrierung */
   justify-content: center; /* Horizontale Zentrierung */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
   &:hover {
     color: #ff4d4d;
   }
 `;
 
-const StyledDeleteContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
-  border: 1px solid ${(props) => (props.$isDelete ? "#ff0000" : "#fff")};
-  padding: 8px;
-`;
-const StyledButtonContainer = styled.div`
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-  align-items: flex-end;
-  align-self: flex-end;
-  position: relative;
-`;
 const StyledExtraTitle = styled.h4`
   font-weight: bold;
 `;
@@ -366,25 +348,6 @@ const StyledExtraDescription = styled.ul`
   margin-left: 10px;
   padding: 8px;
   list-style: circle;
-`;
-
-const StyledTitleIcon = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-`;
-
-const StyledWeather = styled.div`
-  display: flex;
-  margin: 16px 0;
-  list-style: none;
-  border-radius: 8px;
-
-  p {
-    padding: 4px 8px;
-    border-radius: 4px;
-    background-color: #f1f1f1;
-  }
 `;
 
 const StyledLi = styled.li`
@@ -430,4 +393,15 @@ const StyledNextButton = styled(StyledArrowButton)`
 const StyledImageSlider = styled.div`
   position: relative;
   background-color: #f1f1f1;
+`;
+const StyledFaHeart = styled(FaHeart)`
+  filter: drop-shadow(3px 1px 2px rgb(0 0 0 / 0.4));
+  path {
+    stroke: red;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
 `;
