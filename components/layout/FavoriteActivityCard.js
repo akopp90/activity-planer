@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import styled from "styled-components";
 
 export default function FavoriteActivityCard({
-  id,
+  _id,
   title,
   country,
   categories,
@@ -14,9 +14,7 @@ export default function FavoriteActivityCard({
 }) {
   return (
     <StyledFavoriteCard>
-      {imageUrl.map((image, index) => (
-        <StyledImage key={image} src={image} sizes="50vw" fill />
-      ))}
+      <StyledImage key={imageUrl[0]} src={imageUrl[0]} sizes="50vw" fill />
 
       <CardHeader>
         <div>
@@ -25,7 +23,7 @@ export default function FavoriteActivityCard({
           ))}
         </div>
 
-        <HeartContainer onClick={() => toggleBookmark(id)}>
+        <HeartContainer onClick={() => toggleBookmark(_id)}>
           <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
         </HeartContainer>
       </CardHeader>
