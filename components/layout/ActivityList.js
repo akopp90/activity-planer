@@ -23,7 +23,7 @@ export default function ActivityList({
             const isBookmarked = bookmarks?.includes(activity._id) || false;
 
             return (
-              <li key={activity._id}>
+              <li key={activity}>
                 <ActivityCard
                   {...activity}
                   toggleBookmark={() => toggleBookmark(activity._id)}
@@ -49,7 +49,6 @@ const StyledSection = styled.section`
   flex-direction: column;
   align-items: flex-start;
   background-color: #f1f1f1;
-  width: min(640px, 100% - 48px);
 `;
 
 const StyledList = styled.ul`

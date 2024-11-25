@@ -78,26 +78,23 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const filteredActivities = filterActivities(initialActivities, filter);
-  const [listedActivities, setListedActivities] = useState(filteredActivities);
-  useEffect(() => {
-    setListedActivities(filteredActivities);
-  }, [filteredActivities]);
+  const filteredActivities = filterActivities(initialActivities, filter || []);
+  const [listedActivities, setListedActivities] = useState(
+    filteredActivities || []
+  );
   useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
-        setListedActivities(
-          initialActivities.filter((activity) =>
-            activity.title.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+        const listedActivities = initialActivities.filter((activity) =>
+          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        setListedActivities(listedActivities);
       } else {
         const filteredActivities = initialActivities.filter(
           ({ categories }) =>
             filter.length === 0 ||
             categories.some((category) => filter.includes(category))
         );
-
         setListedActivities(filteredActivities);
       }
     } else {

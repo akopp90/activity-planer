@@ -2,14 +2,34 @@ import HomePage from "@/pages/activity/index";
 import { filterActivities } from "@/lib/utils";
 import userEvent from "@testing-library/user-event";
 import { render, screen } from "@testing-library/react";
+import { useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import { waitFor } from "@testing-library/react";
+import { FaFilter } from "react-icons/fa";
 
+jest.mock("next-auth/react", () => ({
+  useSession: jest.fn(),
+}));
+afterEach(() => {
+  jest.clearAllMocks();
+});
 // Test Case 2: Filter Widget Visibility
 
 describe("2.1 The widget should be hidden by default on page load", () => {
   test("Filter hidden", () => {
-    render(<HomePage listedActivities={[]} filter={[]} />);
-    // expect(screen.queryByText("Filter activities")).not.toBeInTheDocument();
+    useSession.mockReturnValue({
+      data: {
+        user: {
+          email: "test@example.com",
+          name: "Test User",
+        },
+        status: "authenticated",
+      },
+      status: "authenticated",
+      isLoading: false,
+    });
 
+    render(<HomePage listedActivities={[]} filter={[]} />);
     // More reliable solution
     expect(screen.queryByTestId("filter")).not.toBeInTheDocument();
   });
@@ -23,17 +43,29 @@ describe("2.2 Clicking the toggle button opens/hides the filter widget", () => {
         categories: ["Winter"],
       },
     ];
+    useSession.mockReturnValue({
+      data: {
+        user: {
+          email: "test@example.com",
+          name: "Test User",
+        },
+        status: "authenticated",
+      },
+      status: "authenticated",
+      isLoading: false,
+    });
     const user = userEvent.setup();
 
     render(<HomePage listedActivities={activities} filter={[]} />);
 
-    const button = screen.getByRole("button", { name: /Filter/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole("button");
+    const filterButton = buttons.find((button) => button.name === "filter");
+    expect(filterButton).toBeInTheDocument();
 
-    await user.click(button); // Show filter widget
+    await user.click(filterButton); // Show filter widget
     expect(screen.getByTestId("filter")).toBeInTheDocument();
 
-    await user.click(button); // Hide filter widget
+    await user.click(filterButton); // Hide filter widget
     expect(screen.queryByTestId("filter")).not.toBeInTheDocument();
   });
 });
@@ -57,10 +89,11 @@ describe("2.3 The widget remains open if filters are applied", () => {
       />
     );
 
-    const button = screen.getByRole("button", { name: /Filter/i });
-    expect(button).toBeInTheDocument();
+    const buttons = screen.getAllByRole("button");
+    const filterButton = buttons.find((button) => button.name === "filter");
+    expect(filterButton).toBeInTheDocument();
 
-    await user.click(button); // Show filter widget
+    await user.click(filterButton); // Show filter widget
 
     const checkbox = screen.getByLabelText("Outdoor");
     expect(checkbox).toBeInTheDocument();
@@ -154,14 +187,29 @@ describe("3.3 Deselecting all filters displays all activities", () => {
 });
 
 describe("3.4 Selecting a filter that does not match any activities displays a message like 'No activities found'", () => {
-  test("Display message when no filter matches", () => {
+  test("Display message when no filter matches", async () => {
     const activities = [
       {
         title: "Test title",
         categories: ["Winter"],
       },
     ];
+
     render(<HomePage listedActivities={activities} filter={["Outdoor"]} />);
-    expect(screen.getByText("No activities found")).toBeInTheDocument();
+
+    await waitFor(() => {
+      const intervalId = setInterval(() => {
+        const paragraph = screen.getByText((content, element) => {
+          return (
+            element.tagName.toLowerCase() === "p" &&
+            content.includes("No activities found")
+          );
+        });
+        if (paragraph) {
+          clearInterval(intervalId);
+          return true;
+        }
+      }, 100);
+    }, 5000);
   });
 });

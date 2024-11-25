@@ -7,6 +7,8 @@ import Header from "@/components/layout/Header";
 import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa6";
 
 export default function ActivityPage({
   activities,
@@ -20,6 +22,7 @@ export default function ActivityPage({
   const router = useRouter();
   const { id } = router.query;
   const [showForm, setShowForm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const { status, data } = useSession();
   if (status === "loading") {
     return <p>Loading session...</p>;
@@ -41,6 +44,19 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
+  function handleDeleteClick() {
+    setShowConfirm(true);
+  }
+
+  function handleConfirmDelete() {
+    handleDeleteActivity(activity.id);
+    setShowConfirm(false);
+  }
+
+  function handleCancelDelete() {
+    setShowConfirm(false);
+  }
+
   const isBookmarked = bookmarks?.includes(activity._id) || false;
 
   return (
@@ -48,14 +64,27 @@ export default function ActivityPage({
       <Head>
         <title>Activity Planner</title>
       </Head>
-      <Header>Activity Details</Header>
 
-      {status === "authenticated" && data.user?.id === activity.createdBy && (
+      <Header>Activity Details</Header>
+      {status === "authenticated" && data.user?.id === activity.createdBy ? (
         <>
           {!showForm ? (
             <StyledSection>
-              <Button onClick={() => setShowForm(true)} isPrimary>
-                Edit activity
+              <Button onClick={() => router.back()}>
+                <StyledIcon>
+                  <FaArrowLeft />
+                </StyledIcon>
+              </Button>
+              <Button onClick={handleToggleEdit}>
+                <StyledIcon>
+                  <FaEdit />
+                </StyledIcon>
+              </Button>
+
+              <Button onClick={handleDeleteClick}>
+                <StyledIcon>
+                  <FaTrashAlt />
+                </StyledIcon>
               </Button>
             </StyledSection>
           ) : (
@@ -76,10 +105,33 @@ export default function ActivityPage({
             </>
           )}
         </>
+      ) : (
+        <StyledSection>
+          <Button onClick={() => router.back()}>
+            <StyledIcon>
+              <FaArrowLeft />
+            </StyledIcon>
+          </Button>
+        </StyledSection>
       )}
+
+      {showConfirm && (
+        <StyledConfirmContainer>
+          <StyledConfirmMessage>
+            <p>Are you sure you want to delete this activity?</p>
+            <StyledButtonGroup>
+              <Button onClick={handleConfirmDelete} isPrimary>
+                Confirm
+              </Button>
+              <Button onClick={handleCancelDelete}>Cancel</Button>
+            </StyledButtonGroup>
+          </StyledConfirmMessage>
+        </StyledConfirmContainer>
+      )}
+
       <ActivityDetails
         {...activity}
-        deleteActivity={deleteActivity}
+        deleteActivity={handleDeleteActivity}
         toggleBookmark={() => toggleBookmark(activity._id)}
         isBookmarked={isBookmarked}
         showHeart={showHeart}
@@ -90,6 +142,42 @@ export default function ActivityPage({
 
 const StyledSection = styled.section`
   display: flex;
+  gap: 10px;
   padding: 0 24px;
   justify-content: flex-end;
+  align-items: center;
+`;
+
+const StyledConfirmContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+const StyledConfirmMessage = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+`;
+
+const StyledIcon = styled.div`
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
 `;

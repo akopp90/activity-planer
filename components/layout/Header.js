@@ -1,17 +1,18 @@
 import Link from "next/link";
 import styled from "styled-components";
+import Image from "next/image";
 
-export default function Header({ children }) {
+export default function Header() {
   return (
     <StyledHeader>
-      <h1>{children}</h1>
+      <Image src="/LOGO.png" width={270} height={100} alt="Image is missing" />
     </StyledHeader>
   );
 }
 
 const StyledHeader = styled.header`
-  padding: 16px 0;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 15px;
   border-bottom: 1px solid #ccc;
+  background-color: white;
 `;

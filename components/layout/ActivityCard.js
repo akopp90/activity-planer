@@ -11,6 +11,7 @@ export default function ActivityCard({
   isBookmarked,
   toggleBookmark,
   showHeart = true,
+  activity,
 }) {
   return (
     <StyledArticle data-testid="activity">
@@ -34,18 +35,18 @@ export default function ActivityCard({
 
         {showHeart && (
           <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
-            <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+            <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
           </StyledHeartIcon>
         )}
       </StyledImageContainer>
 
       <StyledList>
-
         {Array.isArray(categories) &&
           categories.map((category) => (
-            <StyledListItem key={category}>{category}</StyledListItem>
+            <StyledListItem key={category} data-testid="category">
+              {category}
+            </StyledListItem>
           ))}
-
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>
@@ -57,6 +58,7 @@ const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  background-color: white;
 `;
 
 const StyledImageContainer = styled.div`
@@ -107,4 +109,8 @@ const StyledLink = styled(Link)`
   &:hover {
     text-decoration: none;
   }
+`;
+const StyledFaHeart = styled(FaHeart)`
+  filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+  overflow: visible;
 `;
