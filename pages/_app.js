@@ -192,36 +192,34 @@ export default function App({
   }
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
-      window.addEventListener("beforeinstallprompt", (event) => {
+      const handleBeforeInstallPrompt = (event) => {
         event.preventDefault();
         setDeferredPrompt(event);
         setShowInstallButton(true);
-      });
+        setShowInstallPrompt(false);
+      };
+
+      const handleAppInstalled = () => {
+        setShowInstallPrompt(false);
+        setShowInstallButton(false);
+        console.log("App installed");
+        setDeferredPrompt(null);
+      };
+
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.addEventListener("appinstalled", handleAppInstalled);
+
+      return () => {
+        window.removeEventListener(
+          "beforeinstallprompt",
+          handleBeforeInstallPrompt
+        );
+        window.removeEventListener("appinstalled", handleAppInstalled);
+      };
     }
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
-      setShowInstallButton(true);
-      setShowInstallPrompt(false);
-    });
-
-    window.addEventListener("appinstalled", () => {
-      setShowInstallPrompt(false);
-      setShowInstallButton(true);
-      console.log("App installed");
-      setDeferredPrompt(null);
-    });
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", () => {});
-      window.removeEventListener("appinstalled", () => {});
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
+  async function handleInstallClick() {
     if (!deferredPrompt) return;
 
     deferredPrompt.prompt();
@@ -231,7 +229,7 @@ export default function App({
       setShowInstallPrompt(false);
     }
     setDeferredPrompt(null);
-  };
+  }
 
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;

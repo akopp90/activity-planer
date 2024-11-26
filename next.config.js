@@ -8,10 +8,10 @@ const nextConfig = withPWA({
   experimental: {
     newNextLinkBehavior: true,
   },
-
   compiler: {
-    styledComponents: true,
+    styledComponents: false,
   },
+  transpilePackages: ["next-auth"],
   reactStrictMode: true,
   webpack(config) {
     config.module.rules.push({
