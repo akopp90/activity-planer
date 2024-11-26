@@ -105,7 +105,6 @@ export default function ActivityDetails({
       imageListRef.current.scrollBy(offset, 0);
     }
   }
-
   function handleShare() {
     if (navigator.share) {
       navigator
@@ -114,7 +113,13 @@ export default function ActivityDetails({
           text: description,
           url: window.location.href,
         })
-        .catch((error) => console.error("Sharing failed", error));
+        .catch((error) => {
+          if (error.name === "AbortError") {
+            console.log("Sharing cancelled by the user");
+          } else {
+            console.error("Sharing failed", error);
+          }
+        });
     } else {
       navigator.clipboard.writeText(window.location.href);
       alert("Link copied to clipboard!");
