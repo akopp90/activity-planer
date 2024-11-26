@@ -9,7 +9,7 @@ const nextConfig = withPWA({
     newNextLinkBehavior: true,
   },
   compiler: {
-    styledComponents: false,
+    styledComponents: true,
   },
   transpilePackages: ["next-auth"],
   reactStrictMode: true,
