@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
-import { FaKey, FaSearch } from "react-icons/fa";
+import { FaKey, FaArrowCircleDown, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
@@ -14,17 +14,15 @@ export default function ActivityPage({
   deleteActivity,
   showHeart,
   handleSearchInputChange,
-  listedActivities,
+  randomActivities,
   title,
-  activities,
-  initialActivities,
-  mutate,
+  travelTipsCategories,
 }) {
   const [showForm, setShowForm] = useState(false);
 
   const [showFilter, setShowFilter] = useState(false);
   const { data: session } = useSession();
-
+  const listedActivities = randomActivities;
   const activity = {
     id: "",
     title: "",
@@ -44,36 +42,6 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
-  const [randomActivities, setRandomActivities] = useState([]);
-  const NUM_OF_RANDOM_ACTIVITIES = 6;
-
-  useEffect(() => {
-    if (initialActivities) {
-      getRandomActivities();
-    }
-  }, [initialActivities]);
-
-  function getRandomActivities() {
-    if (NUM_OF_RANDOM_ACTIVITIES >= activities.length) return [...activities];
-
-    const randomActivitiesList = [];
-
-    while (randomActivitiesList.length < NUM_OF_RANDOM_ACTIVITIES) {
-      const randomIndex = Math.floor(Math.random() * activities.length);
-      const randomActivity = activities[randomIndex];
-
-      const isAlreadyIncluded = randomActivitiesList.some(
-        (activity) => randomActivity._id === activity._id
-      );
-
-      if (!isAlreadyIncluded) {
-        randomActivitiesList.push(randomActivity);
-      }
-    }
-
-    setRandomActivities(randomActivitiesList);
-  }
-
   return (
     <>
       <Header>Activity Planner</Header>
@@ -90,7 +58,14 @@ export default function ActivityPage({
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
         <Search onChange={(event) => handleSearchInputChange(event)} />
-        <h2>{title}</h2>
+
+        <JumpToTravelTipsContainer>
+          <Link href="#travel-tips">Jump to Travel Tips</Link>
+          <ArrowDownContainer>
+            <FaArrowCircleDown />
+          </ArrowDownContainer>
+        </JumpToTravelTipsContainer>
+
         <ActivitiesTitle>{activity.title}</ActivitiesTitle>
 
         {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
@@ -98,32 +73,9 @@ export default function ActivityPage({
             No Activities Found
           </NoActivitiesFoundContainer>
         ) : (
-          <></>
-        )}
-
-        {listedActivities && listedActivities.length > 0 && (
-          <ActivitiesContainer>
-            {listedActivities.map((activity) => {
-              const isBookmarked = bookmarks?.includes(activity._id) || false;
-
-              return (
-                <ActivityCard
-                  key={activity._id}
-                  {...activity}
-                  deleteActivity={deleteActivity}
-                  toggleBookmark={() => toggleBookmark(activity._id)}
-                  isBookmarked={isBookmarked}
-                  showHeart={showHeart}
-                />
-              );
-            })}
-          </ActivitiesContainer>
-        )}
-
-        {!listedActivities ||
-          (listedActivities.length === 0 && (
-            <RandomActivitiesContainer>
-              {randomActivities.map((activity) => {
+          listedActivities?.length > 0 && (
+            <ActivitiesContainer>
+              {listedActivities.map((activity) => {
                 const isBookmarked = bookmarks?.includes(activity._id) || false;
 
                 return (
@@ -137,8 +89,18 @@ export default function ActivityPage({
                   />
                 );
               })}
-            </RandomActivitiesContainer>
+            </ActivitiesContainer>
+          )
+        )}
+
+        <TravelTipsHeading id="travel-tips">Travel Tips</TravelTipsHeading>
+        <TravelTipsButtonsContainer>
+          {travelTipsCategories.map((cat) => (
+            <Link key={cat.id} href={`/travel-tips/${cat.id}`}>
+              <TravelTipButton>{cat.title} Activity Tips</TravelTipButton>
+            </Link>
           ))}
+        </TravelTipsButtonsContainer>
       </Container>
     </>
   );
@@ -184,21 +146,27 @@ const ActivitiesTitle = styled.h2`
 
 const NoActivitiesFoundContainer = styled.div``;
 
-const RandomActivitiesContainer = styled.div`
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-  width: 100%;
-  margin-bottom: 50px;
+const TravelTipsHeading = styled.h2``;
 
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
+const TravelTipButton = styled.div`
+  padding: 12px;
+  border-radius: 4px;
+  background: linear-gradient(#ececec, #d3d3d3);
+  text-align: center;
+  transition: 0.5s;
 
-  @media (min-width: 1050px) {
-    grid-template-columns: 1fr 1fr 1fr;
+  &:hover {
+    cursor: pointer;
+    box-shadow: #b6b6b6 0px 2px 2px 1px;
   }
 `;
+
+const TravelTipsButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
 const StyledLink = styled(Link)`
   border-radius: 4px;
   border: 1px solid #ccc;
@@ -212,4 +180,14 @@ const LogoutContainer = styled.div`
   position: absolute;
   top: 80px;
   right: 24px;
+`;
+
+const JumpToTravelTipsContainer = styled.div`
+  display: flex;
+  gap: 0.25rem;
+`;
+
+const ArrowDownContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
