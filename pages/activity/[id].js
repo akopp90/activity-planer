@@ -9,6 +9,7 @@ import ActivityDetails from "@/components/layout/ActivityDetails";
 import { useSession } from "next-auth/react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa6";
+import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default function ActivityPage({
   activities,
@@ -18,6 +19,9 @@ export default function ActivityPage({
   bookmarks,
   showHeart = true,
   mutate,
+  showInstallPrompt,
+  install,
+  showInstallButton,
 }) {
   const router = useRouter();
   const { id } = router.query;
@@ -70,6 +74,11 @@ export default function ActivityPage({
         <>
           {!showForm ? (
             <StyledSection>
+              <InstallPrompt
+                showInstallPrompt={showInstallPrompt}
+                install={install}
+                showInstallButton={showInstallButton}
+              />
               <Button onClick={() => router.back()}>
                 <StyledIcon>
                   <FaArrowLeft />

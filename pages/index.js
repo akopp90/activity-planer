@@ -7,6 +7,7 @@ import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Button from "@/components/ui/Button";
+import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -16,6 +17,9 @@ export default function ActivityPage({
   handleSearchInputChange,
   randomActivities,
   title,
+  showInstallPrompt,
+  install,
+  showInstallButton,
 }) {
   const [showForm, setShowForm] = useState(false);
 
@@ -58,6 +62,11 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
+        <InstallPrompt
+          showInstallPrompt={showInstallPrompt}
+          install={install}
+          showInstallButton={showInstallButton}
+        />
         <h3>
           you have to be registered to add activities and only can delete and
           edit your own activities.

@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  compiler: {
-    styledComponents: false,
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+const nextConfig = withPWA({
+  experimental: {
+    newNextLinkBehavior: true,
   },
-  transpilePackages: ["next-auth"],
+
+  compiler: {
+    styledComponents: true,
+  },
   reactStrictMode: true,
   webpack(config) {
     config.module.rules.push({
@@ -33,6 +41,6 @@ const nextConfig = {
       },
     ],
   },
-};
+});
 
 module.exports = nextConfig;

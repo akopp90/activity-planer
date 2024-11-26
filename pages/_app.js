@@ -9,6 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
+import { set } from "mongoose";
 
 export default function App({
   Component,
@@ -82,6 +83,9 @@ export default function App({
   const [listedActivities, setListedActivities] = useState(
     filteredActivities || []
   );
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(true);
   useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
@@ -186,6 +190,48 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      window.addEventListener("beforeinstallprompt", (event) => {
+        event.preventDefault();
+        setDeferredPrompt(event);
+        setShowInstallButton(true);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      setDeferredPrompt(event);
+      setShowInstallButton(true);
+      setShowInstallPrompt(false);
+    });
+
+    window.addEventListener("appinstalled", () => {
+      setShowInstallPrompt(false);
+      setShowInstallButton(true);
+      console.log("App installed");
+      setDeferredPrompt(null);
+    });
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", () => {});
+      window.removeEventListener("appinstalled", () => {});
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setShowInstallPrompt(false);
+    }
+    setDeferredPrompt(null);
+  };
 
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
@@ -221,6 +267,9 @@ export default function App({
           initialActivities={initialActivities}
           mutate={mutate}
           getRandomActivities={getRandomActivities}
+          showInstallPrompt={showInstallPrompt}
+          showInstallButton={showInstallButton}
+          install={handleInstallClick}
           {...pageProps}
         />
         <ToastContainer />
