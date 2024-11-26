@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function ActivityCard({
   _id,
@@ -34,9 +34,9 @@ export default function ActivityCard({
         )}
 
         {showHeart && (
-          <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
-            <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-          </StyledHeartIcon>
+          <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
+            {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
+          </StyledHeartIconContainer>
         )}
       </StyledImageContainer>
 
@@ -70,20 +70,6 @@ const StyledImageContainer = styled.div`
   background-color: #f1f1f1;
 `;
 
-const StyledHeartIcon = styled.div`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  text-shadow: 0 2px 2px #000;
-
-  &:hover {
-    color: #ff4d4d;
-  }
-`;
-
 const StyledList = styled.ul`
   gap: 8px;
   display: flex;
@@ -110,7 +96,23 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
-const StyledFaHeart = styled(FaHeart)`
-  filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-  overflow: visible;
+const StyledHeartIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: #ff4d4d;
+  }
 `;

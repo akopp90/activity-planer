@@ -62,7 +62,6 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
-
         <InstallPrompt
           showInstallPrompt={showInstallPrompt}
           install={install}
@@ -73,6 +72,10 @@ export default function ActivityPage({
           edit your own activities.
         </h3>
         <p>User: test@test123.com Password: test12345</p>
+        <SloganContainer>
+          Register to manage your own activities. 
+        </SloganContainer>
+        <p>User: test@test123.com</p>
         <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
 
         {listedActivities.length === 0 ? (

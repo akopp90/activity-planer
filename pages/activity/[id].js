@@ -71,9 +71,31 @@ export default function ActivityPage({
 
       <Header>Activity Details</Header>
       {status === "authenticated" && data.user?.id === activity.createdBy ? (
-        <>
-          {!showForm ? (
+      <>
+        {!showForm ? (
+          <StyledSection>
+            <Button onClick={() => router.back()}>
+              <StyledIcon>
+                <FaArrowLeft />
+              </StyledIcon>
+            </Button>
+
+            <Button onClick={handleToggleEdit}>
+              <StyledIcon>
+                <FaEdit />
+              </StyledIcon>
+            </Button>
+
+            <Button onClick={handleDeleteClick}>
+              <StyledIcon>
+                <FaTrashAlt />
+              </StyledIcon>
+            </Button>
+          </StyledSection>
+        ) : (
+          <>
             <StyledSection>
+
               <InstallPrompt
                 showInstallPrompt={showInstallPrompt}
                 install={install}
@@ -93,27 +115,25 @@ export default function ActivityPage({
               <Button onClick={handleDeleteClick}>
                 <StyledIcon>
                   <FaTrashAlt />
+
+              <Button onClick={() => setShowForm(!showForm)}>
+              <StyledIcon>
+                <FaEdit />
+
                 </StyledIcon>
               </Button>
             </StyledSection>
-          ) : (
-            <>
-              <StyledSection>
-                <Button onClick={() => setShowForm(!showForm)} isPrimary>
-                  Edit activity
-                </Button>
-              </StyledSection>
-              <ActivityForm
-                handleToggleEdit={handleToggleEdit}
-                handleEditActivity={(newActivity) => {
-                  handleEditActivity(newActivity);
-                  mutate(`/api/activities`);
-                }}
-                activity={activity}
-              />
-            </>
-          )}
-        </>
+            <ActivityForm
+              handleToggleEdit={handleToggleEdit}
+              handleEditActivity={(newActivity) => {
+                handleEditActivity(newActivity);
+                mutate(`/api/activities`);
+              }}
+              activity={activity}
+            />
+          </>
+        )}
+      </>
       ) : (
         <StyledSection>
           <Button onClick={() => router.back()}>
