@@ -8,6 +8,7 @@ import ActivityForm from "@/components/layout/ActivityForm";
 import ActivityFilter from "@/components/layout/ActivityFilter";
 import Search from "@/components/layout/Search";
 import { useSession } from "next-auth/react";
+import IconButton from "@/components/ui/IconButton";
 import LogoutButton from "@/components/layout/LogoutButton";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
@@ -23,6 +24,8 @@ export default function HomePage({
   handleResetFilter,
   mutate,
   listedActivities,
+  viewMode,
+  handleViewMode,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -70,10 +73,19 @@ export default function HomePage({
       </Head>
       <Header>Activity Planner</Header>
       <StyledSection>
+        <IconButton
+          variant="Grid"
+          viewMode={viewMode}
+          handleViewMode={handleViewMode}
+        />
+        <IconButton
+          variant="List"
+          viewMode={viewMode}
+          handleViewMode={handleViewMode}
+        />
         <SearchIconContainer onClick={toggleSearchVisibility}>
           <FaSearch size={20} />
         </SearchIconContainer>
-
         <Button onClick={() => setShowFilter(!showFilter)}>
           Filter ({filter.length})
         </Button>
@@ -118,6 +130,7 @@ export default function HomePage({
         activities={listedActivities}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
+        viewMode={viewMode}
         toggleBookmark={toggleBookmark}
         handleResetFilter={handleResetFilter}
       />
@@ -149,7 +162,6 @@ const SearchIconContainer = styled.div`
     background-color: #e0e0e0;
   }
 `;
-
 const StyledLink = styled(Link)`
   border-radius: 4px;
   border: 1px solid #ccc;

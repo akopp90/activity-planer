@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import ActivityCard from "@/components/layout/ActivityCard";
@@ -9,8 +8,8 @@ export default function ActivityList({
   toggleBookmark,
   handleResetFilter,
   showHeart = true,
+  viewMode,
 }) {
-  const [viewMode, setViewMode] = useState("List");
   if (!activities) return <div>Loading...</div>;
   return (
     <main>

@@ -74,6 +74,7 @@ export default function App({
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [title, setTitle] = useState("");
+  const [viewMode, setViewMode] = useState("Grid");
   const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
@@ -215,6 +216,8 @@ export default function App({
           activities={filteredActivities}
           handleFilter={handleFilter}
           filter={filter}
+          viewMode={viewMode}
+          handleViewMode={setViewMode}
           filteredActivities={listedActivities}
           listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}

@@ -16,6 +16,7 @@ export default function ActivityPage({
   handleSearchInputChange,
   randomActivities,
   title,
+  viewMode,
 }) {
   const [showForm, setShowForm] = useState(false);
 
@@ -79,6 +80,7 @@ export default function ActivityPage({
                   <ActivityCard
                     key={activity._id}
                     {...activity}
+                    viewMode={viewMode}
                     deleteActivity={deleteActivity}
                     toggleBookmark={() => toggleBookmark(activity._id)}
                     isBookmarked={isBookmarked}
