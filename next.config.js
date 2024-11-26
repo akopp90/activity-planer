@@ -8,6 +8,7 @@ const nextConfig = withPWA({
   experimental: {
     newNextLinkBehavior: true,
   },
+  transpileModules: ["react-ios-pwa-prompt"],
   compiler: {
     styledComponents: true,
   },

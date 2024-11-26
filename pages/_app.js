@@ -9,7 +9,6 @@ import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
-import { set } from "mongoose";
 
 export default function App({
   Component,
@@ -242,6 +241,7 @@ export default function App({
     >
       <SessionProvider session={session}>
         <GlobalStyle />
+
         <Component
           bookmarks={bookmarkedActivities}
           toggleBookmark={toggleBookmark}
@@ -270,6 +270,7 @@ export default function App({
           install={handleInstallClick}
           {...pageProps}
         />
+
         <ToastContainer />
         <Footer />
       </SessionProvider>
