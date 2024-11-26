@@ -8,6 +8,7 @@ import { showToast } from "../components/ui/ToastMessage";
 import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 import useSWR, { mutate, SWRConfig } from "swr";
+import ThemeToggle from "@/components/ThemeToggle"; 
 
 export default function App({
   Component,
@@ -54,6 +55,14 @@ export default function App({
         categories.some((category) => filter.includes(category))
       )
     : [];
+
+  const [theme, setTheme] = useLocalStorageState("theme", {
+    defaultValue: "light", // default theme is light
+  });
+
+  useEffect(() => {
+    document.body.classList.add(theme); // Add the theme class to the body
+  }, [theme]);
 
   useEffect(() => {
     if (searchTerm) {
@@ -151,8 +160,10 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
+
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
+
   return (
     <SWRConfig
       value={{
@@ -161,7 +172,10 @@ export default function App({
       }}
     >
       <SessionProvider session={session}>
-        <GlobalStyle />
+        {/* GlobalStyle now takes the current theme */}
+        <GlobalStyle theme={theme} />
+        {/* ThemeToggle allows the user to switch themes */}
+        <ThemeToggle theme={theme} setTheme={setTheme} />
         <Component
           bookmarks={bookmarkedActivities}
           toggleBookmark={toggleBookmark}
