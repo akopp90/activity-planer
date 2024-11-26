@@ -19,7 +19,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
-import { FaRegHeart, FaHeart } from "react-icons/fa6";
+import { FaArrowUpFromBracket, FaRegHeart, FaHeart } from "react-icons/fa6";
 
 import dynamic from "next/dynamic";
 import styled from "styled-components";
@@ -105,6 +105,22 @@ export default function ActivityDetails({
       imageListRef.current.scrollBy(offset, 0);
     }
   }
+
+  function handleShare() {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title,
+          text: description,
+          url: window.location.href,
+        })
+        .catch((error) => console.error("Sharing failed", error));
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  }
+
   return (
     <StyledContainer>
       <StyledDetails>
@@ -125,10 +141,12 @@ export default function ActivityDetails({
               alt="Image is missing"
             />
           )}
-
+          <StyledShareIconContainer onClick={() => handleShare()}>
+            <FaArrowUpFromBracket fill="#000" />
+          </StyledShareIconContainer>
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-              <StyledFaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+              {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
@@ -324,12 +342,34 @@ const StyledHeartIconContainer = styled.div`
   text-shadow: 0 2px 2px #000;
   background-color: white;
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: #ff4d4d;
+  }
+`;
+
+const StyledShareIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
   &:hover {
     color: #ff4d4d;
   }
@@ -392,9 +432,8 @@ const StyledImageSlider = styled.div`
 `;
 
 const StyledFaHeart = styled(FaHeart)`
-  filter: drop-shadow(3px 1px 2px rgb(0 0 0 / 0.4));
   path {
-    stroke: red;
+    stroke: black;
     stroke-width: 3rem;
     stroke-linejoin: round;
     stroke-linecap: round;

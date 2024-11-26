@@ -58,11 +58,11 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
-        <h3>
-          you have to be registered to add activities and only can delete and
-          edit your own activities.
-        </h3>
-        <p>User: test@test123.com Password: test12345</p>
+        <SloganContainer>
+          Register to manage your own activities. 
+        </SloganContainer>
+        <p>User: test@test123.com</p>
+        <p> Password: test12345</p>
         <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
 
         {listedActivities.length === 0 ? (
