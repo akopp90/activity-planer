@@ -1,0 +1,16 @@
+{
+  "short_name": "Daily Adventures",
+  "name": "Daily Adventures",
+  "description": "neue Fische capstone Project Amine Tunc, Rebecca Drumm, Benjamin Pfleghaar und Andreas Kopp",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "icons": [
+    {
+      "src": "/LOGO_pwa.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

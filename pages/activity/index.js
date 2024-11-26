@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
+import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default function HomePage({
   handleAddActivity,
@@ -23,6 +24,9 @@ export default function HomePage({
   handleResetFilter,
   mutate,
   listedActivities,
+  showInstallPrompt,
+  install,
+  showInstallButton,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -71,7 +75,11 @@ export default function HomePage({
         <SearchIconContainer onClick={toggleSearchVisibility}>
           <FaSearch size={20} />
         </SearchIconContainer>
-
+        <InstallPrompt
+          showInstallPrompt={showInstallPrompt}
+          install={install}
+          showInstallButton={showInstallButton}
+        />
         <Button
           onClick={() => setShowFilter(!showFilter)}
           name="filter"
@@ -140,12 +148,12 @@ const SearchIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  border-radius: 4px; 
-  background-color: #fff; 
-  border: 1px solid #ccc; 
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
   font-size: 1rem;
   transition: background-color 0.3s, border-color 0.3s;
-  
+
   &:hover {
     background-color: #e0e0e0;
   }

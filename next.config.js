@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+const nextConfig = withPWA({
+  experimental: {
+    newNextLinkBehavior: true,
+  },
   compiler: {
-    styledComponents: false,
+    styledComponents: true,
   },
   transpilePackages: ["next-auth"],
   reactStrictMode: true,
@@ -33,6 +41,6 @@ const nextConfig = {
       },
     ],
   },
-};
+});
 
 module.exports = nextConfig;

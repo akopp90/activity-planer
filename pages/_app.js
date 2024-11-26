@@ -82,6 +82,9 @@ export default function App({
   const [listedActivities, setListedActivities] = useState(
     filteredActivities || []
   );
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(true);
   useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
@@ -186,6 +189,46 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      const handleBeforeInstallPrompt = (event) => {
+        event.preventDefault();
+        setDeferredPrompt(event);
+        setShowInstallButton(true);
+        setShowInstallPrompt(false);
+      };
+
+      const handleAppInstalled = () => {
+        setShowInstallPrompt(false);
+        setShowInstallButton(false);
+        console.log("App installed");
+        setDeferredPrompt(null);
+      };
+
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.addEventListener("appinstalled", handleAppInstalled);
+
+      return () => {
+        window.removeEventListener(
+          "beforeinstallprompt",
+          handleBeforeInstallPrompt
+        );
+        window.removeEventListener("appinstalled", handleAppInstalled);
+      };
+    }
+  }, []);
+
+  async function handleInstallClick() {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setShowInstallPrompt(false);
+    }
+    setDeferredPrompt(null);
+  }
 
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
@@ -198,6 +241,7 @@ export default function App({
     >
       <SessionProvider session={session}>
         <GlobalStyle />
+
         <Component
           bookmarks={bookmarkedActivities}
           toggleBookmark={toggleBookmark}
@@ -221,8 +265,12 @@ export default function App({
           initialActivities={initialActivities}
           mutate={mutate}
           getRandomActivities={getRandomActivities}
+          showInstallPrompt={showInstallPrompt}
+          showInstallButton={showInstallButton}
+          install={handleInstallClick}
           {...pageProps}
         />
+
         <ToastContainer />
         <Footer />
       </SessionProvider>
