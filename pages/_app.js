@@ -191,6 +191,10 @@ export default function App({
     setSearchTerm("");
   }
 
+  function handleViewMode(mode) {
+    setViewMode(mode);
+  }
+
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
   return (
@@ -217,7 +221,7 @@ export default function App({
           handleFilter={handleFilter}
           filter={filter}
           viewMode={viewMode}
-          handleViewMode={setViewMode}
+          handleViewMode={handleViewMode}
           filteredActivities={listedActivities}
           listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}

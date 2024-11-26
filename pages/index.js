@@ -6,6 +6,7 @@ import Search from "@/components/layout/Search";
 import { FaKey, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import IconButton from "@/components/ui/IconButton";
 import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
@@ -17,6 +18,7 @@ export default function ActivityPage({
   randomActivities,
   title,
   viewMode,
+  handleViewMode,
 }) {
   const [showForm, setShowForm] = useState(false);
 
@@ -72,23 +74,38 @@ export default function ActivityPage({
           </NoActivitiesFoundContainer>
         ) : (
           listedActivities?.length > 0 && (
-            <ActivitiesContainer>
-              {listedActivities.map((activity) => {
-                const isBookmarked = bookmarks?.includes(activity._id) || false;
+            <>
+              <StyledSection>
+                <IconButton
+                  variant="Grid"
+                  viewMode={viewMode}
+                  handleViewMode={handleViewMode}
+                />
+                <IconButton
+                  variant="List"
+                  viewMode={viewMode}
+                  handleViewMode={handleViewMode}
+                />
+              </StyledSection>
+              <ActivitiesContainer>
+                {listedActivities.map((activity) => {
+                  const isBookmarked =
+                    bookmarks?.includes(activity._id) || false;
 
-                return (
-                  <ActivityCard
-                    key={activity._id}
-                    {...activity}
-                    viewMode={viewMode}
-                    deleteActivity={deleteActivity}
-                    toggleBookmark={() => toggleBookmark(activity._id)}
-                    isBookmarked={isBookmarked}
-                    showHeart={showHeart}
-                  />
-                );
-              })}
-            </ActivitiesContainer>
+                  return (
+                    <ActivityCard
+                      key={activity._id}
+                      {...activity}
+                      viewMode={viewMode}
+                      deleteActivity={deleteActivity}
+                      toggleBookmark={() => toggleBookmark(activity._id)}
+                      isBookmarked={isBookmarked}
+                      showHeart={showHeart}
+                    />
+                  );
+                })}
+              </ActivitiesContainer>
+            </>
           )
         )}
       </Container>
@@ -116,6 +133,14 @@ const Container = styled.div`
   align-items: center;
   padding: 32px;
   gap: 32px;
+`;
+
+const StyledSection = styled.section`
+  gap: 16px;
+  width: 100%;
+  display: flex;
+  padding: 0 24px;
+  justify-content: flex-end;
 `;
 
 const SloganContainer = styled.section`

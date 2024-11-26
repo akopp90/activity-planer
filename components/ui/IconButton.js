@@ -3,11 +3,19 @@ import { FaThLarge, FaBars } from "react-icons/fa";
 
 export default function IconButton({ variant, viewMode, handleViewMode }) {
   return variant === "Grid" ? (
-    <Button type="button" $isActive={viewMode === "Grid"}>
+    <Button
+      type="button"
+      $isActive={viewMode === "Grid"}
+      onClick={() => handleViewMode("Grid")}
+    >
       <FaThLarge size={20} fill={viewMode === "Grid" ? "#fff" : "#000"} />
     </Button>
   ) : (
-    <Button type="button" $isActive={viewMode === "List"}>
+    <Button
+      type="button"
+      $isActive={viewMode === "List"}
+      onClick={() => handleViewMode("List")}
+    >
       <FaBars size={20} fill={viewMode === "List" ? "#fff" : "#000"} />
     </Button>
   );
