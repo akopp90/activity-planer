@@ -53,7 +53,7 @@ export default function ActivityPage({
   }
 
   function handleConfirmDelete() {
-    handleDeleteActivity(activity.id);
+    handleDeleteActivity(activity._id);
     setShowConfirm(false);
   }
 
@@ -71,41 +71,15 @@ export default function ActivityPage({
 
       <Header>Activity Details</Header>
       {status === "authenticated" && data.user?.id === activity.createdBy ? (
-      <>
-        {!showForm ? (
-          <StyledSection>
-            <Button onClick={() => router.back()}>
-              <StyledIcon>
-                <FaArrowLeft />
-              </StyledIcon>
-            </Button>
-
-            <Button onClick={handleToggleEdit}>
-              <StyledIcon>
-                <FaEdit />
-              </StyledIcon>
-            </Button>
-
-            <Button onClick={handleDeleteClick}>
-              <StyledIcon>
-                <FaTrashAlt />
-              </StyledIcon>
-            </Button>
-          </StyledSection>
-        ) : (
-          <>
+        <>
+          {!showForm ? (
             <StyledSection>
-
-              <InstallPrompt
-                showInstallPrompt={showInstallPrompt}
-                install={install}
-                showInstallButton={showInstallButton}
-              />
               <Button onClick={() => router.back()}>
                 <StyledIcon>
                   <FaArrowLeft />
                 </StyledIcon>
               </Button>
+
               <Button onClick={handleToggleEdit}>
                 <StyledIcon>
                   <FaEdit />
@@ -115,25 +89,51 @@ export default function ActivityPage({
               <Button onClick={handleDeleteClick}>
                 <StyledIcon>
                   <FaTrashAlt />
-
-              <Button onClick={() => setShowForm(!showForm)}>
-              <StyledIcon>
-                <FaEdit />
-
                 </StyledIcon>
               </Button>
             </StyledSection>
-            <ActivityForm
-              handleToggleEdit={handleToggleEdit}
-              handleEditActivity={(newActivity) => {
-                handleEditActivity(newActivity);
-                mutate(`/api/activities`);
-              }}
-              activity={activity}
-            />
-          </>
-        )}
-      </>
+          ) : (
+            <>
+              <StyledSection>
+                <InstallPrompt
+                  showInstallPrompt={showInstallPrompt}
+                  install={install}
+                  showInstallButton={showInstallButton}
+                />
+                <Button onClick={() => router.back()}>
+                  <StyledIcon>
+                    <FaArrowLeft />
+                  </StyledIcon>
+                </Button>
+                <Button onClick={handleToggleEdit}>
+                  <StyledIcon>
+                    <FaEdit />
+                  </StyledIcon>
+                </Button>
+
+                <Button onClick={handleDeleteClick}>
+                  <StyledIcon>
+                    <FaTrashAlt />
+                  </StyledIcon>
+                </Button>
+
+                <Button onClick={() => setShowForm(!showForm)}>
+                  <StyledIcon>
+                    <FaEdit />
+                  </StyledIcon>
+                </Button>
+              </StyledSection>
+              <ActivityForm
+                handleToggleEdit={handleToggleEdit}
+                handleEditActivity={(newActivity) => {
+                  handleEditActivity(newActivity);
+                  mutate(`/api/activities`);
+                }}
+                activity={activity}
+              />
+            </>
+          )}
+        </>
       ) : (
         <StyledSection>
           <Button onClick={() => router.back()}>
