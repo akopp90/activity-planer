@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Button from "@/components/ui/Button";
 import InstallPrompt from "@/components/ui/InstallPrompt";
-import PWAPrompt from "react-ios-pwa-prompt";
 
 export default function ActivityPage({
   toggleBookmark,
