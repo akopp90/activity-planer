@@ -8,6 +8,7 @@ export default function ActivityCard({
   title,
   categories,
   imageUrl,
+  viewMode,
   isBookmarked,
   toggleBookmark,
   showHeart = true,
@@ -15,30 +16,36 @@ export default function ActivityCard({
 }) {
   return (
     <StyledArticle data-testid="activity">
-      <StyledImageContainer>
-        {imageUrl ? (
-          <Image
-            src={imageUrl[0]}
-            alt={title}
-            style={{ objectFit: "cover" }}
-            sizes="33vw"
-            fill
-          />
-        ) : (
-          <Image
-            src="/images/no-image.svg"
-            width={40}
-            height={40}
-            alt="Image is missing"
-          />
-        )}
+      {viewMode === "Grid" && (
+        <StyledImageContainer>
+          {imageUrl ? (
+            <Image
+              src={imageUrl[0]}
+              alt={title}
+              style={{ objectFit: "cover" }}
+              sizes="33vw"
+              fill
+            />
+          ) : (
+            <Image
+              src="/images/no-image.svg"
+              width={40}
+              height={40}
+              alt="Image is missing"
+            />
+          )}
+        </StyledImageContainer>
+      )}
 
-        {showHeart && (
-          <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-            {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
-          </StyledHeartIconContainer>
-        )}
-      </StyledImageContainer>
+      {showHeart && (
+        <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
+          <StyledFaHeart
+            fill={
+              isBookmarked ? "#ff4d4d" : viewMode === "Grid" ? "#fff" : "#ccc"
+            }
+          />
+        </StyledHeartIconContainer>
+      )}
 
       <StyledList>
         {Array.isArray(categories) &&
@@ -57,6 +64,7 @@ export default function ActivityCard({
 const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
+  position: relative;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
   background-color: white;
 `;
@@ -116,4 +124,14 @@ const StyledHeartIconContainer = styled.div`
   &:hover {
     color: #ff4d4d;
   }
+`;
+const StyledFaHeart = styled(FaHeart)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
 `;

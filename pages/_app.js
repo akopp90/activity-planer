@@ -76,12 +76,16 @@ export default function App({
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [title, setTitle] = useState("");
+  const [viewMode, setViewMode] = useState("Grid");
   const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const filteredActivities = filterActivities(initialActivities, filter);
+  const filteredActivities = filterActivities(initialActivities, filter || []);
   const [listedActivities, setListedActivities] = useState(filteredActivities);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(true);
   useEffect(() => {
     setListedActivities(filteredActivities);
   }, [filteredActivities]);
@@ -192,6 +196,50 @@ export default function App({
     setSearchTerm("");
   }
 
+  function handleViewMode(mode) {
+    setViewMode(mode);
+  }
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      const handleBeforeInstallPrompt = (event) => {
+        event.preventDefault();
+        setDeferredPrompt(event);
+        setShowInstallButton(true);
+        setShowInstallPrompt(false);
+      };
+
+      const handleAppInstalled = () => {
+        setShowInstallPrompt(false);
+        setShowInstallButton(false);
+        console.log("App installed");
+        setDeferredPrompt(null);
+      };
+
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.addEventListener("appinstalled", handleAppInstalled);
+
+      return () => {
+        window.removeEventListener(
+          "beforeinstallprompt",
+          handleBeforeInstallPrompt
+        );
+        window.removeEventListener("appinstalled", handleAppInstalled);
+      };
+    }
+  }, []);
+
+  async function handleInstallClick() {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setShowInstallPrompt(false);
+    }
+    setDeferredPrompt(null);
+  }
+
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
   return (
@@ -204,38 +252,39 @@ export default function App({
       <SessionProvider session={session}>
         <GlobalStyle />
 
-        <Container>
-          <ContentContainer>
-            <Component
-              bookmarks={bookmarkedActivities}
-              toggleBookmark={toggleBookmark}
-              handleAddActivity={handleAddActivity}
-              handleEditActivity={handleEditActivity}
-              handleDeleteActivity={handleDeleteActivity}
-              travelTipsCategories={travelTipsData}
-              randomActivities={
-                (filter.length === 0) & (searchTerm === "")
-                  ? randomActivities
-                  : listedActivities
-              }
-              activities={filteredActivities}
-              handleFilter={handleFilter}
-              filter={filter}
-              filteredActivities={listedActivities}
-              listedActivities={listedActivities} // Pass listedActivities as a prop
-              handleSearchInputChange={handleSearchInputChange}
-              searchTerm={searchTerm}
-              title={title}
-              handleResetFilter={handleResetFilter}
-              initialActivities={listedActivities}
-              mutate={mutate}
-              getRandomActivities={getRandomActivities}
-              {...pageProps}
-            />
-          </ContentContainer>
-          <ToastContainer />
-          <Footer />
-        </Container>
+        <Component
+          bookmarks={bookmarkedActivities}
+          toggleBookmark={toggleBookmark}
+          handleAddActivity={handleAddActivity}
+          handleEditActivity={handleEditActivity}
+          handleDeleteActivity={handleDeleteActivity}
+          randomActivities={
+            (filter.length === 0) & (searchTerm === "")
+              ? randomActivities
+              : listedActivities
+          }
+          activities={filteredActivities}
+          handleFilter={handleFilter}
+          filter={filter}
+          viewMode={viewMode}
+          handleViewMode={handleViewMode}
+          filteredActivities={listedActivities}
+          listedActivities={listedActivities} // Pass listedActivities as a prop
+          handleSearchInputChange={handleSearchInputChange}
+          searchTerm={searchTerm}
+          title={title}
+          handleResetFilter={handleResetFilter}
+          initialActivities={initialActivities}
+          mutate={mutate}
+          showInstallPrompt={showInstallPrompt}
+          showInstallButton={showInstallButton}
+          install={handleInstallClick}
+          getRandomActivities={getRandomActivities}
+          travelTipsCategories={travelTipsData}
+          {...pageProps}
+        />
+        <ToastContainer />
+        <Footer />
       </SessionProvider>
     </SWRConfig>
   );
