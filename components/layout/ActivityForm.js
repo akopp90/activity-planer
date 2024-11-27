@@ -32,7 +32,10 @@ export default function ActivityForm({
     const includes = formData.includes.split(",");
     const notSuitableFor = formData.notsuitablefor.split(",");
     const importantInformation = formData.importantinformation.split(",");
-    const whatToBring = formData.whattobring.split(",");
+    const whatToBring = formData.whattobring;
+    const numberOfPeople = formData.numberofpeople;
+    const fullDescription = formData.fulldescription;
+
     const createdBy = session.data.user.id;
     const newActivity = {
       ...activityData,
@@ -42,6 +45,8 @@ export default function ActivityForm({
       includes: includes[0] !== "" ? includes : ["no information"],
       notSuitableFor:
         notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+      fullDescription: fullDescription,
+      numberOfPeople: numberOfPeople,
       importantInformation:
         importantInformation[0] !== ""
           ? importantInformation
@@ -74,6 +79,8 @@ export default function ActivityForm({
         includes: includes[0] !== "" ? includes : ["no information"],
         notSuitableFor:
           notSuitableFor[0] !== "" ? notSuitableFor : ["no information"],
+        fullDescription: fullDescription, // Add this
+        numberOfPeople: numberOfPeople,
         importantInformation:
           importantInformation[0] !== ""
             ? importantInformation
