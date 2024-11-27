@@ -30,7 +30,7 @@ export default function FavoriteActivityCard({
 
       <CardFooter>
         <TitleContainer>
-          <Link href={`/activities/${_id}`}>{title}</Link>
+          <Link href={`/activity/${_id}`}>{title}</Link>
         </TitleContainer>
         <CountryContainer>{country}</CountryContainer>
       </CardFooter>
