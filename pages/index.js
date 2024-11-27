@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
 import Button from "@/components/ui/Button";
+import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -73,7 +74,11 @@ export default function ActivityPage({
           edit your own activities.
         </p>
         <p>User: test@test123.com Password: test12345</p>
-
+        <InstallPrompt
+          showInstallPrompt={showInstallPrompt}
+          install={install}
+          showInstallButton={showInstallButton}
+        />
         <JumpToTravelTipsContainer>
           <Link href="#travel-tips">Jump to Travel Tips</Link>
 
