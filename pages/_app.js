@@ -21,7 +21,6 @@ export default function App({
   const {
     data: initialActivities,
     error,
-    isLoading,
     mutate,
   } = useSWR(
     `/api/activities`,
@@ -77,10 +76,6 @@ export default function App({
   const [searchTerm, setSearchTerm] = useState("");
   const [title, setTitle] = useState("");
   const [viewMode, setViewMode] = useState("Grid");
-  const RANDOM_ACTIVITIES_TITLE = "Activities You Might Like";
-  const FOUND_ACTIVITIES_TITLE = "Found Activities";
-
-  const [previousActivities, setPreviousActivities] = useState(null);
   const filteredActivities = filterActivities(initialActivities, filter || []);
   const [listedActivities, setListedActivities] = useState(
     filteredActivities || []
@@ -257,18 +252,16 @@ export default function App({
               ? randomActivities
               : listedActivities
           }
-          activities={filteredActivities}
+          filteredActivities={listedActivities}
+          listedActivities={listedActivities}
           handleFilter={handleFilter}
           filter={filter}
           viewMode={viewMode}
           handleViewMode={handleViewMode}
-          filteredActivities={listedActivities}
-          listedActivities={listedActivities} // Pass listedActivities as a prop
           handleSearchInputChange={handleSearchInputChange}
           searchTerm={searchTerm}
           title={title}
           handleResetFilter={handleResetFilter}
-          initialActivities={initialActivities}
           mutate={mutate}
           showInstallPrompt={showInstallPrompt}
           showInstallButton={showInstallButton}
@@ -283,15 +276,3 @@ export default function App({
     </SWRConfig>
   );
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const ContentContainer = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 50px;
-`;

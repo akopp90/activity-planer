@@ -5,7 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import styled from "styled-components";
 
 export default function MyFavoriteActivitiesPage({
-  activities,
+  listedActivities: activities,
   bookmarks,
   toggleBookmark,
 }) {

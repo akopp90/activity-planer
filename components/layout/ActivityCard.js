@@ -12,7 +12,6 @@ export default function ActivityCard({
   isBookmarked,
   toggleBookmark,
   showHeart = true,
-  activity,
 }) {
   return (
     <StyledArticle data-testid="activity">

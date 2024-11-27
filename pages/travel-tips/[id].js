@@ -4,22 +4,23 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaArrowCircleLeft } from "react-icons/fa";
 
-export default function TravelTipsPage({ travelTipsCategories, listedActivities }) {
+export default function TravelTipsPage({
+  travelTipsCategories,
+  listedActivities,
+}) {
   const router = useRouter();
   const { id } = router.query;
   const category = travelTipsCategories.find((cat) => cat.id === id);
 
-  
   const formatTip = (tip) => {
     const parts = tip.split("**");
     return {
       emoji: parts[0].trim(),
-      mainPoint: parts[1] ? parts[1] : '',
-      subPoint: parts[2] ? parts[2] : ''
+      mainPoint: parts[1] ? parts[1] : "",
+      subPoint: parts[2] ? parts[2] : "",
     };
   };
 
-  
   const matchingActivities = listedActivities
     .filter((activity) =>
       activity.categories.some((activityCat) =>
@@ -38,9 +39,7 @@ export default function TravelTipsPage({ travelTipsCategories, listedActivities 
 
   return (
     <>
-      <Header>
-        Travel Tips {category?.emoji}
-      </Header>
+      <Header>Travel Tips {category?.emoji}</Header>
 
       <GoBackButton onClick={handleGoBack}>
         <FaArrowCircleLeft />
@@ -70,7 +69,6 @@ export default function TravelTipsPage({ travelTipsCategories, listedActivities 
                 })}
               </ul>
 
-              
               {matchingActivities.length > 0 && (
                 <RelatedActivities>
                   <h2>Related Activities</h2>
@@ -127,7 +125,7 @@ const GoBackButton = styled.button`
   border: none;
   padding: 10px;
   border-radius: 50%;
-  font-size: 20px;  
+  font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s;
   margin: 14px;
@@ -151,16 +149,17 @@ const StyledArticle = styled.article`
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
   background-color: white;
   margin: 24px;
+  margin-bottom: 70px;
 `;
 
 const HeaderRow = styled.div`
   grid-column: 1;
   border-radius: 8px;
   h1 {
-    font-size: 24px;  
+    font-size: 24px;
   }
   p {
-    font-size: 14px;  
+    font-size: 14px;
     color: #777;
   }
 `;
@@ -184,12 +183,12 @@ const ImageColumn = styled.div`
 
 const ListElement = styled.li`
   margin-bottom: 1rem;
-  font-size: 14px;  
+  font-size: 14px;
   line-height: 1.5;
 `;
 
 const TipHeader = styled.div`
-  font-size: 14px;  
+  font-size: 14px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -198,7 +197,7 @@ const TipHeader = styled.div`
 `;
 
 const TipSubtext = styled.div`
-  font-size: 10px;  
+  font-size: 10px;
   color: #666;
   font-weight: 400;
   margin-left: 10px;
@@ -250,4 +249,3 @@ const RelatedActivities = styled.div`
   padding-top: 1rem;
   border-top: 1px solid #eee;
 `;
-

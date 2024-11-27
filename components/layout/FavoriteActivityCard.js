@@ -1,4 +1,3 @@
-import { activities } from "@/lib/activities";
 import Image from "next/image";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
