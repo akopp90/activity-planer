@@ -96,6 +96,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+
 const StyledHeartIconContainer = styled.div`
   position: absolute;
   top: 16px;

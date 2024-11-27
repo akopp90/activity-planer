@@ -3,11 +3,10 @@ import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
-import { FaKey, FaSearch } from "react-icons/fa";
+import { FaKey, FaArrowCircleDown, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import Button from "@/components/ui/Button";
-import InstallPrompt from "@/components/ui/InstallPrompt";
+import LogoutButton from "@/components/layout/LogoutButton";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -17,12 +16,9 @@ export default function ActivityPage({
   handleSearchInputChange,
   randomActivities,
   title,
-  showInstallPrompt,
-  install,
-  showInstallButton,
+  travelTipsCategories,
 }) {
   const [showForm, setShowForm] = useState(false);
-
   const [showFilter, setShowFilter] = useState(false);
   const { data: session } = useSession();
   const listedActivities = randomActivities;
@@ -45,41 +41,42 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
+  const scrollToTravelTips = () => {
+    const element = document.getElementById("travel-tips");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <>
-      <Header />
+      <Header>Activity Planner</Header>
+      {!session ? (
+        <StyledLink href="/auth/signin">
+          <FaKey />
+        </StyledLink>
+      ) : (
+        <LogoutContainer>
+          <LogoutButton />
+        </LogoutContainer>
+      )}
       <Container>
-        <SloganContainer>Your new adventure starts here.</SloganContainer>
-        <SearchBarContainer>
-          <SearchIconContainer>
-            <FaSearch size={20} />
-          </SearchIconContainer>
-          <SearchInput
-            placeholder="Search activities..."
-            onChange={handleSearchInputChange}
-          />
-          <SearchButtonContainer>
-            <Button isPrimary>Search</Button>
-          </SearchButtonContainer>
-        </SearchBarContainer>
-        <InstallPrompt
-          showInstallPrompt={showInstallPrompt}
-          install={install}
-          showInstallButton={showInstallButton}
-        />
-        <h3>
-          you have to be registered to add activities and only can delete and
-          edit your own activities.
-        </h3>
-        <p>User: test@test123.com Password: test12345</p>
-        <SloganContainer>
-          Register to manage your own activities. 
-        </SloganContainer>
-        <p>User: test@test123.com</p>
-        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
+        <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        {listedActivities.length === 0 ? (
-          <NoActivitiesFoundContainer key="no-activities-found">
+        <Search onChange={(event) => handleSearchInputChange(event)} />
+
+        <JumpToTravelTipsContainer>
+          <Link href="#travel-tips">Jump to Travel Tips</Link>
+
+          <ArrowDownContainer onClick={scrollToTravelTips}>
+            <FaArrowCircleDown />
+          </ArrowDownContainer>
+        </JumpToTravelTipsContainer>
+
+        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
+
+        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer>
             No Activities Found
           </NoActivitiesFoundContainer>
         ) : (
@@ -102,10 +99,20 @@ export default function ActivityPage({
             </ActivitiesContainer>
           )
         )}
+
+        <TravelTipsHeading id="travel-tips">Travel Tips</TravelTipsHeading>
+        <TravelTipsButtonsContainer>
+          {travelTipsCategories.map((cat) => (
+            <Link key={cat.id} href={`/travel-tips/${cat.id}`}>
+              <TravelTipButton>{cat.title} travel Tips</TravelTipButton>
+            </Link>
+          ))}
+        </TravelTipsButtonsContainer>
       </Container>
     </>
   );
 }
+
 const ActivitiesContainer = styled.div`
   display: grid;
   gap: 1rem;
@@ -121,6 +128,7 @@ const ActivitiesContainer = styled.div`
     grid-template-columns: 1fr 1fr 1fr;
   }
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -130,55 +138,79 @@ const Container = styled.div`
 `;
 
 const SloganContainer = styled.section`
-  font-size: 1rem;
+  font-size: 1.5rem;
   text-align: center;
-  font-weight: 700;
-  color: #333;
-  width: 100%;
 `;
 
 const ActivitiesTitle = styled.h2`
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-top: 24px;
+  margin-bottom: 16px;
   color: #333;
   text-align: left;
   width: 100%;
   padding-left: 16px;
 `;
 
-const NoActivitiesFoundContainer = styled.div`
+const NoActivitiesFoundContainer = styled.div``;
+
+const TravelTipsHeading = styled.h2``;
+
+const TravelTipButton = styled.div`
+  padding: 12px;
+  border-radius: 4px;
+  background: linear-gradient(#ececec, #d3d3d3);
   text-align: center;
-  margin-top: 24px;
-  margin-bottom: 50px;
-  color: #333;
+  transition: 0.5s;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: #b6b6b6 0px 2px 2px 1px;
+  }
 `;
-const SearchBarContainer = styled.div`
+
+const TravelTipsButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const StyledLink = styled(Link)`
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 16px;
+  position: absolute;
+  top: 80px;
+  right: 24px;
+`;
+
+const LogoutContainer = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 24px;
+`;
+
+const JumpToTravelTipsContainer = styled.div`
+  display: flex;
+  gap: 0.25rem;
+`;
+
+const ArrowDownContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border: solid 1px gray;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: white;
-  width: 90%;
-  max-width: 600px;
-`;
-const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;
-`;
-const SearchButtonContainer = styled.div`
-  display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
-`;
-const SearchInput = styled.input`
-  font-size: 0.9rem;
-  border-radius: 0.5rem;
-  outline: none;
-  border: none;
-  flex-grow: 1;
-  padding: 0.5rem;
-  width: 100%;
+  cursor: pointer;
+  font-size: 2rem;
+  transition: transform 0.3s ease-in-out, color 0.3s ease;
+
+  &:hover {
+    color: #007bff;
+    transform: translateY(5px);
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
 `;

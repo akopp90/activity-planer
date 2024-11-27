@@ -9,6 +9,8 @@ import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
+import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategories";
+import styled from "styled-components";
 
 export default function App({
   Component,
@@ -78,26 +80,26 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const filteredActivities = filterActivities(initialActivities, filter || []);
-  const [listedActivities, setListedActivities] = useState(
-    filteredActivities || []
-  );
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
-  const [showInstallButton, setShowInstallButton] = useState(true);
+  const filteredActivities = filterActivities(initialActivities, filter);
+  const [listedActivities, setListedActivities] = useState(filteredActivities);
+  useEffect(() => {
+    setListedActivities(filteredActivities);
+  }, [filteredActivities]);
   useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
-        const listedActivities = initialActivities.filter((activity) =>
-          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+        setListedActivities(
+          initialActivities.filter((activity) =>
+            activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
         );
-        setListedActivities(listedActivities);
       } else {
         const filteredActivities = initialActivities.filter(
           ({ categories }) =>
             filter.length === 0 ||
             categories.some((category) => filter.includes(category))
         );
+
         setListedActivities(filteredActivities);
       }
     } else {
@@ -189,46 +191,6 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
-  useEffect(() => {
-    if ("serviceWorker" in navigator && "PushManager" in window) {
-      const handleBeforeInstallPrompt = (event) => {
-        event.preventDefault();
-        setDeferredPrompt(event);
-        setShowInstallButton(true);
-        setShowInstallPrompt(false);
-      };
-
-      const handleAppInstalled = () => {
-        setShowInstallPrompt(false);
-        setShowInstallButton(false);
-        console.log("App installed");
-        setDeferredPrompt(null);
-      };
-
-      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      window.addEventListener("appinstalled", handleAppInstalled);
-
-      return () => {
-        window.removeEventListener(
-          "beforeinstallprompt",
-          handleBeforeInstallPrompt
-        );
-        window.removeEventListener("appinstalled", handleAppInstalled);
-      };
-    }
-  }, []);
-
-  async function handleInstallClick() {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-
-    if (outcome === "accepted") {
-      setShowInstallPrompt(false);
-    }
-    setDeferredPrompt(null);
-  }
 
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
@@ -242,38 +204,51 @@ export default function App({
       <SessionProvider session={session}>
         <GlobalStyle />
 
-        <Component
-          bookmarks={bookmarkedActivities}
-          toggleBookmark={toggleBookmark}
-          handleAddActivity={handleAddActivity}
-          handleEditActivity={handleEditActivity}
-          handleDeleteActivity={handleDeleteActivity}
-          randomActivities={
-            (filter.length === 0) & (searchTerm === "")
-              ? randomActivities
-              : listedActivities
-          }
-          activities={filteredActivities}
-          handleFilter={handleFilter}
-          filter={filter}
-          filteredActivities={listedActivities}
-          listedActivities={listedActivities} // Pass listedActivities as a prop
-          handleSearchInputChange={handleSearchInputChange}
-          searchTerm={searchTerm}
-          title={title}
-          handleResetFilter={handleResetFilter}
-          initialActivities={initialActivities}
-          mutate={mutate}
-          getRandomActivities={getRandomActivities}
-          showInstallPrompt={showInstallPrompt}
-          showInstallButton={showInstallButton}
-          install={handleInstallClick}
-          {...pageProps}
-        />
-
-        <ToastContainer />
-        <Footer />
+        <Container>
+          <ContentContainer>
+            <Component
+              bookmarks={bookmarkedActivities}
+              toggleBookmark={toggleBookmark}
+              handleAddActivity={handleAddActivity}
+              handleEditActivity={handleEditActivity}
+              handleDeleteActivity={handleDeleteActivity}
+              travelTipsCategories={travelTipsData}
+              randomActivities={
+                (filter.length === 0) & (searchTerm === "")
+                  ? randomActivities
+                  : listedActivities
+              }
+              activities={filteredActivities}
+              handleFilter={handleFilter}
+              filter={filter}
+              filteredActivities={listedActivities}
+              listedActivities={listedActivities} // Pass listedActivities as a prop
+              handleSearchInputChange={handleSearchInputChange}
+              searchTerm={searchTerm}
+              title={title}
+              handleResetFilter={handleResetFilter}
+              initialActivities={initialActivities}
+              mutate={mutate}
+              getRandomActivities={getRandomActivities}
+              {...pageProps}
+            />
+          </ContentContainer>
+          <ToastContainer />
+          <Footer />
+        </Container>
       </SessionProvider>
     </SWRConfig>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const ContentContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 50px;
+`;
