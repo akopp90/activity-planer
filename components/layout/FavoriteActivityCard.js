@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -28,7 +29,9 @@ export default function FavoriteActivityCard({
       </CardHeader>
 
       <CardFooter>
-        <TitleContainer>{title}</TitleContainer>
+        <TitleContainer>
+          <Link href={`/activities/${_id}`}>{title}</Link>
+        </TitleContainer>
         <CountryContainer>{country}</CountryContainer>
       </CardFooter>
     </StyledFavoriteCard>
