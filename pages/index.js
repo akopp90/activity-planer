@@ -19,6 +19,9 @@ export default function ActivityPage({
   randomActivities,
   title,
   travelTipsCategories,
+  showInstallPrompt,
+  install,
+  showInstallButton,
 }) {
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
