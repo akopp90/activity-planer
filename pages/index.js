@@ -72,11 +72,7 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
-        <p>
-          You have to be registered to add activities and only can delete and
-          edit your own activities.
-        </p>
-        <p>User: test@test123.com Password: test12345</p>
+
         <InstallPrompt
           showInstallPrompt={showInstallPrompt}
           install={install}
@@ -194,7 +190,8 @@ const ActivitiesTitle = styled.h2`
 `;
 
 const NoActivitiesFoundContainer = styled.div`
-  font-size: 1.5rem;`;
+  font-size: 1.5rem;
+`;
 
 const TravelTipsHeading = styled.h2`
   font-size: 1.5rem;
