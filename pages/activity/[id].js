@@ -32,10 +32,7 @@ export default function ActivityPage({
     return <p>Loading session...</p>;
   }
   if (!activities) return <p>Loading...</p>;
-  if (!Array.isArray(activities)) {
-    console.error("Activities is not an array");
-    return <p>Error: Activities is not an array</p>;
-  }
+ 
 
   const activity = activities.find((activity) => activity._id === id);
   if (!activity) return <p>Activity not found</p>;

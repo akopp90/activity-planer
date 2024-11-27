@@ -103,8 +103,6 @@ export default function App({
         );
         setListedActivities(filteredActivities);
       }
-    } else {
-      console.error("initialActivities is not an array");
     }
   }, [initialActivities, filter, searchTerm]);
 
