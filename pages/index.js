@@ -7,6 +7,7 @@ import { FaKey, FaArrowCircleDown, FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import LogoutButton from "@/components/layout/LogoutButton";
+import Button from "@/components/ui/Button";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -51,19 +52,27 @@ export default function ActivityPage({
   return (
     <>
       <Header>Activity Planner</Header>
-      {!session ? (
-        <StyledLink href="/auth/signin">
-          <FaKey />
-        </StyledLink>
-      ) : (
-        <LogoutContainer>
-          <LogoutButton />
-        </LogoutContainer>
-      )}
+
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
 
-        <Search onChange={(event) => handleSearchInputChange(event)} />
+        <SearchBarContainer>
+          <SearchIconContainer>
+            <FaSearch size={20} />
+          </SearchIconContainer>
+          <SearchInput
+            placeholder="Search activities..."
+            onChange={handleSearchInputChange}
+          />
+          <SearchButtonContainer>
+            <Button isPrimary>Search</Button>
+          </SearchButtonContainer>
+        </SearchBarContainer>
+        <p>
+          You have to be registered to add activities and only can delete and
+          edit your own activities.
+        </p>
+        <p>User: test@test123.com Password: test12345</p>
 
         <JumpToTravelTipsContainer>
           <Link href="#travel-tips">Jump to Travel Tips</Link>
@@ -72,11 +81,9 @@ export default function ActivityPage({
             <FaArrowCircleDown />
           </ArrowDownContainer>
         </JumpToTravelTipsContainer>
-
-        <ActivitiesTitle>{activity.title}</ActivitiesTitle>
-
-        {Array.isArray(listedActivities) && listedActivities.length === 0 ? (
-          <NoActivitiesFoundContainer>
+        <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
+        {listedActivities.length === 0 ? (
+          <NoActivitiesFoundContainer key="no-activities-found">
             No Activities Found
           </NoActivitiesFoundContainer>
         ) : (
@@ -176,20 +183,34 @@ const TravelTipsButtonsContainer = styled.div`
   gap: 8px;
 `;
 
-const StyledLink = styled(Link)`
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  padding: 8px;
-  font-size: 16px;
-  position: absolute;
-  top: 80px;
-  right: 24px;
+const SearchBarContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: solid 1px gray;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
 `;
-
-const LogoutContainer = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 24px;
+const SearchIconContainer = styled.div`
+  margin-right: 0.5rem;
+`;
+const SearchButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+`;
+const SearchInput = styled.input`
+  font-size: 0.9rem;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+  flex-grow: 1;
+  padding: 0.5rem;
+  width: 100%;
 `;
 
 const JumpToTravelTipsContainer = styled.div`
