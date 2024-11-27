@@ -24,6 +24,7 @@ export default function TravelTipsPage({ travelTipsCategories }) {
         <FaArrowCircleLeft />
       </GoBackButton>
 
+<StyledArticle>
       <Container>
         <HeaderRow>
           <h1>{category?.title}</h1>
@@ -49,6 +50,7 @@ export default function TravelTipsPage({ travelTipsCategories }) {
           </ImageColumn>
         </ContentRow>
       </Container>
+      </StyledArticle>
     </>
   );
 }
@@ -65,6 +67,7 @@ const GoBackButton = styled.button`
   font-size: 24px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin: 14px;
 
   &:hover {
     background-color: #e0e0e0;
@@ -77,6 +80,14 @@ const Container = styled.div`
   grid-template-columns: 1fr;
   gap: 20px;
   padding: 20px;
+`;
+
+const StyledArticle = styled.article`
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  background-color: white;
+  margin: 24px;
 `;
 
 const HeaderRow = styled.div`
