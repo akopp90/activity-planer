@@ -227,7 +227,7 @@ export default function App({
               searchTerm={searchTerm}
               title={title}
               handleResetFilter={handleResetFilter}
-              initialActivities={initialActivities}
+              initialActivities={listedActivities}
               mutate={mutate}
               getRandomActivities={getRandomActivities}
               {...pageProps}
