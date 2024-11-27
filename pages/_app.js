@@ -82,28 +82,25 @@ export default function App({
 
   const [previousActivities, setPreviousActivities] = useState(null);
   const filteredActivities = filterActivities(initialActivities, filter || []);
-  const [listedActivities, setListedActivities] = useState(filteredActivities);
+  const [listedActivities, setListedActivities] = useState(
+    filteredActivities || []
+  );
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
   const [showInstallButton, setShowInstallButton] = useState(true);
   useEffect(() => {
-    setListedActivities(filteredActivities);
-  }, [filteredActivities]);
-  useEffect(() => {
     if (Array.isArray(initialActivities)) {
       if (searchTerm) {
-        setListedActivities(
-          initialActivities.filter((activity) =>
-            activity.title.toLowerCase().includes(searchTerm.toLowerCase())
-          )
+        const listedActivities = initialActivities.filter((activity) =>
+          activity.title.toLowerCase().includes(searchTerm.toLowerCase())
         );
+        setListedActivities(listedActivities);
       } else {
         const filteredActivities = initialActivities.filter(
           ({ categories }) =>
             filter.length === 0 ||
             categories.some((category) => filter.includes(category))
         );
-
         setListedActivities(filteredActivities);
       }
     } else {
@@ -195,10 +192,6 @@ export default function App({
   function handleResetFilter() {
     setSearchTerm("");
   }
-
-  function handleViewMode(mode) {
-    setViewMode(mode);
-  }
   useEffect(() => {
     if ("serviceWorker" in navigator && "PushManager" in window) {
       const handleBeforeInstallPrompt = (event) => {
@@ -239,9 +232,12 @@ export default function App({
     }
     setDeferredPrompt(null);
   }
-
+  function handleViewMode(mode) {
+    setViewMode(mode);
+  }
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
+
   return (
     <SWRConfig
       value={{
