@@ -41,7 +41,6 @@ export default function ActivityPage({
     setShowForm(!showForm);
   }
 
-  
   const scrollToTravelTips = () => {
     const element = document.getElementById("travel-tips");
     if (element) {
@@ -68,7 +67,7 @@ export default function ActivityPage({
 
         <JumpToTravelTipsContainer>
           <Link href="#travel-tips">Jump to Travel Tips</Link>
-         
+
           <ArrowDownContainer onClick={scrollToTravelTips}>
             <FaArrowCircleDown />
           </ArrowDownContainer>
@@ -105,7 +104,7 @@ export default function ActivityPage({
         <TravelTipsButtonsContainer>
           {travelTipsCategories.map((cat) => (
             <Link key={cat.id} href={`/travel-tips/${cat.id}`}>
-              <TravelTipButton>{cat.title} Activity Tips</TravelTipButton>
+              <TravelTipButton>{cat.title} travel Tips</TravelTipButton>
             </Link>
           ))}
         </TravelTipsButtonsContainer>
