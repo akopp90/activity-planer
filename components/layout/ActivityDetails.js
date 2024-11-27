@@ -23,7 +23,6 @@ import { FaArrowUpFromBracket, FaRegHeart, FaHeart } from "react-icons/fa6";
 
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import Button from "../ui/Button";
 
 const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
@@ -67,22 +66,15 @@ export default function ActivityDetails({
   toggleBookmark,
   isBookmarked,
   showHeart = true,
-  createdBy,
 }) {
-  const session = useSession();
   const imageUrls = imageUrl ? imageUrl : [];
-  const {
-    data: weather,
-    error,
-    isLoading,
-  } = useSWR(
+  const { data: weather } = useSWR(
     location?.lat && location?.lon
       ? ["weather", location.lat, location.lon]
       : null,
     ([, lat, lon]) => fetchWeatherData(lat, lon)
   );
 
-  const [showConfirm, setShowConfirm] = useState(false);
   const [mainImage, setMainImage] = useState(imageUrls[0]);
   function handleDelete() {
     setShowConfirm(true);
@@ -151,7 +143,7 @@ export default function ActivityDetails({
           </StyledShareIconContainer>
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-              {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
+              {isBookmarked ? <StyledFaHeart fill="#ff4d4d" /> : <FaRegHeart />}
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
@@ -325,16 +317,6 @@ const StyledLocation = styled.p`
   margin: 8px 0 16px;
   justify-content: flex-end;
   gap: 10px;
-`;
-
-const StyledLink = styled(Link)`
-  color: inherit;
-  font-weight: bold;
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
 `;
 
 const StyledHeartIconContainer = styled.div`

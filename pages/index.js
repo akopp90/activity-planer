@@ -18,7 +18,6 @@ export default function ActivityPage({
   showHeart,
   handleSearchInputChange,
   randomActivities,
-  title,
   viewMode,
   handleViewMode,
   travelTipsCategories,
@@ -27,8 +26,6 @@ export default function ActivityPage({
   showInstallButton,
 }) {
   const [showForm, setShowForm] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const { data: session } = useSession();
   const listedActivities = randomActivities;
   const activity = {
     id: "",
@@ -196,9 +193,19 @@ const ActivitiesTitle = styled.h2`
   padding-left: 16px;
 `;
 
-const NoActivitiesFoundContainer = styled.div``;
+const NoActivitiesFoundContainer = styled.div`
+  font-size: 1.5rem;`;
 
-const TravelTipsHeading = styled.h2``;
+const TravelTipsHeading = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  color: #333;
+  text-align: left;
+  width: 100%;
+  padding-left: 16px;
+`;
 
 const TravelTipButton = styled.div`
   padding: 12px;

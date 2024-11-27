@@ -22,12 +22,6 @@ const FormCard = styled.div`
   width: 400px;
 `;
 
-const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-`;
-
 const FormGroup = styled.div`
   margin-bottom: 1rem;
 `;

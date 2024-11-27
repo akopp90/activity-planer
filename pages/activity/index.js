@@ -9,11 +9,8 @@ import ActivityFilter from "@/components/layout/ActivityFilter";
 import Search from "@/components/layout/Search";
 import { useSession } from "next-auth/react";
 import IconButton from "@/components/ui/IconButton";
-import LogoutButton from "@/components/layout/LogoutButton";
 import { FaFilter, FaPlus } from "react-icons/fa";
-import { FaKey, FaSearch } from "react-icons/fa";
-import Link from "next/link";
-import InstallPrompt from "@/components/ui/InstallPrompt";
+import { FaSearch } from "react-icons/fa";
 
 export default function HomePage({
   handleAddActivity,
@@ -28,14 +25,10 @@ export default function HomePage({
   listedActivities,
   viewMode,
   handleViewMode,
-  showInstallPrompt,
-  install,
-  showInstallButton,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const activity = {
@@ -169,13 +162,6 @@ const SearchIconContainer = styled.div`
     background-color: #e0e0e0;
   }
 `;
-
-const StyledLink = styled(Link)`
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  padding: 8px;
-  font-size: 16px;`;
-
 
 const StyledIcon = styled.div`
   display: flex;

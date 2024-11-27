@@ -12,7 +12,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default function ActivityPage({
-  activities,
+  listedActivities,
   handleEditActivity,
   handleDeleteActivity,
   toggleBookmark,
@@ -23,6 +23,7 @@ export default function ActivityPage({
   install,
   showInstallButton,
 }) {
+  const activities = listedActivities;
   const router = useRouter();
   const { id } = router.query;
   const [showForm, setShowForm] = useState(false);
@@ -32,7 +33,6 @@ export default function ActivityPage({
     return <p>Loading session...</p>;
   }
   if (!activities) return <p>Loading...</p>;
- 
 
   const activity = activities.find((activity) => activity._id === id);
   if (!activity) return <p>Activity not found</p>;
