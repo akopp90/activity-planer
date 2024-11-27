@@ -59,6 +59,7 @@ export default function HomePage({
 
   function toggleSearchVisibility() {
     setIsSearchVisible((prevState) => !prevState);
+    handleResetFilter();
   }
   if (!listedActivities) return <div>Loading...</div>;
 
