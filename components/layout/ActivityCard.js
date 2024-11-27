@@ -37,17 +37,15 @@ export default function ActivityCard({
         </StyledImageContainer>
       )}
 
-
       {showHeart && (
-        <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
-          <FaHeart
+        <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
+          <StyledFaHeart
             fill={
               isBookmarked ? "#ff4d4d" : viewMode === "Grid" ? "#fff" : "#ccc"
             }
           />
-        </StyledHeartIcon>
+        </StyledHeartIconContainer>
       )}
-
 
       <StyledList>
         {Array.isArray(categories) &&
@@ -126,4 +124,14 @@ const StyledHeartIconContainer = styled.div`
   &:hover {
     color: #ff4d4d;
   }
+`;
+const StyledFaHeart = styled(FaHeart)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
 `;

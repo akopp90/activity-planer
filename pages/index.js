@@ -169,6 +169,7 @@ const Container = styled.div`
   align-items: center;
   padding: 32px;
   gap: 32px;
+  margin-bottom: 50px;
 `;
 
 const StyledSection = styled.section`

@@ -81,8 +81,11 @@ export default function App({
   const FOUND_ACTIVITIES_TITLE = "Found Activities";
 
   const [previousActivities, setPreviousActivities] = useState(null);
-  const filteredActivities = filterActivities(initialActivities, filter);
+  const filteredActivities = filterActivities(initialActivities, filter || []);
   const [listedActivities, setListedActivities] = useState(filteredActivities);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(true);
   useEffect(() => {
     setListedActivities(filteredActivities);
   }, [filteredActivities]);
@@ -196,6 +199,46 @@ export default function App({
   function handleViewMode(mode) {
     setViewMode(mode);
   }
+  useEffect(() => {
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      const handleBeforeInstallPrompt = (event) => {
+        event.preventDefault();
+        setDeferredPrompt(event);
+        setShowInstallButton(true);
+        setShowInstallPrompt(false);
+      };
+
+      const handleAppInstalled = () => {
+        setShowInstallPrompt(false);
+        setShowInstallButton(false);
+        console.log("App installed");
+        setDeferredPrompt(null);
+      };
+
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.addEventListener("appinstalled", handleAppInstalled);
+
+      return () => {
+        window.removeEventListener(
+          "beforeinstallprompt",
+          handleBeforeInstallPrompt
+        );
+        window.removeEventListener("appinstalled", handleAppInstalled);
+      };
+    }
+  }, []);
+
+  async function handleInstallClick() {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      setShowInstallPrompt(false);
+    }
+    setDeferredPrompt(null);
+  }
 
   if (!initialActivities) return <div>Loading...</div>;
   if (error) return <div>Failed to load activities</div>;
@@ -233,6 +276,9 @@ export default function App({
           handleResetFilter={handleResetFilter}
           initialActivities={initialActivities}
           mutate={mutate}
+          showInstallPrompt={showInstallPrompt}
+          showInstallButton={showInstallButton}
+          install={handleInstallClick}
           getRandomActivities={getRandomActivities}
           travelTipsCategories={travelTipsData}
           {...pageProps}
