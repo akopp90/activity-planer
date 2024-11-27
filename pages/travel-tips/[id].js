@@ -177,7 +177,7 @@ const Column = styled.div`
 
 const ImageColumn = styled.div`
   position: relative;
-  height: 300px;
+  height: 500px;
   border-radius: 8px;
   overflow: hidden;
 `;
