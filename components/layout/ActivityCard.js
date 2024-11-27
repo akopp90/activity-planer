@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function ActivityCard({
   _id,
@@ -12,6 +12,7 @@ export default function ActivityCard({
   isBookmarked,
   toggleBookmark,
   showHeart = true,
+  activity,
 }) {
   return (
     <StyledArticle data-testid="activity">
@@ -36,6 +37,7 @@ export default function ActivityCard({
         </StyledImageContainer>
       )}
 
+
       {showHeart && (
         <StyledHeartIcon onClick={() => toggleBookmark(_id)}>
           <FaHeart
@@ -46,10 +48,13 @@ export default function ActivityCard({
         </StyledHeartIcon>
       )}
 
+
       <StyledList>
         {Array.isArray(categories) &&
           categories.map((category) => (
-            <StyledListItem key={category}>{category}</StyledListItem>
+            <StyledListItem key={category} data-testid="category">
+              {category}
+            </StyledListItem>
           ))}
       </StyledList>
 
@@ -63,6 +68,7 @@ const StyledArticle = styled.article`
   border-radius: 8px;
   position: relative;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  background-color: white;
 `;
 
 const StyledImageContainer = styled.div`
@@ -72,20 +78,6 @@ const StyledImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #f1f1f1;
-`;
-
-const StyledHeartIcon = styled.div`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3s ease;
-  text-shadow: 0 2px 2px #000;
-
-  &:hover {
-    color: #ff4d4d;
-  }
 `;
 
 const StyledList = styled.ul`
@@ -112,5 +104,26 @@ const StyledLink = styled(Link)`
 
   &:hover {
     text-decoration: none;
+  }
+`;
+
+const StyledHeartIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: #ff4d4d;
   }
 `;

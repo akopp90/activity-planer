@@ -9,6 +9,8 @@ import { SessionProvider } from "next-auth/react";
 import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
+import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategories";
+import styled from "styled-components";
 
 export default function App({
   Component,
@@ -206,6 +208,7 @@ export default function App({
     >
       <SessionProvider session={session}>
         <GlobalStyle />
+
         <Component
           bookmarks={bookmarkedActivities}
           toggleBookmark={toggleBookmark}
@@ -231,6 +234,7 @@ export default function App({
           initialActivities={initialActivities}
           mutate={mutate}
           getRandomActivities={getRandomActivities}
+          travelTipsCategories={travelTipsData}
           {...pageProps}
         />
         <ToastContainer />
@@ -239,3 +243,15 @@ export default function App({
     </SWRConfig>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
+const ContentContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 50px;
+`;

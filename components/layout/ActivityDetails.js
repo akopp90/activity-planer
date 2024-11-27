@@ -19,11 +19,11 @@ import {
   FaArrowLeft,
   FaArrowRight,
 } from "react-icons/fa";
+import { FaArrowUpFromBracket, FaRegHeart, FaHeart } from "react-icons/fa6";
 
-import Button from "../ui/Button";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import { FaHeart } from "react-icons/fa";
+import Button from "../ui/Button";
 
 const ActivityMap = dynamic(() => import("@/components/layout/ActivityMap"), {
   ssr: false,
@@ -105,6 +105,27 @@ export default function ActivityDetails({
       imageListRef.current.scrollBy(offset, 0);
     }
   }
+  function handleShare() {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title,
+          text: description,
+          url: window.location.href,
+        })
+        .catch((error) => {
+          if (error.name === "AbortError") {
+            console.log("Sharing cancelled by the user");
+          } else {
+            console.error("Sharing failed", error);
+          }
+        });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link copied to clipboard!");
+    }
+  }
+
   return (
     <StyledContainer>
       <StyledDetails>
@@ -125,10 +146,12 @@ export default function ActivityDetails({
               alt="Image is missing"
             />
           )}
-
+          <StyledShareIconContainer onClick={() => handleShare()}>
+            <FaArrowUpFromBracket fill="#000" />
+          </StyledShareIconContainer>
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-              <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
+              {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
             </StyledHeartIconContainer>
           )}
         </StyledImageContainer>
@@ -161,38 +184,23 @@ export default function ActivityDetails({
               <StyledListItem key={category}>{category}</StyledListItem>
             ))}
           </StyledList>
-
-          <StyledWeather>
-            <div>
-              {weather ? (
-                <>
-                  <p>
-                    {weather.temperature} {getWeatherIcon(weather.condition)}
-                  </p>
-                </>
-              ) : (
-                <p>Loading weather data...</p>
-              )}
-            </div>
-          </StyledWeather>
-
           <StyledLocation>
             {area}, {country}
           </StyledLocation>
-          <StyledDescription>{description}</StyledDescription>
+          <p>{description}</p>
           <StyledSubtitle>About this Activity</StyledSubtitle>
-          <StyledDescription>{duration}</StyledDescription>
-          <StyledDescription>{numberOfPeople}</StyledDescription>
+          <p>{duration}</p>
+          <p>{numberOfPeople}</p>
           <StyledSubtitle>About this Experience</StyledSubtitle>
-          <StyledTitleIcon>
-            <FaBook />
-            <StyledExtraTitle>Full Description</StyledExtraTitle>
-          </StyledTitleIcon>
-          <StyledDescription>{fullDescription}</StyledDescription>
-          <StyledTitleIcon>
-            <FaCheckCircle />
-            <StyledExtraTitle>Includes</StyledExtraTitle>
-          </StyledTitleIcon>
+
+          <StyledExtraTitle>
+            <FaBook /> Full Description
+          </StyledExtraTitle>
+          <p>{fullDescription}</p>
+
+          <StyledExtraTitle>
+            <FaCheckCircle /> Includes
+          </StyledExtraTitle>
           <StyledExtraDescription>
             {Array.isArray(includes) ? (
               includes.map((item) => <li key={item}>{item}</li>)
@@ -202,10 +210,9 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {notSuitableFor && (
             <>
-              <StyledTitleIcon>
-                <FaThumbsDown />
-                <StyledExtraTitle>Not suitable for</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaThumbsDown /> Not suitable for
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(notSuitableFor) ? (
                   notSuitableFor.map((item) => <li key={item}>{item}</li>)
@@ -215,10 +222,10 @@ export default function ActivityDetails({
               </StyledExtraDescription>
             </>
           )}
-          <StyledTitleIcon>
-            <FaInfo />
-            <StyledExtraTitle>Important Information</StyledExtraTitle>
-          </StyledTitleIcon>
+
+          <StyledExtraTitle>
+            <FaInfo /> Important Information
+          </StyledExtraTitle>
           <StyledExtraDescription>
             {Array.isArray(importantInformation) ? (
               importantInformation.map((item) => <li key={item}>{item}</li>)
@@ -228,10 +235,9 @@ export default function ActivityDetails({
           </StyledExtraDescription>
           {whatToBring && (
             <>
-              <StyledTitleIcon>
-                <FaShoppingBag />
-                <StyledExtraTitle>What to bring</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaShoppingBag /> What to bring
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(whatToBring) ? (
                   whatToBring.map((item) => <li key={item}>{item}</li>)
@@ -243,10 +249,9 @@ export default function ActivityDetails({
           )}
           {notAllowed && (
             <>
-              <StyledTitleIcon>
-                <FaTimesCircle />
-                <StyledExtraTitle>Not Allowed</StyledExtraTitle>
-              </StyledTitleIcon>
+              <StyledExtraTitle>
+                <FaTimesCircle /> Not Allowed
+              </StyledExtraTitle>
               <StyledExtraDescription>
                 {Array.isArray(notAllowed) ? (
                   notAllowed.map((item) => <li key={item}>{item}</li>)
@@ -254,32 +259,20 @@ export default function ActivityDetails({
                   <li>{notAllowed}</li>
                 )}
               </StyledExtraDescription>
+
+              {weather ? (
+                <>
+                  <p>
+                    <strong>Weather: </strong>
+                    {weather.temperature} {getWeatherIcon(weather.condition)}
+                  </p>
+                </>
+              ) : (
+                <p>Loading weather data...</p>
+              )}
             </>
           )}
           <ActivityMap {...location} />
-          <StyledLink href="/" title="Back to Activities">
-            Back to Activities
-          </StyledLink>
-          {session.status === "authenticated" &&
-            session.data.user.id === createdBy && (
-              <StyledDeleteContainer>
-                {!showConfirm ? (
-                  <Button onClick={() => setShowConfirm(true)}>Delete</Button>
-                ) : (
-                  <>
-                    <p>Are you sure, that you want to delete?</p>
-                    <StyledButtonContainer>
-                      <Button onClick={() => setShowConfirm(false)}>
-                        Cancel
-                      </Button>
-                      <Button isDeleting onClick={confirmDelete}>
-                        Confirm
-                      </Button>
-                    </StyledButtonContainer>
-                  </>
-                )}
-              </StyledDeleteContainer>
-            )}
         </StyledContainer>
       </StyledDetails>
     </StyledContainer>
@@ -297,6 +290,7 @@ const StyledDetails = styled.article`
   border-radius: 8px;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
   margin-bottom: 50px;
+  background-color: white;
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -330,10 +324,9 @@ const StyledLocation = styled.p`
   display: flex;
   margin: 8px 0 16px;
   justify-content: flex-end;
+  gap: 10px;
 `;
-const StyledDescription = styled.p`
-  margin: 16px 0;
-`;
+
 const StyledLink = styled(Link)`
   color: inherit;
   font-weight: bold;
@@ -343,68 +336,58 @@ const StyledLink = styled(Link)`
     text-decoration: none;
   }
 `;
+
 const StyledHeartIconContainer = styled.div`
   position: absolute;
   top: 16px;
-  right: 16px;
-  font-size: 1.5rem;
+  right: 10px;
+  font-size: 1rem;
   cursor: pointer;
   transition: color 0.3s ease;
   text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: #ff4d4d;
+  }
+`;
+
+const StyledShareIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   &:hover {
     color: #ff4d4d;
   }
 `;
 
-const StyledDeleteContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 16px;
-  border: 1px solid ${(props) => (props.$isDelete ? "#ff0000" : "#fff")};
-  padding: 8px;
-`;
-const StyledButtonContainer = styled.div`
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-  align-items: flex-end;
-  align-self: flex-end;
-  position: relative;
-`;
 const StyledExtraTitle = styled.h4`
   font-weight: bold;
-  display: grid;
-  list-style: none;
-  grid-template-columns: repeat(auto-fill, minmax(327px, 1fr));
 `;
 
 const StyledExtraDescription = styled.ul`
-  margin: 16px 0;
   margin-left: 10px;
   padding: 8px;
   list-style: circle;
-`;
-
-const StyledTitleIcon = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-`;
-
-const StyledWeather = styled.div`
-  display: flex;
-  margin: 16px 0;
-  list-style: none;
-  border-radius: 8px;
-
-  p {
-    padding: 4px 8px;
-    border-radius: 4px;
-    background-color: #f1f1f1;
-  }
 `;
 
 const StyledLi = styled.li`
@@ -447,7 +430,19 @@ const StyledPrevButton = styled(StyledArrowButton)`
 const StyledNextButton = styled(StyledArrowButton)`
   right: 0;
 `;
+
 const StyledImageSlider = styled.div`
   position: relative;
   background-color: #f1f1f1;
+`;
+
+const StyledFaHeart = styled(FaHeart)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
 `;

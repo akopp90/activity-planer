@@ -1,10 +1,10 @@
 import { activities } from "@/lib/activities";
 import Image from "next/image";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 
 export default function FavoriteActivityCard({
-  id,
+  _id,
   title,
   country,
   categories,
@@ -14,9 +14,7 @@ export default function FavoriteActivityCard({
 }) {
   return (
     <StyledFavoriteCard>
-      {imageUrl.map((image, index) => (
-        <StyledImage key={image} src={image} sizes="50vw" fill />
-      ))}
+      <StyledImage key={imageUrl[0]} src={imageUrl[0]} sizes="50vw" fill />
 
       <CardHeader>
         <div>
@@ -25,9 +23,9 @@ export default function FavoriteActivityCard({
           ))}
         </div>
 
-        <HeartContainer onClick={() => toggleBookmark(id)}>
-          <FaHeart fill={isBookmarked ? "#ff4d4d" : "#fff"} />
-        </HeartContainer>
+        <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
+          {isBookmarked ? <FaHeart fill="#ff4d4d" /> : <FaRegHeart />}
+        </StyledHeartIconContainer>
       </CardHeader>
 
       <CardFooter>
@@ -81,9 +79,25 @@ const CardHeader = styled.div`
   align-items: center;
 `;
 
-const HeartContainer = styled.div`
+const StyledHeartIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  font-size: 1rem;
   cursor: pointer;
-  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.85) !important;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: #ff4d4d;
+  }
 `;
 
 const CardFooter = styled.div`

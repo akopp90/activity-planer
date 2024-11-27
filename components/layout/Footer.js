@@ -1,42 +1,62 @@
 import styled from "styled-components";
 import Link from "next/link";
-import { FaHome, FaStar, FaWalking } from "react-icons/fa";
+import { FaHome, FaHeart, FaWalking, FaUser } from "react-icons/fa";
 
-
-export default function Footer(){
+export default function Footer() {
   return (
     <MenuFooterContainer>
       <StyledUl>
         <StyledLi>
-          <StyledLink href="/activity">
-            Activities <FaWalking />
+
+        <StyledLink href={"/"}>
+
+            <StyledIcon>
+              <FaHome />
+              <span>Home</span>
+            </StyledIcon>
           </StyledLink>
         </StyledLi>
-        <StyledHome>
-          <StyledLink href={"/"}>
-            <FaHome />
+        <StyledLi>
+
+        <StyledLink href="/activity">
+            <StyledIcon>
+            <FaWalking />
+
+              <span>Activities</span>
+            </StyledIcon>
           </StyledLink>
-        </StyledHome>
+        </StyledLi>
         <StyledLi>
           <StyledLink href="/my-favorites">
-          Favorites <FaStar />
+            <StyledIcon>
+              <FaHeart />
+              <span>Favourites</span>
+            </StyledIcon>
+          </StyledLink>
+        </StyledLi>
+        <StyledLi>
+          <StyledLink href="/auth/signin">
+            <StyledIcon>
+              <FaUser />
+              <span>Account</span>
+            </StyledIcon>
           </StyledLink>
         </StyledLi>
       </StyledUl>
     </MenuFooterContainer>
   );
-};
+}
 
 const MenuFooterContainer = styled.div`
   display: flex;
   background: white;
   box-shadow: inset 0px 0 17px -8px gray;
-  width: 100vw;
+  width: 100%; 
   position: fixed;
   bottom: 0;
   justify-content: center;
-  gap: 16px;
-
+  gap: 0; 
+  overflow-x: hidden; 
   a {
     text-decoration: none;
     color: #000000;
@@ -45,36 +65,39 @@ const MenuFooterContainer = styled.div`
 
 const StyledUl = styled.ul`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-evenly; 
   align-items: center;
   list-style: none;
-  border: solid 1px #ccc;
   height: 65px;
-  width: 100%;
+
+  width: 100%; 
+  margin: 0; 
+  padding: 0; 
 `;
 
 const StyledLi = styled.li`
-  border: solid 1px #ccc;
-  width: 100%;
-  height: 100%;
+  flex: 1; 
   text-align: center;
-  padding: 17px;
-`;
-
-const StyledHome = styled.li`
-  border: solid 1px #ccc;
-  width: 30%;
-  height: 100%;
-  text-align: center;
-  padding: 17px;
 `;
 
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
+  flex-direction: column; 
+  gap: 4px; 
+  width: 100%; 
+  height: 100%; 
+`;
+
+const StyledIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem; 
+  span {
+    font-size: 0.8rem; 
+    margin-top: 4px; 
+  }
 `;

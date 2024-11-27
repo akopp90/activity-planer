@@ -36,14 +36,19 @@ export default function Login() {
   if (session) {
     return (
       <>
+      <Header />
+      <Container>
+        <StyledLogin>
         Signed in as {session.user.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <Button onClick={() => signOut()}>Sign out</Button>
+        </StyledLogin>
+      </Container>
       </>
     );
   }
   return (
     <>
-      <Header>Login</Header>
+      <Header />
       <Container>
         <FormCard>
           <NavContainer>
@@ -69,22 +74,20 @@ export default function Login() {
             </FormGroup>
             <Button type="submit">Sign In</Button>
           </form>
-          <Button onClick={() => signIn("github")}>
-            <FaGithub /> Sign in with GitHub
-          </Button>
-          <Button onClick={() => signIn("google")}>
-            <FaGoogle /> Sign in with Google
-          </Button>
-          <br />
-          <p>no account yet?</p>
-          <Link href="/auth/register">Register</Link>
+          <StyledButton>
+            <Button onClick={() => signIn("github")}>
+              <FaGithub /> Sign in with GitHub
+            </Button>
+            <Button onClick={() => signIn("google")}>
+              <FaGoogle /> Sign in with Google
+            </Button>
+          </StyledButton>
         </FormCard>
       </Container>
     </>
   );
 }
 const Container = styled.div`
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,10 +123,30 @@ const StyledLink = styled(Link)`
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 6px;
+  margin-right: 6px;
+  margin-left: 6px;
 `;
 const NavContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
   justify-content: center;
+`;
+
+const StyledButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+`;
+
+const StyledLogin = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 `;
