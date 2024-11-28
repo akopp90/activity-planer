@@ -33,7 +33,11 @@ export default function ActivityPage({
   showInstallButton,
   toggleTheme,
   currentTheme,
+  session,
+  filter,
+  handleResetFilter,
 }) {
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const listedActivities = randomActivities;
   const activity = {
@@ -54,7 +58,10 @@ export default function ActivityPage({
   function handleToggleEdit() {
     setShowForm(!showForm);
   }
-
+  function toggleSearchVisibility() {
+    setIsSearchVisible((prevState) => !prevState);
+    handleResetFilter();
+  }
   const scrollToTravelTips = () => {
     const element = document.getElementById("travel-tips");
     if (element) {
@@ -105,18 +112,20 @@ export default function ActivityPage({
             </>
           )}
         </StyledSection>
-        <SearchBarContainer>
-          <SearchIconContainer>
-            <FaSearch size={20} />
-          </SearchIconContainer>
-          <SearchInput
-            placeholder="Search activities..."
-            onChange={handleSearchInputChange}
-          />
-          <SearchButtonContainer>
-            <Button isPrimary>Search</Button>
-          </SearchButtonContainer>
-        </SearchBarContainer>
+        {isSearchVisible && (
+          <SearchBarContainer>
+            <SearchIconContainer>
+              <FaSearch size={20} />
+            </SearchIconContainer>
+            <SearchInput
+              placeholder="Search activities..."
+              onChange={handleSearchInputChange}
+            />
+            <SearchButtonContainer>
+              <Button isPrimary>Search</Button>
+            </SearchButtonContainer>
+          </SearchBarContainer>
+        )}
         <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
         <InstallPrompt
           showInstallPrompt={showInstallPrompt}
@@ -281,8 +290,23 @@ const SearchBarContainer = styled.div`
   max-width: 600px;
 `;
 const SearchIconContainer = styled.div`
-  margin-right: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: ${(props) => props.theme.cardBackground};
+  border: 1px solid ${(props) => props.theme.border};
+  font-size: 1rem;
+  transition: background-color 0.3s, border-color 0.3s;
+  color: ${(props) => props.theme.text};
+
+  &:hover {
+    background-color: ${(props) => props.theme.border};
+  }
 `;
+
 const SearchButtonContainer = styled.div`
   display: flex;
   justify-content: center;
