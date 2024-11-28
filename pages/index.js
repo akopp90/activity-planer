@@ -74,7 +74,6 @@ export default function ActivityPage({
       <Header>Activity Planner</Header>
 
       <Container>
-        <SloganContainer>Your new adventure starts here ...</SloganContainer>
         <StyledSection>
           <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
 
@@ -112,6 +111,7 @@ export default function ActivityPage({
             </>
           )}
         </StyledSection>
+        <SloganContainer>Your new adventure starts here ...</SloganContainer>
         {isSearchVisible && (
           <SearchBarContainer>
             <SearchIconContainer>
