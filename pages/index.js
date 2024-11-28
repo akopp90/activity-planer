@@ -3,7 +3,13 @@ import Header from "@/components/layout/Header";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
-import { FaKey, FaArrowCircleDown, FaSearch } from "react-icons/fa";
+import {
+  FaKey,
+  FaArrowCircleDown,
+  FaSearch,
+  FaPlus,
+  FaFilter,
+} from "react-icons/fa";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import IconButton from "@/components/ui/IconButton";
@@ -62,7 +68,43 @@ export default function ActivityPage({
 
       <Container>
         <SloganContainer>Your new adventure starts here ...</SloganContainer>
+        <StyledSection>
+          <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
 
+          <IconButton
+            variant="Grid"
+            viewMode={viewMode}
+            handleViewMode={handleViewMode}
+          />
+          <IconButton
+            variant="List"
+            viewMode={viewMode}
+            handleViewMode={handleViewMode}
+          />
+          <SearchIconContainer onClick={toggleSearchVisibility}>
+            <FaSearch size={20} />
+          </SearchIconContainer>
+
+          <Button
+            onClick={() => setShowFilter(!showFilter)}
+            name="filter"
+            id="filter"
+          >
+            <StyledIcon>
+              <FaFilter />
+            </StyledIcon>
+            ({filter.length})
+          </Button>
+          {session && (
+            <>
+              <Button onClick={handleToggleEdit}>
+                <StyledIcon>
+                  <FaPlus />
+                </StyledIcon>
+              </Button>
+            </>
+          )}
+        </StyledSection>
         <SearchBarContainer>
           <SearchIconContainer>
             <FaSearch size={20} />
@@ -278,4 +320,12 @@ const ArrowDownContainer = styled.div`
   &:active {
     transform: translateY(2px);
   }
+`;
+
+const StyledIcon = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1rem;
+  align-items: center;
 `;
