@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react";
 import IconButton from "@/components/ui/IconButton";
 import { FaFilter, FaPlus } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function HomePage({
   handleAddActivity,
@@ -25,6 +26,8 @@ export default function HomePage({
   listedActivities,
   viewMode,
   handleViewMode,
+  toggleTheme,
+  currentTheme,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -70,6 +73,8 @@ export default function HomePage({
       </Head>
       <Header />
       <StyledSection>
+        <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
+
         <IconButton
           variant="Grid"
           viewMode={viewMode}
@@ -94,7 +99,6 @@ export default function HomePage({
           </StyledIcon>
           ({filter.length})
         </Button>
-
         {session && (
           <>
             <Button onClick={handleToggleEdit}>
@@ -154,13 +158,14 @@ const SearchIconContainer = styled.div`
   justify-content: center;
   padding: 8px;
   border-radius: 4px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: ${(props) => props.theme.cardBackground};
+  border: 1px solid ${(props) => props.theme.border};
   font-size: 1rem;
   transition: background-color 0.3s, border-color 0.3s;
+  color: ${(props) => props.theme.text};
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${(props) => props.theme.border};
   }
 `;
 

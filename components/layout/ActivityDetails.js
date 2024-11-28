@@ -276,13 +276,15 @@ const StyledContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 24px;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledDetails = styled.article`
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px -4px ${(props) => props.theme.border};
   margin-bottom: 50px;
-  background-color: white;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -290,11 +292,12 @@ const StyledImageContainer = styled.div`
   position: relative;
   align-items: center;
   justify-content: center;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledTitle = styled.h2`
   font-size: 1.5rem;
   margin: 16px 0;
+  color: ${(props) => props.theme.text};
 `;
 const StyledSubtitle = styled.h3`
   font-size: 1.2rem;
@@ -309,10 +312,11 @@ const StyledList = styled.ul`
 const StyledListItem = styled.li`
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
 `;
 const StyledLocation = styled.p`
-  color: #666;
+  color: ${(props) => props.theme.secondary};
   display: flex;
   margin: 8px 0 16px;
   justify-content: flex-end;
@@ -335,6 +339,9 @@ const StyledHeartIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
+  box-shadow: 0 2px 4px ${(props) => props.theme.border};
   &:hover {
     color: #ff4d4d;
   }
@@ -356,7 +363,9 @@ const StyledShareIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
+  box-shadow: 0 2px 4px ${(props) => props.theme.border};
   &:hover {
     color: #ff4d4d;
   }
@@ -376,7 +385,7 @@ const StyledLi = styled.li`
   padding: 4px 8px;
   width: 150px;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledImage = styled(Image)`
   border-radius: 4px;
@@ -398,7 +407,8 @@ const StyledArrowButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #fff;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
   border: none;
   padding: 8px;
   cursor: pointer;
@@ -415,7 +425,7 @@ const StyledNextButton = styled(StyledArrowButton)`
 
 const StyledImageSlider = styled.div`
   position: relative;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 
 const StyledFaHeart = styled(FaHeart)`

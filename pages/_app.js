@@ -10,14 +10,21 @@ import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
 import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategories";
-import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "@/lib/theme";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
   const NUM_OF_RANDOM_ACTIVITIES = 6;
+  const [theme, setTheme] = useLocalStorageState("theme", {
+    defaultValue: "light",
+  });
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
   const {
     data: initialActivities,
     error,
@@ -239,39 +246,43 @@ export default function App({
       }}
     >
       <SessionProvider session={session}>
-        <GlobalStyle />
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+          <GlobalStyle />
 
-        <Component
-          bookmarks={bookmarkedActivities}
-          toggleBookmark={toggleBookmark}
-          handleAddActivity={handleAddActivity}
-          handleEditActivity={handleEditActivity}
-          handleDeleteActivity={handleDeleteActivity}
-          randomActivities={
-            (filter.length === 0) & (searchTerm === "")
-              ? randomActivities
-              : listedActivities
-          }
-          filteredActivities={listedActivities}
-          listedActivities={listedActivities}
-          handleFilter={handleFilter}
-          filter={filter}
-          viewMode={viewMode}
-          handleViewMode={handleViewMode}
-          handleSearchInputChange={handleSearchInputChange}
-          searchTerm={searchTerm}
-          title={title}
-          handleResetFilter={handleResetFilter}
-          mutate={mutate}
-          showInstallPrompt={showInstallPrompt}
-          showInstallButton={showInstallButton}
-          install={handleInstallClick}
-          getRandomActivities={getRandomActivities}
-          travelTipsCategories={travelTipsData}
-          {...pageProps}
-        />
-        <ToastContainer />
-        <Footer />
+          <Component
+            bookmarks={bookmarkedActivities}
+            toggleBookmark={toggleBookmark}
+            handleAddActivity={handleAddActivity}
+            handleEditActivity={handleEditActivity}
+            handleDeleteActivity={handleDeleteActivity}
+            randomActivities={
+              (filter.length === 0) & (searchTerm === "")
+                ? randomActivities
+                : listedActivities
+            }
+            filteredActivities={listedActivities}
+            listedActivities={listedActivities}
+            handleFilter={handleFilter}
+            filter={filter}
+            viewMode={viewMode}
+            handleViewMode={handleViewMode}
+            handleSearchInputChange={handleSearchInputChange}
+            searchTerm={searchTerm}
+            title={title}
+            handleResetFilter={handleResetFilter}
+            mutate={mutate}
+            showInstallPrompt={showInstallPrompt}
+            showInstallButton={showInstallButton}
+            install={handleInstallClick}
+            getRandomActivities={getRandomActivities}
+            travelTipsCategories={travelTipsData}
+            toggleTheme={toggleTheme}
+            currentTheme={theme}
+            {...pageProps}
+          />
+          <ToastContainer />
+          <Footer />
+        </ThemeProvider>
       </SessionProvider>
     </SWRConfig>
   );

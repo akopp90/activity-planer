@@ -54,7 +54,8 @@ const StyledTag = styled.div`
   padding: 4px 8px;
   font-size: 0.75rem;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
   list-style-type: none;
   display: inline-block;
   margin-right: 6px;

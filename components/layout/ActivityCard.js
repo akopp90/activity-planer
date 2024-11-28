@@ -65,7 +65,14 @@ const StyledArticle = styled.article`
   border-radius: 8px;
   position: relative;
   box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
-  background-color: white;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
+  border: 1px solid ${(props) => props.theme.border};
+  box-shadow: 0 2px 4px ${(props) => props.theme.border}40;
+
+  &:hover {
+    box-shadow: 0 4px 8px ${(props) => props.theme.border}60;
+  }
 `;
 
 const StyledImageContainer = styled.div`
@@ -88,7 +95,8 @@ const StyledListItem = styled.li`
   padding: 4px 8px;
   font-size: 0.75rem;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.secondary};
+  color: ${(props) => props.theme.text};
 `;
 
 const StyledLink = styled(Link)`

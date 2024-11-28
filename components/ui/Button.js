@@ -24,7 +24,6 @@ export default function Button({
     </StyledButton>
   );
 }
-
 const StyledButton = styled.button`
   gap: 8px;
   height: 40px;
@@ -36,16 +35,19 @@ const StyledButton = styled.button`
   border-radius: 4px;
   font-size: 0.75rem;
   align-items: center;
-  color: ${(props) => (props.$primary ? "#fff" : "#000")};
-  border: 1px solid ${(props) => (props.$primary ? "#000" : "#ccc")};
+  color: ${(props) =>
+    props.$primary ? props.theme.cardBackground : props.theme.text};
+  border: 1px solid
+    ${(props) => (props.$primary ? props.theme.text : props.theme.border)};
   background-color: ${(props) =>
     props.$primary
       ? props.$delete
         ? "#ff0000"
-        : "#000"
+        : props.theme.text
       : props.$delete
       ? "#ff0000"
-      : "#fff"};
+      : props.theme.cardBackground};
+
   ${(props) =>
     props.$deleteImage &&
     css`

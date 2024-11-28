@@ -10,6 +10,7 @@ import IconButton from "@/components/ui/IconButton";
 import LogoutButton from "@/components/layout/LogoutButton";
 import Button from "@/components/ui/Button";
 import InstallPrompt from "@/components/ui/InstallPrompt";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -24,6 +25,8 @@ export default function ActivityPage({
   showInstallPrompt,
   install,
   showInstallButton,
+  toggleTheme,
+  currentTheme,
 }) {
   const [showForm, setShowForm] = useState(false);
   const listedActivities = randomActivities;
@@ -72,7 +75,7 @@ export default function ActivityPage({
             <Button isPrimary>Search</Button>
           </SearchButtonContainer>
         </SearchBarContainer>
-
+        <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
         <InstallPrompt
           showInstallPrompt={showInstallPrompt}
           install={install}
@@ -198,7 +201,7 @@ const TravelTipsHeading = styled.h2`
   font-weight: 700;
   margin-top: 24px;
   margin-bottom: 16px;
-  color: #333;
+  color: ${(props) => props.theme.text};
   text-align: left;
   width: 100%;
   padding-left: 16px;
@@ -207,13 +210,14 @@ const TravelTipsHeading = styled.h2`
 const TravelTipButton = styled.div`
   padding: 12px;
   border-radius: 4px;
-  background: linear-gradient(#ececec, #d3d3d3);
+  background: ${(props) => props.theme.cardBackground};
   text-align: center;
   transition: 0.5s;
+  border: 1px solid ${(props) => props.theme.border};
 
   &:hover {
     cursor: pointer;
-    box-shadow: #b6b6b6 0px 2px 2px 1px;
+    box-shadow: ${(props) => props.theme.border} 0px 2px 2px 1px;
   }
 `;
 

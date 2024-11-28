@@ -120,8 +120,8 @@ const GoBackButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
-  color: #555;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
   border: none;
   padding: 10px;
   border-radius: 50%;
@@ -131,7 +131,7 @@ const GoBackButton = styled.button`
   margin: 14px;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${(props) => props.theme.border};
   }
 `;
 
@@ -146,8 +146,8 @@ const Container = styled.div`
 const StyledArticle = styled.article`
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
-  background-color: white;
+  box-shadow: 0 4px 8px -4px ${(props) => props.theme.border};
+  background-color: ${(props) => props.theme.cardBackground};
   margin: 24px;
   margin-bottom: 70px;
 `;
@@ -157,10 +157,11 @@ const HeaderRow = styled.div`
   border-radius: 8px;
   h1 {
     font-size: 24px;
+    color: ${(props) => props.theme.text};
   }
   p {
     font-size: 14px;
-    color: #777;
+    color: ${(props) => props.theme.secondary};
   }
 `;
 
@@ -193,12 +194,12 @@ const TipHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #333;
+  color: ${(props) => props.theme.text};
 `;
 
 const TipSubtext = styled.div`
   font-size: 10px;
-  color: #666;
+  color: ${(props) => props.theme.secondary};
   font-weight: 400;
   margin-left: 10px;
   margin-top: 5px;
@@ -228,8 +229,8 @@ const ActivityTitle = styled.span`
   position: absolute;
   inset: 0;
   color: white;
+  background: ${(props) => `${props.theme.cardBackground}99`};
   text-align: center;
-  background: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -247,5 +248,8 @@ const ActivityList = styled.div`
 const RelatedActivities = styled.div`
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid ${(props) => props.theme.border};
+  h2 {
+    color: ${(props) => props.theme.text};
+  }
 `;

@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa6";
 import InstallPrompt from "@/components/ui/InstallPrompt";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function ActivityPage({
   listedActivities,
@@ -22,6 +23,8 @@ export default function ActivityPage({
   showInstallPrompt,
   install,
   showInstallButton,
+  toggleTheme,
+  currentTheme,
 }) {
   const activities = listedActivities;
   const router = useRouter();
@@ -76,7 +79,10 @@ export default function ActivityPage({
                   <FaArrowLeft />
                 </StyledIcon>
               </Button>
-
+              <ThemeToggle
+                toggleTheme={toggleTheme}
+                currentTheme={currentTheme}
+              />
               <Button onClick={handleToggleEdit}>
                 <StyledIcon>
                   <FaEdit />
@@ -92,10 +98,9 @@ export default function ActivityPage({
           ) : (
             <>
               <StyledSection>
-                <InstallPrompt
-                  showInstallPrompt={showInstallPrompt}
-                  install={install}
-                  showInstallButton={showInstallButton}
+                <ThemeToggle
+                  toggleTheme={toggleTheme}
+                  currentTheme={currentTheme}
                 />
                 <Button onClick={() => router.back()}>
                   <StyledIcon>

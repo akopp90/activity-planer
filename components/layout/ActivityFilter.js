@@ -43,7 +43,7 @@ const StyledSection = styled.section`
   margin-inline: auto;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #fff;
+  ${(props) => props.theme.cardBackground}
   width: min(640px, 100% - 48px);
 `;
 const StyledList = styled.ul`
