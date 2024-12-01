@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Link from 'next/link';
+import { useRef, useState, useEffect } from 'react';
 
 const Container = styled.section`
   padding: 1rem;
@@ -81,13 +80,31 @@ const ScrollButton = styled.button`
   }
 `;
 
-const ActivityItem = styled(motion.div)`
+const ActivityItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   min-width: 120px;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s ease forwards;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -211,8 +228,8 @@ export default function RandomActivities({ activities }) {
         </ScrollButton>
         <ScrollContainer ref={scrollContainerRef}>
           {randomActivities.map((activity) => (
-            <Link href={`/activity/${activity._id}`} passHref key={activity._id}>
-              <CardContent>
+            <Link href={`/activity/${activity._id}`} key={activity._id}>
+              <ActivityItem>
                 <ImageContainer>
                   <Image
                     src={activity.imageUrl[0] || '/placeholder-activity.jpg'}
@@ -223,7 +240,7 @@ export default function RandomActivities({ activities }) {
                 </ImageContainer>
                 <ActivityName>{activity.name}</ActivityName>
                 <Location>{activity.location?.address || 'Location not specified'}</Location>
-              </CardContent>
+              </ActivityItem>
             </Link>
           ))}
         </ScrollContainer>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRef } from "react";
-import { FaArrowUpFromBracket } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa";
 
 function Upload({ name, isRequired, children, onChange, multiple }) {
   const inputRef = useRef(null);
@@ -21,7 +21,7 @@ function Upload({ name, isRequired, children, onChange, multiple }) {
       <StyledLabel htmlFor={name}>{children}</StyledLabel>
       <StyledDiv onDragOver={handleDragOver} onDrop={handleDrop}>
         <UploadInstructions>
-          <FaArrowUpFromBracket size={24} />
+          <FaUpload size={24} />
           <span>Drag and drop or click to upload (max 5 files a 5MB)</span>
         </UploadInstructions>
         <StyledInput

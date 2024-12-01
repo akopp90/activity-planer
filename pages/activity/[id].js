@@ -160,6 +160,7 @@ export default function ActivityPage({
 
       <ActivityDetails
         {...activity}
+        handleShare={handleShare}
         deleteActivity={handleDeleteActivity}
         toggleBookmark={() => toggleBookmark(activity._id)}
         isBookmarked={isBookmarked}

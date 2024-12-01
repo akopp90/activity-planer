@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Link from 'next/link';
@@ -80,13 +79,30 @@ const ScrollButton = styled.button`
   }
 `;
 
-const ActivityItem = styled(motion.div)`
+const ActivityItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
   min-width: 120px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s ease forwards;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -193,21 +209,20 @@ export default function LatestActivities({ activities }) {
             <Link href={`/activity/${activity._id}`} key={activity._id}>
             <ActivityItem
               key={activity._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              
               transition={{ duration: 0.5 }}
             >
-              <ImageContainer>
-                <Image
-                  src={activity.imageUrl[0] || '/placeholder-activity.jpg'}
-                  alt={activity.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </ImageContainer>
-              <ActivityName>{activity.name}</ActivityName>
-              <Location>{activity.location?.address || 'Location not specified'}</Location>
-            </ActivityItem>
+                <ImageContainer>
+                  <Image
+                    src={activity.imageUrl[0] || '/placeholder-activity.jpg'}
+                    alt={activity.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </ImageContainer>
+                <ActivityName>{activity.name}</ActivityName>
+                <Location>{activity.location?.address || 'Location not specified'}</Location>
+              </ActivityItem>
             </Link>
           ))}
         </ScrollContainer>
