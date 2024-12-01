@@ -317,7 +317,7 @@ const StyledForm = styled.form`
   margin-top: 24px;
   margin-inline: auto;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.cardBackground};
   width: min(640px, 100% - 48px);
 `;
 const StyledList = styled.ul`
@@ -334,16 +334,18 @@ const StyledSelectDiv = styled.div`
 const StyledLabel = styled.label`
   font-weight: bold;
   font-size: 0.75rem;
+  color: ${(props) => props.theme.text};
 `;
 const StyledSelect = styled.select`
   padding: 8px;
   font: inherit;
-  color: inherit;
+  color: ${(props) => props.theme.text};
   appearance: none;
   border-radius: 4px;
   font-size: 0.875rem;
-  border: 1px solid #ccc;
-  background: #fff url("/images/arrow-down.svg") center right 8px no-repeat;
+  border: 1px solid ${(props) => props.theme.border};
+  background: ${(props) => props.theme.cardBackground}
+    url("/images/arrow-down.svg") center right 8px no-repeat;
 `;
 const StyledBottomDiv = styled.div`
   gap: 8px;
@@ -361,7 +363,7 @@ const StyledDeleteImage = styled.div`
 `;
 const StyledImage = styled(Image)`
   border-radius: 4px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px -4px ${(props) => props.theme.border};
   top: 30px;
   right: -130px;
   position: relative;

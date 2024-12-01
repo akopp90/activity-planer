@@ -10,14 +10,45 @@ import useLocalStorageState from "use-local-storage-state";
 import { filterActivities } from "@/lib/utils";
 import useSWR, { mutate, SWRConfig } from "swr";
 import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategories";
-import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "@/lib/theme";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
   const NUM_OF_RANDOM_ACTIVITIES = 6;
-
+  const [theme, setTheme] = useLocalStorageState("theme", {
+    defaultValue: "light",
+  });
+  const handleShare = useCallback((title = "Daily Adventures", description = "Check out this activity!") => {
+    console.log('handleShare called with:', { title, description });
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title,
+          text: description,
+          url: window.location.href,
+        })
+        .catch((error) => {
+          if (error.name === "AbortError") {
+            console.log("Sharing cancelled by the user");
+          } else {
+            console.error("Sharing failed", error);
+          }
+        });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      showToast("Link copied to clipboard!", "success");
+    }
+  }, []);
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    // Update theme-color meta tag
+    const themeColor = newTheme === "light" ? "#ffffff" : "#121212";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
+  };
   const {
     data: initialActivities,
     error,
@@ -100,6 +131,15 @@ export default function App({
       }
     }
   }, [initialActivities, filter, searchTerm]);
+
+  useEffect(() => {
+    // Set initial theme-color meta tag
+    const themeColor = theme === "light" ? "#ffffff" : "#121212";
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute("content", themeColor);
+    }
+  }, [theme]);
 
   async function handleAddActivity(newActivity) {
     try {
@@ -239,39 +279,36 @@ export default function App({
       }}
     >
       <SessionProvider session={session}>
-        <GlobalStyle />
+        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+          <GlobalStyle />
 
-        <Component
-          bookmarks={bookmarkedActivities}
-          toggleBookmark={toggleBookmark}
-          handleAddActivity={handleAddActivity}
-          handleEditActivity={handleEditActivity}
-          handleDeleteActivity={handleDeleteActivity}
-          randomActivities={
-            (filter.length === 0) & (searchTerm === "")
-              ? randomActivities
-              : listedActivities
-          }
-          filteredActivities={listedActivities}
-          listedActivities={listedActivities}
-          handleFilter={handleFilter}
-          filter={filter}
-          viewMode={viewMode}
-          handleViewMode={handleViewMode}
-          handleSearchInputChange={handleSearchInputChange}
-          searchTerm={searchTerm}
-          title={title}
-          handleResetFilter={handleResetFilter}
-          mutate={mutate}
-          showInstallPrompt={showInstallPrompt}
-          showInstallButton={showInstallButton}
-          install={handleInstallClick}
-          getRandomActivities={getRandomActivities}
-          travelTipsCategories={travelTipsData}
-          {...pageProps}
-        />
-        <ToastContainer />
-        <Footer />
+          <Component
+            {...pageProps}
+            bookmarks={bookmarkedActivities}
+            toggleBookmark={toggleBookmark}
+            handleAddActivity={handleAddActivity}
+            handleEditActivity={handleEditActivity}
+            handleDeleteActivity={handleDeleteActivity}
+            randomActivities={
+              (filter.length === 0) & (searchTerm === "")
+                ? randomActivities
+                : listedActivities
+            }
+            filteredActivities={listedActivities}
+            listedActivities={listedActivities}
+            handleFilter={handleFilter}
+            filter={filter}
+            viewMode={viewMode}
+            handleViewMode={handleViewMode}
+            handleSearchInputChange={handleSearchInputChange}
+            handleShare={handleShare}
+            travelTipsCategories={travelTipsData}
+            toggleTheme={toggleTheme}
+            currentTheme={theme}
+          />
+          <ToastContainer />
+          <Footer />
+        </ThemeProvider>
       </SessionProvider>
     </SWRConfig>
   );

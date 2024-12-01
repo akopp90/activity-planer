@@ -37,5 +37,7 @@ const StyledInput = styled.input`
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 0.875rem;
-  border: 1px solid #ccc;
+  border: 1px solid ${props => props.theme.border};
+  background-color: ${props => props.theme.cardBackground};
+  color: ${props => props.theme.text};
 `;

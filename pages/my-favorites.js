@@ -8,6 +8,7 @@ export default function MyFavoriteActivitiesPage({
   listedActivities: activities,
   bookmarks,
   toggleBookmark,
+  handleShare,
 }) {
   const hasBookmarks = bookmarks.length > 0;
   const bookmarkedActivities = activities.filter((activity) =>
@@ -25,6 +26,7 @@ export default function MyFavoriteActivitiesPage({
           {hasBookmarks ? (
             bookmarkedActivities.map((activity) => (
               <FavoriteActivityCard
+              handleShare={handleShare}
                 key={activity._id}
                 {...activity}
                 isBookmarked={true}

@@ -18,8 +18,9 @@ import {
   FaCloud,
   FaArrowLeft,
   FaArrowRight,
+  FaShare,
 } from "react-icons/fa";
-import { FaArrowUpFromBracket, FaRegHeart, FaHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
 import dynamic from "next/dynamic";
 import styled from "styled-components";
@@ -65,6 +66,7 @@ export default function ActivityDetails({
   notAllowed,
   toggleBookmark,
   isBookmarked,
+  handleShare,
   showHeart = true,
 }) {
   const imageUrls = imageUrl ? imageUrl : [];
@@ -97,26 +99,6 @@ export default function ActivityDetails({
       imageListRef.current.scrollBy(offset, 0);
     }
   }
-  function handleShare() {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: title,
-          text: description,
-          url: window.location.href,
-        })
-        .catch((error) => {
-          if (error.name === "AbortError") {
-            console.log("Sharing cancelled by the user");
-          } else {
-            console.error("Sharing failed", error);
-          }
-        });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  }
 
   return (
     <StyledContainer>
@@ -138,8 +120,8 @@ export default function ActivityDetails({
               alt="Image is missing"
             />
           )}
-          <StyledShareIconContainer onClick={() => handleShare()}>
-            <FaArrowUpFromBracket fill="#000" />
+          <StyledShareIconContainer onClick={() => handleShare(title, description)}>
+            <StyledFaShare/>
           </StyledShareIconContainer>
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
@@ -276,13 +258,15 @@ const StyledContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 24px;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledDetails = styled.article`
   overflow: hidden;
   border-radius: 8px;
-  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px -4px ${(props) => props.theme.border};
   margin-bottom: 50px;
-  background-color: white;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
 `;
 const StyledImageContainer = styled.div`
   height: 50vh;
@@ -290,11 +274,12 @@ const StyledImageContainer = styled.div`
   position: relative;
   align-items: center;
   justify-content: center;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledTitle = styled.h2`
   font-size: 1.5rem;
   margin: 16px 0;
+  color: ${(props) => props.theme.text};
 `;
 const StyledSubtitle = styled.h3`
   font-size: 1.2rem;
@@ -309,10 +294,11 @@ const StyledList = styled.ul`
 const StyledListItem = styled.li`
   padding: 4px 8px;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.text};
 `;
 const StyledLocation = styled.p`
-  color: #666;
+  color: ${(props) => props.theme.secondary};
   display: flex;
   margin: 8px 0 16px;
   justify-content: flex-end;
@@ -335,6 +321,9 @@ const StyledHeartIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
+  box-shadow: 0 2px 4px ${(props) => props.theme.border};
   &:hover {
     color: #ff4d4d;
   }
@@ -356,7 +345,9 @@ const StyledShareIconContainer = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
+  box-shadow: 0 2px 4px ${(props) => props.theme.border};
   &:hover {
     color: #ff4d4d;
   }
@@ -376,7 +367,7 @@ const StyledLi = styled.li`
   padding: 4px 8px;
   width: 150px;
   border-radius: 4px;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 const StyledImage = styled(Image)`
   border-radius: 4px;
@@ -398,7 +389,8 @@ const StyledArrowButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #fff;
+  background-color: ${(props) => props.theme.cardBackground};
+  color: ${(props) => props.theme.text};
   border: none;
   padding: 8px;
   cursor: pointer;
@@ -415,10 +407,20 @@ const StyledNextButton = styled(StyledArrowButton)`
 
 const StyledImageSlider = styled.div`
   position: relative;
-  background-color: #f1f1f1;
+  background-color: ${(props) => props.theme.background};
 `;
 
 const StyledFaHeart = styled(FaHeart)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
+`;
+const StyledFaShare = styled(FaShare)`
   path {
     stroke: black;
     stroke-width: 3rem;
