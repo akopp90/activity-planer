@@ -17,7 +17,7 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
-  const NUM_OF_RANDOM_ACTIVITIES = 6;
+  const NUM_OF_RANDOM_ACTIVITIES = 15;
   const [theme, setTheme] = useLocalStorageState("theme", {
     defaultValue: "light",
   });
@@ -294,6 +294,7 @@ export default function App({
                 ? randomActivities
                 : listedActivities
             }
+            handleResetFilter={handleResetFilter}
             filteredActivities={listedActivities}
             listedActivities={listedActivities}
             handleFilter={handleFilter}

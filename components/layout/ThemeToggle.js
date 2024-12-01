@@ -10,6 +10,9 @@ const ThemeToggle = ({ toggleTheme, currentTheme }) => {
 };
 
 const StyledButton = styled.button`
+position: absolute;
+  top: 24px;
+  right: 24px;
   border: none;
   background: none;
   cursor: pointer;
