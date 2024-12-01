@@ -9,6 +9,7 @@ export default function ActivityList({
   handleResetFilter,
   showHeart = true,
   viewMode,
+  handleShare,
 }) {
   if (!activities) return <div>Loading...</div>;
   return (
@@ -27,6 +28,7 @@ export default function ActivityList({
               <li key={activity._id}>
                 <ActivityCard
                   {...activity}
+                  handleShare={handleShare}
                   viewMode={viewMode}
                   toggleBookmark={() => toggleBookmark(activity._id)}
                   isBookmarked={isBookmarked}

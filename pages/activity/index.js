@@ -28,6 +28,7 @@ export default function HomePage({
   handleViewMode,
   toggleTheme,
   currentTheme,
+  handleShare,
 }) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
@@ -134,6 +135,7 @@ export default function HomePage({
 
       <ActivityList
         activities={listedActivities}
+        handleShare={handleShare}
         handleFilter={handleFilter}
         bookmarks={bookmarks}
         viewMode={viewMode}

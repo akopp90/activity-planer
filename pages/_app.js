@@ -21,9 +21,33 @@ export default function App({
   const [theme, setTheme] = useLocalStorageState("theme", {
     defaultValue: "light",
   });
-
+  const handleShare = useCallback((title = "Daily Adventures", description = "Check out this activity!") => {
+    console.log('handleShare called with:', { title, description });
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title,
+          text: description,
+          url: window.location.href,
+        })
+        .catch((error) => {
+          if (error.name === "AbortError") {
+            console.log("Sharing cancelled by the user");
+          } else {
+            console.error("Sharing failed", error);
+          }
+        });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      showToast("Link copied to clipboard!", "success");
+    }
+  }, []);
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    // Update theme-color meta tag
+    const themeColor = newTheme === "light" ? "#ffffff" : "#121212";
+    document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
   };
   const {
     data: initialActivities,
@@ -107,6 +131,15 @@ export default function App({
       }
     }
   }, [initialActivities, filter, searchTerm]);
+
+  useEffect(() => {
+    // Set initial theme-color meta tag
+    const themeColor = theme === "light" ? "#ffffff" : "#121212";
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute("content", themeColor);
+    }
+  }, [theme]);
 
   async function handleAddActivity(newActivity) {
     try {
@@ -250,6 +283,7 @@ export default function App({
           <GlobalStyle />
 
           <Component
+            {...pageProps}
             bookmarks={bookmarkedActivities}
             toggleBookmark={toggleBookmark}
             handleAddActivity={handleAddActivity}
@@ -267,18 +301,10 @@ export default function App({
             viewMode={viewMode}
             handleViewMode={handleViewMode}
             handleSearchInputChange={handleSearchInputChange}
-            searchTerm={searchTerm}
-            title={title}
-            handleResetFilter={handleResetFilter}
-            mutate={mutate}
-            showInstallPrompt={showInstallPrompt}
-            showInstallButton={showInstallButton}
-            install={handleInstallClick}
-            getRandomActivities={getRandomActivities}
+            handleShare={handleShare}
             travelTipsCategories={travelTipsData}
             toggleTheme={toggleTheme}
             currentTheme={theme}
-            {...pageProps}
           />
           <ToastContainer />
           <Footer />

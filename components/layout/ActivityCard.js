@@ -1,18 +1,33 @@
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
 
 export default function ActivityCard({
   _id,
   title,
+  description,
   categories,
   imageUrl,
   viewMode,
   isBookmarked,
   toggleBookmark,
   showHeart = true,
+  handleShare,
 }) {
+  console.log('Props in ActivityCard:', {
+    title,
+    handleShare: typeof handleShare,
+  });
+
+  const onShare = () => {
+    if (typeof handleShare === 'function') {
+      handleShare(title, description);
+    } else {
+      console.warn('handleShare is not a function for activity:', title);
+    }
+  };
+
   return (
     <StyledArticle data-testid="activity">
       {viewMode === "Grid" && (
@@ -38,13 +53,12 @@ export default function ActivityCard({
 
       {showHeart && (
         <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
-          <StyledFaHeart
-            fill={
-              isBookmarked ? "#ff4d4d" : viewMode === "Grid" ? "#fff" : "#ccc"
-            }
-          />
+          {isBookmarked ? <StyledFaHeart fill="#ff4d4d" /> : <StyledFaHeart />}
         </StyledHeartIconContainer>
       )}
+      <StyledShareIconContainer onClick={onShare}>
+        <StyledFaShare />
+      </StyledShareIconContainer>
 
       <StyledList>
         {Array.isArray(categories) &&
@@ -132,10 +146,51 @@ const StyledHeartIconContainer = styled.div`
     color: #ff4d4d;
   }
 `;
+
+const StyledShareIconContainer = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  text-shadow: 0 2px 2px #000;
+  background-color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+`;
+
+const StyledFaShare = styled(FaShare)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
+`;
+
 const StyledFaHeart = styled(FaHeart)`
   path {
     stroke: black;
     stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
+`;
+
+const StyledFaRegHeart = styled(FaRegHeart)`
+  path {
+    stroke: black;
+    stroke-width: 1rem;
     stroke-linejoin: round;
     stroke-linecap: round;
     paint-order: stroke;

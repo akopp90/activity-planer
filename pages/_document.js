@@ -38,6 +38,8 @@ export default class MyDocument extends Document {
             content="default"
           />
           <meta name="apple-mobile-web-app-title" content="Daily Adventures" />
+          <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+          <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#121212" />
           <link rel="apple-touch-icon" href="/LOGO_pwa.png" />
           <link rel="manifest" href="/manifest.json" />
         </Head>

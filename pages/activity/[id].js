@@ -25,6 +25,7 @@ export default function ActivityPage({
   showInstallButton,
   toggleTheme,
   currentTheme,
+  handleShare,
 }) {
   const activities = listedActivities;
   const router = useRouter();

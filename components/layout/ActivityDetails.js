@@ -18,8 +18,9 @@ import {
   FaCloud,
   FaArrowLeft,
   FaArrowRight,
+  FaShare,
 } from "react-icons/fa";
-import { FaArrowUpFromBracket, FaRegHeart, FaHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 
 import dynamic from "next/dynamic";
 import styled from "styled-components";
@@ -65,6 +66,7 @@ export default function ActivityDetails({
   notAllowed,
   toggleBookmark,
   isBookmarked,
+  handleShare,
   showHeart = true,
 }) {
   const imageUrls = imageUrl ? imageUrl : [];
@@ -97,26 +99,6 @@ export default function ActivityDetails({
       imageListRef.current.scrollBy(offset, 0);
     }
   }
-  function handleShare() {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: title,
-          text: description,
-          url: window.location.href,
-        })
-        .catch((error) => {
-          if (error.name === "AbortError") {
-            console.log("Sharing cancelled by the user");
-          } else {
-            console.error("Sharing failed", error);
-          }
-        });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Link copied to clipboard!");
-    }
-  }
 
   return (
     <StyledContainer>
@@ -138,8 +120,8 @@ export default function ActivityDetails({
               alt="Image is missing"
             />
           )}
-          <StyledShareIconContainer onClick={() => handleShare()}>
-            <FaArrowUpFromBracket fill="#000" />
+          <StyledShareIconContainer onClick={() => handleShare(title, description)}>
+            <StyledFaShare/>
           </StyledShareIconContainer>
           {showHeart && (
             <StyledHeartIconContainer onClick={() => toggleBookmark(_id)}>
@@ -429,6 +411,16 @@ const StyledImageSlider = styled.div`
 `;
 
 const StyledFaHeart = styled(FaHeart)`
+  path {
+    stroke: black;
+    stroke-width: 3rem;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    paint-order: stroke;
+  }
+  overflow: visible;
+`;
+const StyledFaShare = styled(FaShare)`
   path {
     stroke: black;
     stroke-width: 3rem;
