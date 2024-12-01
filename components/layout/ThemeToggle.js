@@ -10,7 +10,9 @@ const ToggleContainer = styled.button`
   align-items: center;
   justify-content: center;
   padding: 8px;
-  position: relative;
+  position: absolute;
+  top: 32px;
+  right: 32px;
   width: 40px;
   height: 40px;
   transition: all 0.3s ease;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import Link from 'next/link';
 
 const Container = styled.section`
   padding: 1rem;
@@ -120,6 +121,20 @@ const Location = styled.span`
   opacity: 0.7;
 `;
 
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
 const EmptyState = styled.div`
   text-align: center;
   padding: 2rem;
@@ -196,23 +211,20 @@ export default function RandomActivities({ activities }) {
         </ScrollButton>
         <ScrollContainer ref={scrollContainerRef}>
           {randomActivities.map((activity) => (
-            <ActivityItem
-              key={activity._id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <ImageContainer>
-                <Image
-                  src={activity.imageUrl[0] || '/placeholder-activity.jpg'}
-                  alt={activity.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
-              </ImageContainer>
-              <ActivityName>{activity.name}</ActivityName>
-              <Location>{activity.location?.address || 'Location not specified'}</Location>
-            </ActivityItem>
+            <Link href={`/activity/${activity._id}`} passHref key={activity._id}>
+              <CardContent>
+                <ImageContainer>
+                  <Image
+                    src={activity.imageUrl[0] || '/placeholder-activity.jpg'}
+                    alt={activity.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </ImageContainer>
+                <ActivityName>{activity.name}</ActivityName>
+                <Location>{activity.location?.address || 'Location not specified'}</Location>
+              </CardContent>
+            </Link>
           ))}
         </ScrollContainer>
         <ScrollButton 

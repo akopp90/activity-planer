@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function TravelTipsPage({
   travelTipsCategories,
@@ -44,7 +45,7 @@ export default function TravelTipsPage({
       <GoBackButton onClick={handleGoBack}>
         <FaArrowCircleLeft />
       </GoBackButton>
-
+      <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
       <StyledArticle>
         <Container>
           <HeaderRow>

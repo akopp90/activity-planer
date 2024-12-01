@@ -1,5 +1,6 @@
 import FavoriteActivityCard from "@/components/layout/FavoriteActivityCard";
 import Header from "@/components/layout/Header";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 import Button from "@/components/ui/Button";
 import { FaArrowLeft } from "react-icons/fa";
 import styled from "styled-components";
@@ -9,6 +10,8 @@ export default function MyFavoriteActivitiesPage({
   bookmarks,
   toggleBookmark,
   handleShare,
+  toggleTheme,
+  currentTheme,
 }) {
   const hasBookmarks = bookmarks.length > 0;
   const bookmarkedActivities = activities.filter((activity) =>
@@ -22,6 +25,7 @@ export default function MyFavoriteActivitiesPage({
         <Button onClick={() => window.history.back()}>
           <FaArrowLeft />
         </Button>
+        <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
         <StyledFavoriteList>
           {hasBookmarks ? (
             bookmarkedActivities.map((activity) => (

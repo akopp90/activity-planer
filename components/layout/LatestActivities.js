@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import Link from 'next/link';
 
 const Container = styled.section`
   padding: 1rem;
@@ -189,6 +190,7 @@ export default function LatestActivities({ activities }) {
         </ScrollButton>
         <ScrollContainer ref={scrollContainerRef}>
           {sortedActivities.map((activity) => (
+            <Link href={`/activity/${activity._id}`} key={activity._id}>
             <ActivityItem
               key={activity._id}
               initial={{ opacity: 0, y: 20 }}
@@ -206,6 +208,7 @@ export default function LatestActivities({ activities }) {
               <ActivityName>{activity.name}</ActivityName>
               <Location>{activity.location?.address || 'Location not specified'}</Location>
             </ActivityItem>
+            </Link>
           ))}
         </ScrollContainer>
         <ScrollButton 

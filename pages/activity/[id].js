@@ -20,9 +20,6 @@ export default function ActivityPage({
   bookmarks,
   showHeart = true,
   mutate,
-  showInstallPrompt,
-  install,
-  showInstallButton,
   toggleTheme,
   currentTheme,
   handleShare,
@@ -146,7 +143,7 @@ export default function ActivityPage({
           </Button>
         </StyledSection>
       )}
-
+<ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
       {showConfirm && (
         <StyledConfirmContainer>
           <StyledConfirmMessage>

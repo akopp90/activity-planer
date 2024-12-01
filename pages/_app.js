@@ -12,6 +12,7 @@ import useSWR, { mutate, SWRConfig } from "swr";
 import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategories";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "@/lib/theme";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 export default function App({
   Component,
