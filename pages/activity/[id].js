@@ -143,7 +143,7 @@ export default function ActivityPage({
           </Button>
         </StyledSection>
       )}
-<ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
+      <ThemeToggle toggleTheme={toggleTheme} currentTheme={currentTheme} />
       {showConfirm && (
         <StyledConfirmContainer>
           <StyledConfirmMessage>
@@ -176,6 +176,8 @@ const StyledSection = styled.section`
   padding: 0 24px;
   justify-content: flex-end;
   align-items: center;
+  background: ${({ theme }) => theme.cardBackground};
+  transition: all 0.3s ease;
 `;
 
 const StyledConfirmContainer = styled.div`
@@ -184,19 +186,25 @@ const StyledConfirmContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: ${({ theme }) => theme.modalOverlay};
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
 `;
 
 const StyledConfirmMessage = styled.div`
-  background: white;
+  background: ${({ theme }) => theme.cardBackground};
+  color: ${({ theme }) => theme.text};
   padding: 20px;
   border-radius: 8px;
   text-align: center;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 12px ${({ theme }) => theme.shadow};
+  border: 1px solid ${({ theme }) => theme.border};
+  min-width: 300px;
+  transition: all 0.3s ease;
 `;
 
 const StyledButtonGroup = styled.div`
@@ -210,4 +218,6 @@ const StyledIcon = styled.div`
   font-size: 1rem;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.text};
+  transition: all 0.3s ease;
 `;
