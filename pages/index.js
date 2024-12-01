@@ -23,13 +23,7 @@ import TravelTips from "@/components/layout/TravelTips";
 
 export default function ActivityPage({
   toggleBookmark,
-  bookmarks,
-  deleteActivity,
-  showHeart,
-  handleSearchInputChange,
   randomActivities,
-  viewMode,
-  handleViewMode,
   travelTipsCategories,
   showInstallPrompt,
   install,
