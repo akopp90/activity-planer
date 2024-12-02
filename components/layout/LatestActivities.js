@@ -11,6 +11,7 @@ const Container = styled.section`
   margin: 0rem 0;
   max-width: 100%;
   width: 100%;
+  padding: 24px;
   box-shadow: 0 2px 2px ${({ theme }) => theme.background === '#121212' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'};
   border: 0px solid ${({ theme }) => theme.border};
   position: relative;
@@ -209,7 +210,6 @@ export default function LatestActivities({ activities }) {
             <Link href={`/activity/${activity._id}`} key={activity._id}>
             <ActivityItem
               key={activity._id}
-              
               transition={{ duration: 0.5 }}
             >
                 <ImageContainer>

@@ -13,6 +13,7 @@ import { travelTipsCategories as travelTipsData } from "@/lib/travelTipsCategori
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "@/lib/theme";
 import ThemeToggle from "@/components/layout/ThemeToggle";
+import { UserProvider } from '../context/UserContext';
 
 export default function App({
   Component,
@@ -280,37 +281,39 @@ export default function App({
       }}
     >
       <SessionProvider session={session}>
-        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-          <GlobalStyle />
+        <UserProvider>
+          <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+            <GlobalStyle />
 
-          <Component
-            {...pageProps}
-            bookmarks={bookmarkedActivities}
-            toggleBookmark={toggleBookmark}
-            handleAddActivity={handleAddActivity}
-            handleEditActivity={handleEditActivity}
-            handleDeleteActivity={handleDeleteActivity}
-            randomActivities={
-              (filter.length === 0) & (searchTerm === "")
-                ? randomActivities
-                : listedActivities
-            }
-            handleResetFilter={handleResetFilter}
-            filteredActivities={listedActivities}
-            listedActivities={listedActivities}
-            handleFilter={handleFilter}
-            filter={filter}
-            viewMode={viewMode}
-            handleViewMode={handleViewMode}
-            handleSearchInputChange={handleSearchInputChange}
-            handleShare={handleShare}
-            travelTipsCategories={travelTipsData}
-            toggleTheme={toggleTheme}
-            currentTheme={theme}
-          />
-          <ToastContainer />
-          <Footer />
-        </ThemeProvider>
+            <Component
+              {...pageProps}
+              bookmarks={bookmarkedActivities}
+              toggleBookmark={toggleBookmark}
+              handleAddActivity={handleAddActivity}
+              handleEditActivity={handleEditActivity}
+              handleDeleteActivity={handleDeleteActivity}
+              randomActivities={
+                (filter.length === 0) & (searchTerm === "")
+                  ? randomActivities
+                  : listedActivities
+              }
+              handleResetFilter={handleResetFilter}
+              filteredActivities={listedActivities}
+              listedActivities={listedActivities}
+              handleFilter={handleFilter}
+              filter={filter}
+              viewMode={viewMode}
+              handleViewMode={handleViewMode}
+              handleSearchInputChange={handleSearchInputChange}
+              handleShare={handleShare}
+              travelTipsCategories={travelTipsData}
+              toggleTheme={toggleTheme}
+              currentTheme={theme}
+            />
+            <ToastContainer />
+            <Footer />
+          </ThemeProvider>
+        </UserProvider>
       </SessionProvider>
     </SWRConfig>
   );

@@ -1,6 +1,6 @@
 import ActivityCard from "@/components/layout/ActivityCard";
 import Header from "@/components/layout/Header";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Search from "@/components/layout/Search";
 import {
@@ -20,6 +20,9 @@ import ThemeToggle from "@/components/layout/ThemeToggle";
 import RandomActivities from "@/components/layout/RandomActivities";
 import LatestActivities from "@/components/layout/LatestActivities";
 import TravelTips from "@/components/layout/TravelTips";
+import { Content } from "next/font/google";
+import RecommendedActivities from "@/components/layout/RecommendedActivities";
+import UserContext from "@/context/UserContext";
 
 export default function ActivityPage({
   toggleBookmark,
@@ -38,6 +41,62 @@ export default function ActivityPage({
   
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [recommendedActivities, setRecommendedActivities] = useState([]);
+  const { userPreferences } = useContext(UserContext);
+
+  useEffect(() => {
+    if (randomActivities && randomActivities.length > 0) {
+      // Get recommended activities based on various factors
+      const getRecommendedActivities = () => {
+        let recommendations = [...randomActivities];
+        
+        // 1. If user is logged in and has preferences, prioritize those
+        if (session?.user && userPreferences) {
+          // Filter by preferred categories if available
+          if (userPreferences.categories?.length > 0) {
+            recommendations = recommendations.filter(activity => 
+              userPreferences.categories.some(cat => 
+                activity.category?.toLowerCase().includes(cat.toLowerCase())
+              )
+            );
+          }
+
+          // Filter by preferred location if available
+          if (userPreferences.location) {
+            recommendations = recommendations.filter(activity =>
+              activity.location?.address?.toLowerCase().includes(
+                userPreferences.location.toLowerCase()
+              )
+            );
+          }
+        }
+
+        // 2. Prioritize activities with higher ratings
+        recommendations.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+        // 3. Prioritize newer activities
+        recommendations = recommendations.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        // 4. If we have too few recommendations, add some random popular activities
+        if (recommendations.length < 5) {
+          const popularActivities = randomActivities
+            .filter(activity => !recommendations.includes(activity))
+            .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+            .slice(0, 5 - recommendations.length);
+          
+          recommendations = [...recommendations, ...popularActivities];
+        }
+
+        // 5. Limit to 10 recommendations
+        return recommendations.slice(0, 10);
+      };
+
+      setRecommendedActivities(getRecommendedActivities());
+    }
+  }, [randomActivities, session, userPreferences]);
+
   const listedActivities = randomActivities;
   const activity = {
     id: "",
@@ -92,6 +151,14 @@ export default function ActivityPage({
           showInstallButton={showInstallButton}
         />
         <ActivitiesTitle>Activities you might like...</ActivitiesTitle>
+        </Container>
+        <ContentContainer>
+        <RecommendedActivities 
+          activities={recommendedActivities} 
+          handleShare={handleShare}
+          handleBookmark={toggleBookmark}
+        />
+
         <RandomActivities 
           activities={listedActivities} 
           handleShare={handleShare}
@@ -103,7 +170,6 @@ export default function ActivityPage({
         />
 
         <TravelTips categories={travelTipsCategories} />
-
        {/*  {listedActivities.length === 0 ? (
           <NoActivitiesFoundContainer key="no-activities-found">
             No Activities Found
@@ -143,9 +209,9 @@ export default function ActivityPage({
             </>
           )
         )} */}
-
+</ContentContainer>
         
-      </Container>
+     
     </>
   );
 }
@@ -202,4 +268,11 @@ const StyledIcon = styled.div`
   justify-content: center;
   font-size: 1rem;
   align-items: center;
+`;
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 80px;
 `;
