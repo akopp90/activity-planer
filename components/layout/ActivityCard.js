@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
 import { FaHeart, FaRegHeart, FaShare } from "react-icons/fa";
+import Rating from '../ui/Rating';
 
 export default function ActivityCard({
   _id,
@@ -14,6 +15,13 @@ export default function ActivityCard({
   toggleBookmark,
   showHeart = true,
   handleShare,
+  activity,
+  onRatingSubmit,
+  averageRating,
+  totalRatings,
+  location,
+  area,
+  country,
 }) {
   console.log('Props in ActivityCard:', {
     title,
@@ -70,6 +78,19 @@ export default function ActivityCard({
       </StyledList>
 
       <StyledLink href={`/activity/${_id}`}>{title}</StyledLink>
+
+      <StyledCard>
+        <CardContent>
+          <Location>
+            {area}, {country}
+          </Location>
+          <Rating
+            activityId={_id}
+            averageRating={averageRating}
+            totalRatings={totalRatings}
+          />
+        </CardContent>
+      </StyledCard>
     </StyledArticle>
   );
 }
@@ -196,4 +217,42 @@ const StyledFaRegHeart = styled(FaRegHeart)`
     paint-order: stroke;
   }
   overflow: visible;
+`;
+
+const StyledCard = styled.div`
+  padding: 16px;
+`;
+
+const ImageContainer = styled.div`
+  height: 300px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+`;
+
+const StyledImage = styled(Image)`
+  object-fit: cover;
+`;
+
+const CardContent = styled.div`
+  padding: 16px;
+`;
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const Location = styled.p`
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 16px;
+`;
+
+const Description = styled.p`
+  font-size: 1rem;
+  margin-bottom: 16px;
 `;
